@@ -24,12 +24,10 @@ namespace lab1_1
     internal class VirtualFixedStringArray : VirtualArrayBase<string>
     {
 
-        private const int ElementsPerPage = 128;
-        private readonly int stringLength;
+        private const int ElementsPerPage = 128; // количество элементов на одной странице
+        private readonly int stringLength; // длина строки
         private readonly int bitMapSize = 16;  // для 128 элементов
         private int rawDataSize;      // = 128 * stringLength
-        private int rawPageSize;      // = bitMapSize + rawDataSize
-        private new int PageBlockSize;    // выравненный до 512 байт
 
         public VirtualFixedStringArray(string fileName, long totalElements, int stringLength, int bufferPagesCount = 3)
             : base(fileName, totalElements, bufferPagesCount)
@@ -38,9 +36,8 @@ namespace lab1_1
                 throw new ArgumentException("Длина строки должна быть больше 0.");
             this.stringLength = stringLength;
             rawDataSize = ElementsPerPage * stringLength;
-            rawPageSize = bitMapSize + rawDataSize;
-            PageBlockSize = ((rawPageSize + 511) / 512) * 512;
-            totalPages = (int)Math.Ceiling((totalElements * (double)stringLength) / rawDataSize);
+            PageBlockSize = ((rawDataSize + 511) / 512) * 512;
+            totalPages = (int)Math.Ceiling((totalElements * (double)stringLength) / PageBlockSize);
             OpenOrCreateFiles();
             pageBuffer = new PageBase<string>[bufferPagesCount];
             for (int i = 0; i < bufferPagesCount; i++)
@@ -48,7 +45,6 @@ namespace lab1_1
                 pageBuffer[i] = i < totalPages ? LoadPage(i) : null;
             }
         }
-
 
 
         protected override PageBase<string> LoadPage(int absolutePageNumber)

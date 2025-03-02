@@ -32,6 +32,7 @@ namespace lab1_1
             this.recordFileName = recordFileName;
             this.maxStringSize = maxStringSize;
             // totalPages рассчитывается: каждая страница содержит 128 элементов (адресов).
+
             totalPages = (int)Math.Ceiling(totalElements / (double)ElementsPerPage);
             OpenOrCreateFiles();
             OpenOrCreateRecordFile();

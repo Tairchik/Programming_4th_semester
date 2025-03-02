@@ -46,11 +46,10 @@
     <Compile Include="AbstractVirtualArray.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirtualArray.cs" />
     <Compile Include="VirtualArrayConsoleMenu.cs" />
     <Compile Include="VirtualFixedStringArray.cs" />
     <Compile Include="VirtualIntArray.cs" />
-    <Compile Include="VirtualMem.cs" />
-    <Compile Include="VirtualMemory.cs" />
     <Compile Include="VirtualVarStringArray.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ namespace lab1_1
         private const int DataPageSize = 512; // байт данных на странице
         private const int CellsPerPage = DataPageSize / ElementSize; // 128 элементов
         private readonly int bitMapSize = (int)Math.Ceiling(CellsPerPage / 8.0); // 16 байт
-        private new int PageBlockSize => bitMapSize + DataPageSize;  // 528 байт
+        private int PageBlockSize => bitMapSize + DataPageSize;  // 528 байт
 
         public VirtualIntArray(string fileName, long totalElements, int bufferPagesCount = 3)
             : base(fileName, totalElements, bufferPagesCount)

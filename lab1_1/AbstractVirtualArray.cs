@@ -13,10 +13,15 @@ namespace lab1_1
     /// </summary>
     internal abstract class PageBase<T>
     {
-        public int AbsolutePageNumber { get; set; }
+        // Номер страницы
+        public int AbsolutePageNumber { get; set; } 
+        // Флаг изменения страницы
         public byte ModifiedFlag { get; set; }
+        // Время изменения
         public DateTime LastAccessTime { get; set; }
+        // Битовая карта
         public byte[] BitMap { get; set; }
+        // Элементы страницы
         public T[] Data { get; set; }
 
         protected PageBase(int cellsPerPage, int bitMapSize)
