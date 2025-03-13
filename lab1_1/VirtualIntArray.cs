@@ -61,11 +61,10 @@ namespace lab1_1
             // Копируем битовую карту.
             Array.Copy(pageBlock, 0, page.BitMap, 0, bitMapSize);
             // Считываем данные.
-            int dataOffset = bitMapSize;
             for (int i = 0; i < CellsPerPage; i++)
             {
                 byte[] b = new byte[ElementSize];
-                Array.Copy(pageBlock, dataOffset + i * ElementSize, b, 0, ElementSize);
+                Array.Copy(pageBlock, bitMapSize + i * ElementSize, b, 0, ElementSize);
                 page.Data[i] = BitConverter.ToInt32(b, 0);
             }
             return page;
