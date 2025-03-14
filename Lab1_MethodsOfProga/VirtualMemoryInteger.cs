@@ -48,72 +48,110 @@ namespace Lab1_MethodsOfProgram
             bufferPages = new List<Page>();
             for (int i = 0; i < BufferSize; i++) 
             {
-                // Выделяем массив для считывания данных из файла
-                int[] intArray = new int[512 / sizeof(int)];
-
-                for (int j = 0; j < 512 / sizeof(int); j++) 
-                {
-                    if (2 + 16 + j * 4 + i * 512 + 4 > totalSize) 
-                    {
-                        break;
-                    }
-                    // Выделяем 4 байта для считывания значений поэлементно из файла  
-                    byte[] bufferElement = new byte[sizeof(int)];
-
-                    // Считываем элементы, где 2 - VM, 16 - битовая карта
-                    file.Seek(2 + 16 + j * 4 + i * 512, SeekOrigin.Begin);
-                    file.Read(bufferElement, 0, bufferElement.Length);
-
-                    // Копируем в другой массив
-                    byte[] copyBufferElement = new byte[sizeof(int)];
-                    Array.Copy(bufferElement, copyBufferElement, 4);
-                    
-                    // Переводим в int и передаем в массив 
-                    intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
-                }
-
-                if (2 + i * 512 + 16 > totalSize) 
-                {
-                    break;
-                }
-
-                byte[] bitMap = new byte[16];
-                file.Seek(2 + i * 512, SeekOrigin.Begin);
-                file.Read(bitMap, 0, 16);
-                byte[] copyBitMap = new byte[16];
-                Array.Copy(bitMap, copyBitMap, 0);
-
-                bufferPages.Add(new Page(i, 0, DateTime.Now, intArray, copyBitMap));
+                bufferPages.Add(LoadFormFile(i));
             }
             file.Close();
         }
 
 
+        public Page LoadFormFile(long absolutePageNumber)
+        {
+            // Выделяем массив для считывания данных из файла
+            int[] intArray = new int[512 / sizeof(int)];
+
+            for (int j = 0; j < 512 / sizeof(int); j++)
+            {
+                if (2 + 16 + j * 4 + absolutePageNumber * 512 + 4 > totalSize)
+                {
+                    return null;
+                }
+                // Выделяем 4 байта для считывания значений поэлементно из файла  
+                byte[] bufferElement = new byte[sizeof(int)];
+
+                // Считываем элементы, где 2 - VM, 16 - битовая карта
+                file.Seek(2 + 16 + j * 4 + absolutePageNumber * 512, SeekOrigin.Begin);
+                file.Read(bufferElement, 0, bufferElement.Length);
+
+                // Копируем в другой массив
+                byte[] copyBufferElement = new byte[sizeof(int)];
+                Array.Copy(bufferElement, copyBufferElement, 4);
+
+                // Переводим в int и передаем в массив 
+                intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
+            }
+
+            if (2 + absolutePageNumber * 512 + 16 <= totalSize)
+            {
+                byte[] bitMap = new byte[16];
+                file.Seek(2 + absolutePageNumber * 512, SeekOrigin.Begin);
+                file.Read(bitMap, 0, 16);
+                byte[] copyBitMap = new byte[16];
+                Array.Copy(bitMap, copyBitMap, 0);
+
+                return new Page(absolutePageNumber, 0, DateTime.Now, intArray, copyBitMap);
+            }
+            return null;
+        } 
+
+
         // Метод определения номера (индекса) страницы в буфере страниц,
         // где находится элемент массива с заданным индексом
-        public void IdentifyIndex(long index) 
+        public long IdentifyIndex(long index) 
         {
             // Абсолютный номер страницы, определяется как индекс деленный нацело на длину одной страницы (128)
             long absolutePageNumber = index / (512 / (sizeof(int)));
 
             // Проверка на наличие страницы в памяти
             bool fl = false;
+            DateTime time = DateTime.Now;
             foreach (var page in bufferPages) 
             {
                 if (page.AbsoluteNumber == absolutePageNumber)
                 {
-                    fl = true; 
+                    fl = true;
+                }
+                else
+                {
+                    if (DateTime.Compare(time, page.modTime) > 0)
+                    {
+                        time = page.modTime;
+                    }
                 }
             }
 
             if (fl == false)
             {
-                
-                foreach (var page in bufferPages)
+                for (int page = 0; page < bufferPages.Count; page++)
                 {
+                    if (Equals(bufferPages[page].modTime, page) && bufferPages[page].status == 1)
+                    {
+                        // Выгружаем битовую карту
+                        file.Seek(2 + bufferPages[page].AbsoluteNumber * 528, SeekOrigin.Begin);
+                        file.Write(bufferPages[page].bitMap, 0, 16);
 
+                        // Выгружаем элементы страницы
+                        byte[] valuesInBytes = new byte[512];
+                        for (int i = 0; i < 512 / sizeof(int); i++)
+                        {
+                            byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].values[i]);
+                            Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
+                        }
+                        file.Seek(2 + bufferPages[page].AbsoluteNumber * 528 + 16, SeekOrigin.Begin);
+                        file.Write(valuesInBytes, 0, valuesInBytes.Length);
+
+                        // Загружаем в буфер
+                        bufferPages[page] = LoadFormFile(index);
+                        return bufferPages[page].AbsoluteNumber;
+                    }
+                    else if (Equals(bufferPages[page].modTime, page) && bufferPages[page].status == 0)
+                    {
+                        // Загружаем в буфер
+                        bufferPages[page] = LoadFormFile(index);
+                        return bufferPages[page].AbsoluteNumber;
+                    }
                 }
             }
+            return absolutePageNumber;
         }
 
     }

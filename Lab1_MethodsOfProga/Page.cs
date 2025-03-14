@@ -9,7 +9,7 @@ namespace Lab1_MethodsOfProgram
     internal class Page
     {
         private long absoluteNumber;
-        private byte status;
+        public byte status;
         public DateTime modTime;
         public byte[] bitMap;
         public int[] values;
