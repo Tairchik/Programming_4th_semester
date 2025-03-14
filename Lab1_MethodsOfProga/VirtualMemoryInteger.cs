@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -48,11 +49,27 @@ namespace Lab1_MethodsOfProgram
             for (int i = 0; i < BufferSize; i++) 
             {
                 // выделяем массив для считывания данных из файла
-                byte[] buffer = new byte[512];
-                file.Read(buffer, 2 + i * 512, 2 + (i + 1) * 512);
+                
+                
 
+                int[] intArray = new int[512 / sizeof(int)];
 
-                bufferPages.Add(new Page(i, 0, DateTime.Now));
+                for (int j = 0; j < 512 / sizeof(int); j++) 
+                {
+                    byte[] bufferElement = new byte[sizeof(int)];
+                    file.Read(bufferElement, 2 + 16 + j * 4 + i * 512, 4);
+
+                    byte[] copyBufferElement = new byte[sizeof(int)];
+                    Array.Copy(bufferElement, copyBufferElement, 0);
+                    intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
+                }
+
+                byte[] bitMap = new byte[16];
+                file.Read(bitMap, 2 + i * 512, 16);
+                byte[] copyBitMap = new byte[16];
+                Array.Copy(bitMap, copyBitMap, 0);
+
+                bufferPages.Add(new Page(i, 0, DateTime.Now, intArray, copyBitMap));
             }
             file.Close();
         }

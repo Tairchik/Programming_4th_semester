@@ -11,10 +11,10 @@ namespace Lab1_MethodsOfProgram
         private long absoluteNumber;
         private byte status;
         public DateTime modTime;
-        public int[] bitMap;
+        public byte[] bitMap;
         public int[] values;
 
-        public Page(long absoluteNumber, byte status, DateTime modTime, int[] bitMap, int[] values)
+        public Page(long absoluteNumber, byte status, DateTime modTime, int[] values, byte[] bitMap)
         {
             AbsoluteNumber = absoluteNumber;
             Status = status;
