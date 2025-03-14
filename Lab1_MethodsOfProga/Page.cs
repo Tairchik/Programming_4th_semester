@@ -28,7 +28,7 @@ namespace Lab1_MethodsOfProgram
             get { return absoluteNumber; }
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
                     throw new ArgumentException("Некорректный ввод абсолютного номера страницы.");
                 }
@@ -43,13 +43,13 @@ namespace Lab1_MethodsOfProgram
             get { return status; }
             set 
             {
-                if (value != 0 || value != 1) 
+                if (value == 0 || value == 1) 
                 {
-                    throw new ArgumentException("Некорректный ввод статуса изменения страницы.");
+                    status = value;
                 } 
                 else 
                 {
-                    status = value;
+                    throw new ArgumentException("Некорректный ввод статуса изменения страницы.");
                 }
             }
         }

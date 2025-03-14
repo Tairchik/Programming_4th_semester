@@ -61,11 +61,12 @@ namespace Lab1_MethodsOfProgram
                     byte[] bufferElement = new byte[sizeof(int)];
 
                     // Считываем элементы, где 2 - VM, 16 - битовая карта
-                    file.Read(bufferElement, 2 + 16 + j * 4 + i * 512, 4);
+                    file.Seek(2 + 16 + j * 4 + i * 512, SeekOrigin.Begin);
+                    file.Read(bufferElement, 0, bufferElement.Length);
 
                     // Копируем в другой массив
                     byte[] copyBufferElement = new byte[sizeof(int)];
-                    Array.Copy(bufferElement, copyBufferElement, 0);
+                    Array.Copy(bufferElement, copyBufferElement, 4);
                     
                     // Переводим в int и передаем в массив 
                     intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
@@ -77,7 +78,8 @@ namespace Lab1_MethodsOfProgram
                 }
 
                 byte[] bitMap = new byte[16];
-                file.Read(bitMap, 2 + i * 512, 16);
+                file.Seek(2 + i * 512, SeekOrigin.Begin);
+                file.Read(bitMap, 0, 16);
                 byte[] copyBitMap = new byte[16];
                 Array.Copy(bitMap, copyBitMap, 0);
 

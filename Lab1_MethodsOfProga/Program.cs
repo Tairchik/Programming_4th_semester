@@ -11,9 +11,7 @@ namespace Lab1_MethodsOfProgram
         
         static void Main(string[] args)
         {
-           
-         
-
+            VirtualMemoryInteger a = new VirtualMemoryInteger("Test1", 100001);
         }
     }
 }
