@@ -174,5 +174,57 @@ namespace Lab1_MethodsOfProgram
             throw new Exception("Элемент не найден в буфере.");
         }
 
+
+        // Метод чтения значения элемента массива с заданным индексом в указанную переменную
+        public bool SetElementByIndex(int index, int value)
+        {
+            if (index >= totalSize)
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
+            // Вычисляет номер (индекс) страницы в буфере страниц, на которой находится требуемый элемент
+            long absolutePageNumber = GetPageNumber(index);
+
+            // Вычисляет страничный адрес элемента массива с заданным индексом
+            long indexElementInPage = index % 128;
+
+            int byteIndex = (int) indexElementInPage / 8;
+            int bitIndex = (int) indexElementInPage % 8;
+            foreach (var page in bufferPages)
+            {
+                if (page.AbsoluteNumber == absolutePageNumber)
+                {
+                    page.values[indexElementInPage] = value;
+                    page.bitMap[byteIndex] |= (byte)(1 << bitIndex);
+                    page.status = 1;
+                    page.modTime = DateTime.Now;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Выгрузка в файл 
+        public void DumpBuffer()
+        {
+            foreach (var page in bufferPages)
+            {
+                if (page.status == 1)
+                {
+                    // Выгружаем битовую карту
+                    file.Seek(2 + page.AbsoluteNumber * 528, SeekOrigin.Begin);
+                    file.Write(page.bitMap, 0, 16);
+                    // Выгружаем элементы страницы
+                    byte[] valuesInBytes = new byte[512];
+                    for (int i = 0; i < 512 / sizeof(int); i++)
+                    {
+                        byte[] elementInBytes = BitConverter.GetBytes(page.values[i]);
+                        Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
+                    }
+                    file.Seek(2 + page.AbsoluteNumber * 528 + 16, SeekOrigin.Begin);
+                    file.Write(valuesInBytes, 0, valuesInBytes.Length);
+                }
+            }
+        }
     }
 }

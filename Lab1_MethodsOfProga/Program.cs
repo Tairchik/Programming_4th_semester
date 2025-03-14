@@ -13,7 +13,10 @@ namespace Lab1_MethodsOfProgram
         {
             VirtualMemoryInteger a = new VirtualMemoryInteger("Test2", 100001);
 
-            Console.WriteLine(a.GetElementByIndex(1232));
+            
+            Console.WriteLine(a.GetElementByIndex(2));
+       
+            a.DumpBuffer();
         }
     }
 }
