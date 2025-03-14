@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -50,7 +51,6 @@ namespace Lab1_MethodsOfProgram
             {
                 bufferPages.Add(LoadFormFile(i));
             }
-            file.Close();
         }
 
 
@@ -96,7 +96,7 @@ namespace Lab1_MethodsOfProgram
 
         // Метод определения номера (индекса) страницы в буфере страниц,
         // где находится элемент массива с заданным индексом
-        public long IdentifyIndex(long index) 
+        public long GetPageNumber(long index) 
         {
             // Абсолютный номер страницы, определяется как индекс деленный нацело на длину одной страницы (128)
             long absolutePageNumber = index / (512 / (sizeof(int)));
@@ -123,7 +123,7 @@ namespace Lab1_MethodsOfProgram
             {
                 for (int page = 0; page < bufferPages.Count; page++)
                 {
-                    if (Equals(bufferPages[page].modTime, page) && bufferPages[page].status == 1)
+                    if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 1)
                     {
                         // Выгружаем битовую карту
                         file.Seek(2 + bufferPages[page].AbsoluteNumber * 528, SeekOrigin.Begin);
@@ -143,15 +143,38 @@ namespace Lab1_MethodsOfProgram
                         bufferPages[page] = LoadFormFile(index);
                         return bufferPages[page].AbsoluteNumber;
                     }
-                    else if (Equals(bufferPages[page].modTime, page) && bufferPages[page].status == 0)
+                    else if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 0)
                     {
                         // Загружаем в буфер
-                        bufferPages[page] = LoadFormFile(index);
+                        bufferPages[page] = LoadFormFile(absolutePageNumber);
                         return bufferPages[page].AbsoluteNumber;
                     }
                 }
             }
             return absolutePageNumber;
+        }
+
+        // Метод чтения значения элемента массива с заданным индексом в указанную переменную
+        public int GetElementByIndex(long index) 
+        {
+            if (index >= totalSize) 
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
+            // Вычисляет номер (индекс) страницы в буфере страниц, на которой находится требуемый элемент
+            long absolutePageNumber = GetElementByIndex(index);
+
+            // Вычисляет страничный адрес элемента массива с заданным индексом
+            long indexElementInPage = index % 512;
+            
+            foreach (var page in bufferPages)
+            {
+                if (page.AbsoluteNumber == absolutePageNumber)
+                {
+                    return page.values[indexElementInPage];
+                }
+            }
+            throw new Exception("Страница не найдена в буфере.");
         }
 
     }
