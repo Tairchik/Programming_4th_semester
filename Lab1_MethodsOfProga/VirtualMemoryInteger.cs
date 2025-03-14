@@ -91,24 +91,23 @@ namespace Lab1_MethodsOfProgram
                 return new Page(absolutePageNumber, 0, DateTime.Now, intArray, copyBitMap);
             }
             return null;
-        } 
+        }
 
 
         // Метод определения номера (индекса) страницы в буфере страниц,
         // где находится элемент массива с заданным индексом
-        public long GetPageNumber(long index) 
+        public long GetPageNumber(long index)
         {
             // Абсолютный номер страницы, определяется как индекс деленный нацело на длину одной страницы (128)
             long absolutePageNumber = index / (512 / (sizeof(int)));
 
             // Проверка на наличие страницы в памяти
-            bool fl = false;
             DateTime time = DateTime.Now;
-            foreach (var page in bufferPages) 
+            foreach (var page in bufferPages)
             {
                 if (page.AbsoluteNumber == absolutePageNumber)
                 {
-                    fl = true;
+                    return page.AbsoluteNumber;
                 }
                 else
                 {
@@ -119,39 +118,37 @@ namespace Lab1_MethodsOfProgram
                 }
             }
 
-            if (fl == false)
+            for (int page = 0; page < bufferPages.Count; page++)
             {
-                for (int page = 0; page < bufferPages.Count; page++)
+                if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 1)
                 {
-                    if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 1)
-                    {
-                        // Выгружаем битовую карту
-                        file.Seek(2 + bufferPages[page].AbsoluteNumber * 528, SeekOrigin.Begin);
-                        file.Write(bufferPages[page].bitMap, 0, 16);
+                    // Выгружаем битовую карту
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * 528, SeekOrigin.Begin);
+                    file.Write(bufferPages[page].bitMap, 0, 16);
 
-                        // Выгружаем элементы страницы
-                        byte[] valuesInBytes = new byte[512];
-                        for (int i = 0; i < 512 / sizeof(int); i++)
-                        {
-                            byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].values[i]);
-                            Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
-                        }
-                        file.Seek(2 + bufferPages[page].AbsoluteNumber * 528 + 16, SeekOrigin.Begin);
-                        file.Write(valuesInBytes, 0, valuesInBytes.Length);
-
-                        // Загружаем в буфер
-                        bufferPages[page] = LoadFormFile(index);
-                        return bufferPages[page].AbsoluteNumber;
-                    }
-                    else if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 0)
+                    // Выгружаем элементы страницы
+                    byte[] valuesInBytes = new byte[512];
+                    for (int i = 0; i < 512 / sizeof(int); i++)
                     {
-                        // Загружаем в буфер
-                        bufferPages[page] = LoadFormFile(absolutePageNumber);
-                        return bufferPages[page].AbsoluteNumber;
+                        byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].values[i]);
+                        Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
                     }
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * 528 + 16, SeekOrigin.Begin);
+                    file.Write(valuesInBytes, 0, valuesInBytes.Length);
+
+                    // Загружаем в буфер
+                    bufferPages[page] = LoadFormFile(index);
+                    return bufferPages[page].AbsoluteNumber;
+                }
+                else if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 0)
+                {
+                    // Загружаем в буфер
+                    bufferPages[page] = LoadFormFile(absolutePageNumber);
+                    return bufferPages[page].AbsoluteNumber;
                 }
             }
-            return absolutePageNumber;
+
+            throw new Exception("Страница не найдена!");
         }
 
         // Метод чтения значения элемента массива с заданным индексом в указанную переменную
@@ -162,10 +159,10 @@ namespace Lab1_MethodsOfProgram
                 throw new ArgumentOutOfRangeException("index");
             }
             // Вычисляет номер (индекс) страницы в буфере страниц, на которой находится требуемый элемент
-            long absolutePageNumber = GetElementByIndex(index);
+            long absolutePageNumber = GetPageNumber(index);
 
             // Вычисляет страничный адрес элемента массива с заданным индексом
-            long indexElementInPage = index % 512;
+            long indexElementInPage = index % 128;
             
             foreach (var page in bufferPages)
             {
@@ -174,7 +171,7 @@ namespace Lab1_MethodsOfProgram
                     return page.values[indexElementInPage];
                 }
             }
-            throw new Exception("Страница не найдена в буфере.");
+            throw new Exception("Элемент не найден в буфере.");
         }
 
     }

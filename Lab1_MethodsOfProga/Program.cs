@@ -11,9 +11,9 @@ namespace Lab1_MethodsOfProgram
         
         static void Main(string[] args)
         {
-            VirtualMemoryInteger a = new VirtualMemoryInteger("Test1", 100001);
+            VirtualMemoryInteger a = new VirtualMemoryInteger("Test2", 100001);
 
-            Console.WriteLine(a.GetPageNumber(1233));
+            Console.WriteLine(a.GetElementByIndex(1232));
         }
     }
 }
