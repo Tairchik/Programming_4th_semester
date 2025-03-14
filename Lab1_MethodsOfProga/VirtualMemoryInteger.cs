@@ -48,20 +48,32 @@ namespace Lab1_MethodsOfProgram
             bufferPages = new List<Page>();
             for (int i = 0; i < BufferSize; i++) 
             {
-                // выделяем массив для считывания данных из файла
-                
-                
-
+                // Выделяем массив для считывания данных из файла
                 int[] intArray = new int[512 / sizeof(int)];
 
                 for (int j = 0; j < 512 / sizeof(int); j++) 
                 {
+                    if (2 + 16 + j * 4 + i * 512 + 4 > totalSize) 
+                    {
+                        break;
+                    }
+                    // Выделяем 4 байта для считывания значений поэлементно из файла  
                     byte[] bufferElement = new byte[sizeof(int)];
+
+                    // Считываем элементы, где 2 - VM, 16 - битовая карта
                     file.Read(bufferElement, 2 + 16 + j * 4 + i * 512, 4);
 
+                    // Копируем в другой массив
                     byte[] copyBufferElement = new byte[sizeof(int)];
                     Array.Copy(bufferElement, copyBufferElement, 0);
+                    
+                    // Переводим в int и передаем в массив 
                     intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
+                }
+
+                if (2 + i * 512 + 16 > totalSize) 
+                {
+                    break;
                 }
 
                 byte[] bitMap = new byte[16];
