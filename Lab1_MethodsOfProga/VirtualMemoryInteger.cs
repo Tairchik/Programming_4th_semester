@@ -22,6 +22,13 @@ namespace Lab1_MethodsOfProgram
         // Размер массива
         private readonly long totalSize;
 
+
+        // Константы
+        private const int PageByteSize = 512;
+        private const int BitMapByteSize = PageByteSize / sizeof(int) / 8;
+        private const int TotalByteSize = PageByteSize + BitMapByteSize;
+
+
         public VirtualMemoryInteger(string fileName, long totalSize)
         {
             if (totalSize <= 10000) 
@@ -53,15 +60,17 @@ namespace Lab1_MethodsOfProgram
             }
         }
 
+       
+
 
         public Page LoadFormFile(long absolutePageNumber)
         {
             // Выделяем массив для считывания данных из файла
-            int[] intArray = new int[512 / sizeof(int)];
+            int[] intArray = new int[PageByteSize / sizeof(int)];
 
-            for (int j = 0; j < 512 / sizeof(int); j++)
+            for (int j = 0; j < PageByteSize / sizeof(int); j++)
             {
-                if (2 + 16 + j * 4 + absolutePageNumber * 512 + 4 > totalSize)
+                if (2 + BitMapByteSize + j * 4 + absolutePageNumber * PageByteSize + 4 > totalSize)
                 {
                     return null;
                 }
@@ -69,7 +78,7 @@ namespace Lab1_MethodsOfProgram
                 byte[] bufferElement = new byte[sizeof(int)];
 
                 // Считываем элементы, где 2 - VM, 16 - битовая карта
-                file.Seek(2 + 16 + j * 4 + absolutePageNumber * 512, SeekOrigin.Begin);
+                file.Seek(2 + BitMapByteSize + j * 4 + absolutePageNumber * PageByteSize, SeekOrigin.Begin);
                 file.Read(bufferElement, 0, bufferElement.Length);
 
                 // Копируем в другой массив
@@ -80,12 +89,12 @@ namespace Lab1_MethodsOfProgram
                 intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
             }
 
-            if (2 + absolutePageNumber * 512 + 16 <= totalSize)
+            if (2 + absolutePageNumber * PageByteSize + 16 <= totalSize)
             {
-                byte[] bitMap = new byte[16];
-                file.Seek(2 + absolutePageNumber * 512, SeekOrigin.Begin);
-                file.Read(bitMap, 0, 16);
-                byte[] copyBitMap = new byte[16];
+                byte[] bitMap = new byte[BitMapByteSize];
+                file.Seek(2 + absolutePageNumber * PageByteSize, SeekOrigin.Begin);
+                file.Read(bitMap, 0, BitMapByteSize);
+                byte[] copyBitMap = new byte[BitMapByteSize];
                 Array.Copy(bitMap, copyBitMap, 0);
 
                 return new Page(absolutePageNumber, 0, DateTime.Now, intArray, copyBitMap);
@@ -99,7 +108,7 @@ namespace Lab1_MethodsOfProgram
         public long GetPageNumber(long index)
         {
             // Абсолютный номер страницы, определяется как индекс деленный нацело на длину одной страницы (128)
-            long absolutePageNumber = index / (512 / (sizeof(int)));
+            long absolutePageNumber = index / (PageByteSize / (sizeof(int)));
 
             // Проверка на наличие страницы в памяти
             DateTime time = DateTime.Now;
@@ -123,17 +132,17 @@ namespace Lab1_MethodsOfProgram
                 if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 1)
                 {
                     // Выгружаем битовую карту
-                    file.Seek(2 + bufferPages[page].AbsoluteNumber * 528, SeekOrigin.Begin);
-                    file.Write(bufferPages[page].bitMap, 0, 16);
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * TotalByteSize, SeekOrigin.Begin);
+                    file.Write(bufferPages[page].bitMap, 0, BitMapByteSize);
 
                     // Выгружаем элементы страницы
-                    byte[] valuesInBytes = new byte[512];
-                    for (int i = 0; i < 512 / sizeof(int); i++)
+                    byte[] valuesInBytes = new byte[PageByteSize];
+                    for (int i = 0; i < PageByteSize / sizeof(int); i++)
                     {
                         byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].values[i]);
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
                     }
-                    file.Seek(2 + bufferPages[page].AbsoluteNumber * 528 + 16, SeekOrigin.Begin);
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * TotalByteSize + BitMapByteSize, SeekOrigin.Begin);
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
 
                     // Загружаем в буфер
@@ -175,7 +184,7 @@ namespace Lab1_MethodsOfProgram
         }
 
 
-        // Метод чтения значения элемента массива с заданным индексом в указанную переменную
+        // Метод записи заданного значения в элемент массива с указанным индексом
         public bool SetElementByIndex(int index, int value)
         {
             if (index >= totalSize)
@@ -212,16 +221,16 @@ namespace Lab1_MethodsOfProgram
                 if (page.status == 1)
                 {
                     // Выгружаем битовую карту
-                    file.Seek(2 + page.AbsoluteNumber * 528, SeekOrigin.Begin);
-                    file.Write(page.bitMap, 0, 16);
+                    file.Seek(2 + page.AbsoluteNumber * TotalByteSize, SeekOrigin.Begin);
+                    file.Write(page.bitMap, 0, BitMapByteSize);
                     // Выгружаем элементы страницы
-                    byte[] valuesInBytes = new byte[512];
-                    for (int i = 0; i < 512 / sizeof(int); i++)
+                    byte[] valuesInBytes = new byte[PageByteSize];
+                    for (int i = 0; i < PageByteSize / sizeof(int); i++)
                     {
                         byte[] elementInBytes = BitConverter.GetBytes(page.values[i]);
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
                     }
-                    file.Seek(2 + page.AbsoluteNumber * 528 + 16, SeekOrigin.Begin);
+                    file.Seek(2 + page.AbsoluteNumber * TotalByteSize + BitMapByteSize, SeekOrigin.Begin);
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
                 }
             }
