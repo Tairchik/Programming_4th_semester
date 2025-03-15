@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class Page
+    internal class PageInt : IPage<int>
     {
         private long absoluteNumber;
-        public byte status;
-        public DateTime modTime;
-        public byte[] bitMap;
-        public int[] values;
-
-        public Page(long absoluteNumber, byte status, DateTime modTime, int[] values, byte[] bitMap)
+        private byte status;
+        private DateTime modTime;
+        private byte[] bitMap;
+        private int[] values;
+        public PageInt(long absoluteNumber, byte status, DateTime modTime, int[] values, byte[] bitMap)
         {
             AbsoluteNumber = absoluteNumber;
             Status = status;
@@ -22,7 +21,7 @@ namespace Lab1_MethodsOfProgram
             this.bitMap = bitMap;
             this.values = values;
         }
-        
+
         public long AbsoluteNumber
         {
             get { return absoluteNumber; }
@@ -41,17 +40,33 @@ namespace Lab1_MethodsOfProgram
         public byte Status
         {
             get { return status; }
-            set 
+            set
             {
-                if (value == 0 || value == 1) 
+                if (value == 0 || value == 1)
                 {
                     status = value;
-                } 
-                else 
+                }
+                else
                 {
                     throw new ArgumentException("Некорректный ввод статуса изменения страницы.");
                 }
             }
+        }
+
+        public DateTime ModTime
+        {
+            get { return modTime; }
+            set { modTime = value; }
+        }
+        public byte[] BitMap
+        {
+            get { return bitMap; }
+            set { bitMap = value; }
+        }
+        public int[] Values
+        {
+            get { return values; }
+            set { values = value; }
         }
     }
 }

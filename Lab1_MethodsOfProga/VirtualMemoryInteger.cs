@@ -11,12 +11,12 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class VirtualMemoryInteger
+    internal class VirtualMemoryInteger : IVirtualMemory<int>
     {
         // Файловый указатель
         private FileStream file;
         // Буфер страниц
-        private List<Page> bufferPages;
+        private List<IPage<int>> bufferPages;
         // Размер буфера
         private const int BufferSize = 3;
         // Размер массива
@@ -29,13 +29,13 @@ namespace Lab1_MethodsOfProgram
         private const int TotalByteSize = PageByteSize + BitMapByteSize;
 
 
-        public VirtualMemoryInteger(string fileName, long totalSize)
+        public VirtualMemoryInteger(string fileName, long totalSize) 
         {
-            if (totalSize <= 10000) 
+            if (totalSize <= 10000)
             {
                 throw new ArgumentException("Размерность массива должна превышать 10000.");
             }
-            else 
+            else
             {
                 this.totalSize = totalSize;
             }
@@ -46,15 +46,15 @@ namespace Lab1_MethodsOfProgram
                 file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
                 byte[] signature = new byte[] { (byte)'V', (byte)'M' };
                 file.Write(signature, 0, signature.Length);
-                file.SetLength(signature.Length + totalSize);   
+                file.SetLength(signature.Length + totalSize);
             }
             else
             {
                 file = new FileStream(path, FileMode.Open);
             }
 
-            bufferPages = new List<Page>();
-            for (int i = 0; i < BufferSize; i++) 
+            bufferPages = new List<IPage<int>>();
+            for (int i = 0; i < BufferSize; i++)
             {
                 bufferPages.Add(LoadFormFile(i));
             }
@@ -63,7 +63,7 @@ namespace Lab1_MethodsOfProgram
        
 
 
-        public Page LoadFormFile(long absolutePageNumber)
+        public IPage<int> LoadFormFile(long absolutePageNumber)
         {
             // Выделяем массив для считывания данных из файла
             int[] intArray = new int[PageByteSize / sizeof(int)];
@@ -97,7 +97,7 @@ namespace Lab1_MethodsOfProgram
                 byte[] copyBitMap = new byte[BitMapByteSize];
                 Array.Copy(bitMap, copyBitMap, 0);
 
-                return new Page(absolutePageNumber, 0, DateTime.Now, intArray, copyBitMap);
+                return new PageInt(absolutePageNumber, 0, DateTime.Now, intArray, copyBitMap);
             }
             return null;
         }
@@ -120,26 +120,26 @@ namespace Lab1_MethodsOfProgram
                 }
                 else
                 {
-                    if (DateTime.Compare(time, page.modTime) > 0)
+                    if (DateTime.Compare(time, page.ModTime) > 0)
                     {
-                        time = page.modTime;
+                        time = page.ModTime;
                     }
                 }
             }
 
             for (int page = 0; page < bufferPages.Count; page++)
             {
-                if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 1)
+                if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 1)
                 {
                     // Выгружаем битовую карту
                     file.Seek(2 + bufferPages[page].AbsoluteNumber * TotalByteSize, SeekOrigin.Begin);
-                    file.Write(bufferPages[page].bitMap, 0, BitMapByteSize);
+                    file.Write(bufferPages[page].BitMap, 0, BitMapByteSize);
 
                     // Выгружаем элементы страницы
                     byte[] valuesInBytes = new byte[PageByteSize];
                     for (int i = 0; i < PageByteSize / sizeof(int); i++)
                     {
-                        byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].values[i]);
+                        byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].Values[i]);
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
                     }
                     file.Seek(2 + bufferPages[page].AbsoluteNumber * TotalByteSize + BitMapByteSize, SeekOrigin.Begin);
@@ -149,7 +149,7 @@ namespace Lab1_MethodsOfProgram
                     bufferPages[page] = LoadFormFile(index);
                     return bufferPages[page].AbsoluteNumber;
                 }
-                else if (Equals(bufferPages[page].modTime, time) && bufferPages[page].status == 0)
+                else if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 0)
                 {
                     // Загружаем в буфер
                     bufferPages[page] = LoadFormFile(absolutePageNumber);
@@ -177,7 +177,7 @@ namespace Lab1_MethodsOfProgram
             {
                 if (page.AbsoluteNumber == absolutePageNumber)
                 {
-                    return page.values[indexElementInPage];
+                    return page.Values[indexElementInPage];
                 }
             }
             throw new Exception("Элемент не найден в буфере.");
@@ -203,10 +203,10 @@ namespace Lab1_MethodsOfProgram
             {
                 if (page.AbsoluteNumber == absolutePageNumber)
                 {
-                    page.values[indexElementInPage] = value;
-                    page.bitMap[byteIndex] |= (byte)(1 << bitIndex);
-                    page.status = 1;
-                    page.modTime = DateTime.Now;
+                    page.Values[indexElementInPage] = value;
+                    page.BitMap[byteIndex] |= (byte)(1 << bitIndex);
+                    page.Status = 1;
+                    page.ModTime = DateTime.Now;
                     return true;
                 }
             }
@@ -218,16 +218,16 @@ namespace Lab1_MethodsOfProgram
         {
             foreach (var page in bufferPages)
             {
-                if (page.status == 1)
+                if (page.Status == 1)
                 {
                     // Выгружаем битовую карту
                     file.Seek(2 + page.AbsoluteNumber * TotalByteSize, SeekOrigin.Begin);
-                    file.Write(page.bitMap, 0, BitMapByteSize);
+                    file.Write(page.BitMap, 0, BitMapByteSize);
                     // Выгружаем элементы страницы
                     byte[] valuesInBytes = new byte[PageByteSize];
                     for (int i = 0; i < PageByteSize / sizeof(int); i++)
                     {
-                        byte[] elementInBytes = BitConverter.GetBytes(page.values[i]);
+                        byte[] elementInBytes = BitConverter.GetBytes(page.Values[i]);
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
                     }
                     file.Seek(2 + page.AbsoluteNumber * TotalByteSize + BitMapByteSize, SeekOrigin.Begin);
