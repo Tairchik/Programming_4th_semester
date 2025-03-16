@@ -12,11 +12,8 @@ namespace Lab1_MethodsOfProgram
         static void Main(string[] args)
         {
             VirtualMemoryString a = new VirtualMemoryString("Test4", 100005, 50);
-
-            
-            Console.WriteLine(a.GetElementByIndex(11));
-       
-            a.DumpBuffer();
+            Console.WriteLine(a.SetElementByIndex(0, "dIMA"));
+            a.DumpBuffer(); 
         }
     }
 }

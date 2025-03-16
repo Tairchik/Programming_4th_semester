@@ -12,7 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class VirtualMemoryInteger : IVirtualMemory<int>
+    internal class VirtualMemoryInteger : IVirtualMemory<int, int>
     {
         // Файловый указатель
         private FileStream file;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class VirtualMemoryString
+    internal class VirtualMemoryString : IVirtualMemory<int, string>
     {
         // Файловый указатель
         private FileStream file;
