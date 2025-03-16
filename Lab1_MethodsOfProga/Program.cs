@@ -11,10 +11,10 @@ namespace Lab1_MethodsOfProgram
         
         static void Main(string[] args)
         {
-            VirtualMemoryInteger a = new VirtualMemoryInteger("Test2", 100001);
+            IVirtualMemory<string> a = new VirtualMemoryChar("Test3", 100005, 20);
 
             
-            Console.WriteLine(a.GetElementByIndex(2));
+            Console.WriteLine(a.GetElementByIndex(100000));
        
             a.DumpBuffer();
         }

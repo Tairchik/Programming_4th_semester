@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Lab1_MethodsOfProgram
         private const int PageByteSize = 512;
         private const int BitMapByteSize = PageByteSize / sizeof(int) / 8;
         private const int BlockByteSize = PageByteSize + BitMapByteSize;
-
+        private readonly long PageCount;
 
         public VirtualMemoryInteger(string fileName, long totalSize) 
         {
@@ -38,7 +39,9 @@ namespace Lab1_MethodsOfProgram
             }
 
             ArrayLength = totalSize;
-            FileByteSize = totalSize * sizeof(int) + (BlockByteSize - (totalSize * sizeof(int)) % BlockByteSize);
+            PageCount = (long) Math.Ceiling((decimal) ArrayLength / 128);
+            FileByteSize = PageCount * BlockByteSize;
+            
 
 
             string path = $"../../Data/{fileName}.bin";
@@ -52,6 +55,8 @@ namespace Lab1_MethodsOfProgram
             else
             {
                 file = new FileStream(path, FileMode.Open);
+                byte[] signature = new byte[] { (byte)'V', (byte)'M' };
+                file.SetLength(FileByteSize + signature.Length);
             }
 
             bufferPages = new List<IPage<int>>();
@@ -64,9 +69,9 @@ namespace Lab1_MethodsOfProgram
 
         public IPage<int> LoadFormFile(long absolutePageNumber)
         {
-            if (absolutePageNumber > FileByteSize / BlockByteSize || absolutePageNumber < 0) 
+            if (absolutePageNumber > PageCount || absolutePageNumber < 0) 
             {
-                throw new ArgumentOutOfRangeException("Такой страницы не существует.");
+                throw new ArgumentOutOfRangeException("Страницы не существует.");
             }
             // Выделяем массив для считывания данных из файла
             int[] intArray = new int[128];
@@ -82,7 +87,7 @@ namespace Lab1_MethodsOfProgram
 
                 // Копируем
                 byte[] copyBufferElement = new byte[sizeof(int)];
-                Array.Copy(bufferElement, copyBufferElement, 4);
+                Array.Copy(bufferElement, copyBufferElement, sizeof(int));
 
                 // Переводим в int и передаем в массив элементов
                 intArray[j] = BitConverter.ToInt32(copyBufferElement, 0);
@@ -108,7 +113,7 @@ namespace Lab1_MethodsOfProgram
                 throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
             }
             // Абсолютный номер страницы, определяется как номер элемента деленный нацело на длину одной страницы (128)
-            long absolutePageNumber = index / (PageByteSize / (sizeof(int)));
+            long absolutePageNumber = index / 128;
 
             // Проверка на наличие страницы в памяти
             DateTime time = DateTime.Now;

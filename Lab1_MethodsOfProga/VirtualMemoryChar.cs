@@ -26,6 +26,7 @@ namespace Lab1_MethodsOfProgram
         private readonly int PageByteSize;
         private const int BitMapByteSize = 16;
         private readonly int BlockByteSize;
+        private readonly long PageCount;
         public VirtualMemoryChar(string fileName, long totalSize, int lengthString) 
         {
             if (totalSize <= 10000)
@@ -45,11 +46,15 @@ namespace Lab1_MethodsOfProgram
             // Вычисляем константы
             // Выравниваем на границу кратной 512
             PageByteSize = 128 * lengthString + (512 - 128 * lengthString % 512);
-            // Итоговый размер страницы
+
+            // Итоговый размер страницы (блок)
             BlockByteSize = PageByteSize + BitMapByteSize;
 
+            // Общее количество страниц в файле
+            PageCount = (long)Math.Ceiling((decimal)ArrayLength / 128);
+
             // Вычисляем итоговый размер файла (без учета сигнатуры)
-            FileByteSize = totalSize * lengthString + (BlockByteSize - totalSize * lengthString % BlockByteSize);
+            FileByteSize = PageCount * BlockByteSize;
 
             string path = $"../../Data/{fileName}.bin";
             if (!File.Exists(path))
@@ -57,11 +62,13 @@ namespace Lab1_MethodsOfProgram
                 file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
                 byte[] signature = new byte[] { (byte)'V', (byte)'M' };
                 file.Write(signature, 0, signature.Length);
-                file.SetLength(signature.Length + this.FileByteSize);
+                file.SetLength(signature.Length + FileByteSize);
             }
             else
             {
                 file = new FileStream(path, FileMode.Open);
+                byte[] signature = new byte[] { (byte)'V', (byte)'M' };
+                file.SetLength(FileByteSize + signature.Length);
             }
 
             bufferPages = new List<IPage<string>>();
@@ -74,16 +81,16 @@ namespace Lab1_MethodsOfProgram
 
         public IPage<string> LoadFormFile(long absolutePageNumber)
         {
-            if (absolutePageNumber > FileByteSize / BlockByteSize || absolutePageNumber < 0)
+            if (absolutePageNumber > PageCount || absolutePageNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("Такой страницы не существует.");
+                throw new ArgumentOutOfRangeException("Страницы не существует.");
             }
             // Выделяем массив для считывания данных из файла
             string[] stringArray = new string[128];
 
             for (int j = 0; j < 128; j++)
             {
-                // Выделяем 4 байта для считывания значений поэлементно из файла  
+                // Выделяем lengthString байта для считывания значений поэлементно из файла  
                 byte[] bufferElement = new byte[lengthString];
 
                 // Считываем элементы, где 2 - VM
@@ -91,11 +98,11 @@ namespace Lab1_MethodsOfProgram
                 file.Read(bufferElement, 0, bufferElement.Length);
 
                 // Копируем
-                byte[] copyBufferElement = new byte[sizeof(int)];
-                Array.Copy(bufferElement, copyBufferElement, 4);
+                byte[] copyBufferElement = new byte[lengthString];
+                Array.Copy(bufferElement, copyBufferElement, lengthString);
 
                 // Переводим в string и передаем в массив элементов
-                stringArray[j] = BitConverter.ToString(copyBufferElement, 0);
+                stringArray[j] = Encoding.ASCII.GetString(copyBufferElement).TrimEnd('\0');
             }
 
             // Считываем битовую карту
@@ -117,7 +124,7 @@ namespace Lab1_MethodsOfProgram
                 throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
             }
             // Абсолютный номер страницы, определяется как номер элемента деленный нацело на длину одной страницы (128)
-            long absolutePageNumber = index / (128);
+            long absolutePageNumber = index / 128;
 
             // Проверка на наличие страницы в памяти
             DateTime time = DateTime.Now;
@@ -213,7 +220,15 @@ namespace Lab1_MethodsOfProgram
             {
                 if (page.AbsoluteNumber == absolutePageNumber)
                 {
-                    page.Values[indexElementInPage] = value.Substring(0, lengthString);
+                    if (lengthString > value.Length)
+                    {
+                        page.Values[indexElementInPage] = value.PadRight(lengthString);
+                    }
+                    else
+                    {
+                        page.Values[indexElementInPage] = value.Substring(0, lengthString);
+                    }
+                    
                     page.BitMap[byteIndex] |= (byte)(1 << bitIndex);
                     page.Status = 1;
                     page.ModTime = DateTime.Now;

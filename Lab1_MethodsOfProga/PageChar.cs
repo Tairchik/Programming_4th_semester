@@ -70,4 +70,3 @@ namespace Lab1_MethodsOfProgram
         }
     }
 }
-}
