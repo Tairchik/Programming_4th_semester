@@ -142,7 +142,7 @@ namespace Lab1_MethodsOfProgram
                         byte[] elementInBytes = BitConverter.GetBytes(bufferPages[page].Values[i]);
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * sizeof(int), elementInBytes.Length);
                     }
-                    file.Seek(2 + bufferPages[page].AbsoluteNumber * BlockByteSize, SeekOrigin.Begin);
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
 
                     // Загружаем в буфер

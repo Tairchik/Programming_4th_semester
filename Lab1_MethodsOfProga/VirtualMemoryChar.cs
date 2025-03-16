@@ -108,5 +108,142 @@ namespace Lab1_MethodsOfProgram
             return new PageChar(absolutePageNumber, 0, DateTime.Now, stringArray, copyBitMap);
         }
 
+        // Метод определения номера (индекса) страницы в буфере страниц,
+        // где находится элемент массива с заданным индексом
+        public long GetPageNumber(long index)
+        {
+            if (index < 0 || index > ArrayLength)
+            {
+                throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
+            }
+            // Абсолютный номер страницы, определяется как номер элемента деленный нацело на длину одной страницы (128)
+            long absolutePageNumber = index / (128);
+
+            // Проверка на наличие страницы в памяти
+            DateTime time = DateTime.Now;
+            foreach (var page in bufferPages)
+            {
+                if (page.AbsoluteNumber == absolutePageNumber)
+                {
+                    return page.AbsoluteNumber;
+                }
+                else
+                {
+                    if (DateTime.Compare(time, page.ModTime) > 0)
+                    {
+                        time = page.ModTime;
+                    }
+                }
+            }
+
+            for (int page = 0; page < bufferPages.Count; page++)
+            {
+                if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 1)
+                {
+                    // Выгружаем битовую карту
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * BlockByteSize, SeekOrigin.Begin);
+                    file.Write(bufferPages[page].BitMap, 0, BitMapByteSize);
+
+                    // Выгружаем элементы страницы
+                    byte[] valuesInBytes = new byte[PageByteSize];
+                    for (int i = 0; i < 128; i++)
+                    {
+                        byte[] elementInBytes = Encoding.ASCII.GetBytes(bufferPages[page].Values[i]);                     
+                        Array.Copy(elementInBytes, 0, valuesInBytes, i * lengthString, elementInBytes.Length);
+                    }
+                    file.Seek(2 + bufferPages[page].AbsoluteNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
+                    file.Write(valuesInBytes, 0, valuesInBytes.Length);
+
+                    // Загружаем в буфер
+                    bufferPages[page] = LoadFormFile(index);
+                    return bufferPages[page].AbsoluteNumber;
+                }
+                else if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 0)
+                {
+                    // Загружаем в буфер
+                    bufferPages[page] = LoadFormFile(absolutePageNumber);
+                    return bufferPages[page].AbsoluteNumber;
+                }
+            }
+
+            throw new Exception("Страница не найдена!");
+        }
+
+        // Метод чтения значения элемента массива с заданным индексом в указанную переменную
+        public string GetElementByIndex(long index)
+        {
+            if (index < 0 || index > ArrayLength)
+            {
+                throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
+            }
+
+            // Вычисляет номер (индекс) страницы в буфере страниц, на которой находится требуемый элемент
+            long absolutePageNumber = GetPageNumber(index);
+
+            // Вычисляет номер элемента в странице
+            long indexElementInPage = index % 128;
+
+            foreach (var page in bufferPages)
+            {
+                if (page.AbsoluteNumber == absolutePageNumber)
+                {
+                    return page.Values[indexElementInPage];
+                }
+            }
+            throw new Exception("Элемент не найден в буфере.");
+        }
+
+
+        // Метод записи заданного значения в элемент массива с указанным индексом
+        public bool SetElementByIndex(int index, string value)
+        {
+            if (index < 0 || index > ArrayLength)
+            {
+                throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
+            }
+            // Вычисляет номер (индекс) страницы в буфере страниц, на которой находится требуемый элемент
+            long absolutePageNumber = GetPageNumber(index);
+
+            // Вычисляет номер элемента в странице
+            long indexElementInPage = index % 128;
+
+            int byteIndex = (int)indexElementInPage / 8;
+            int bitIndex = (int)indexElementInPage % 8;
+            foreach (var page in bufferPages)
+            {
+                if (page.AbsoluteNumber == absolutePageNumber)
+                {
+                    page.Values[indexElementInPage] = value.Substring(0, lengthString);
+                    page.BitMap[byteIndex] |= (byte)(1 << bitIndex);
+                    page.Status = 1;
+                    page.ModTime = DateTime.Now;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Выгрузка в файл 
+        public void DumpBuffer()
+        {
+            foreach (var page in bufferPages)
+            {
+                if (page.Status == 1)
+                {
+                    // Выгружаем битовую карту
+                    file.Seek(2 + page.AbsoluteNumber * BlockByteSize, SeekOrigin.Begin);
+                    file.Write(page.BitMap, 0, BitMapByteSize);
+                    // Выгружаем элементы страницы
+                    byte[] valuesInBytes = new byte[PageByteSize];
+                    for (int i = 0; i < 128; i++)
+                    {
+                        byte[] elementInBytes = Encoding.ASCII.GetBytes(page.Values[i]);
+                        Array.Copy(elementInBytes, 0, valuesInBytes, i * lengthString, elementInBytes.Length);
+                    }
+                    file.Seek(2 + page.AbsoluteNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
+                    file.Write(valuesInBytes, 0, valuesInBytes.Length);
+                }
+            }
+        }
     }
 }
