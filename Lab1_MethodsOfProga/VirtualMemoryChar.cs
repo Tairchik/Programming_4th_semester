@@ -102,7 +102,7 @@ namespace Lab1_MethodsOfProgram
                 Array.Copy(bufferElement, copyBufferElement, lengthString);
 
                 // Переводим в string и передаем в массив элементов
-                stringArray[j] = Encoding.ASCII.GetString(copyBufferElement).TrimEnd('\0');
+                stringArray[j] = Encoding.UTF8.GetString(copyBufferElement).TrimEnd('\0');
             }
 
             // Считываем битовую карту
@@ -155,7 +155,7 @@ namespace Lab1_MethodsOfProgram
                     byte[] valuesInBytes = new byte[PageByteSize];
                     for (int i = 0; i < 128; i++)
                     {
-                        byte[] elementInBytes = Encoding.ASCII.GetBytes(bufferPages[page].Values[i]);                     
+                        byte[] elementInBytes = Encoding.UTF8.GetBytes(bufferPages[page].Values[i]);                     
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * lengthString, elementInBytes.Length);
                     }
                     file.Seek(2 + bufferPages[page].AbsoluteNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
@@ -252,7 +252,7 @@ namespace Lab1_MethodsOfProgram
                     byte[] valuesInBytes = new byte[PageByteSize];
                     for (int i = 0; i < 128; i++)
                     {
-                        byte[] elementInBytes = Encoding.ASCII.GetBytes(page.Values[i]);
+                        byte[] elementInBytes = Encoding.UTF8.GetBytes(page.Values[i]);
                         Array.Copy(elementInBytes, 0, valuesInBytes, i * lengthString, elementInBytes.Length);
                     }
                     file.Seek(2 + page.AbsoluteNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
