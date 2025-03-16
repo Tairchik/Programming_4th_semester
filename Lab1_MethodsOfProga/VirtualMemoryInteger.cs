@@ -38,7 +38,7 @@ namespace Lab1_MethodsOfProgram
             }
 
             ArrayLength = totalSize;
-            this.FileByteSize = totalSize * sizeof(int) + (BlockByteSize - totalSize % BlockByteSize); // Размер файла в байтах
+            FileByteSize = totalSize * sizeof(int) + (BlockByteSize - (totalSize * sizeof(int)) % BlockByteSize);
 
 
             string path = $"../../Data/{fileName}.bin";
@@ -69,7 +69,7 @@ namespace Lab1_MethodsOfProgram
                 throw new ArgumentOutOfRangeException("Такой страницы не существует.");
             }
             // Выделяем массив для считывания данных из файла
-            int[] intArray = new int[PageByteSize / sizeof(int)];
+            int[] intArray = new int[128];
 
             for (int j = 0; j < 128; j++)
             {
@@ -77,7 +77,7 @@ namespace Lab1_MethodsOfProgram
                 byte[] bufferElement = new byte[sizeof(int)];
 
                 // Считываем элементы, где 2 - VM
-                file.Seek(2 + j * 4 + absolutePageNumber * BlockByteSize, SeekOrigin.Begin);
+                file.Seek(2 + j * 4 + absolutePageNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
                 file.Read(bufferElement, 0, bufferElement.Length);
 
                 // Копируем
@@ -90,7 +90,7 @@ namespace Lab1_MethodsOfProgram
             
             // Считываем битовую карту
             byte[] bitMap = new byte[BitMapByteSize];
-            file.Seek(2 + absolutePageNumber * PageByteSize, SeekOrigin.Begin);
+            file.Seek(2 + absolutePageNumber * BlockByteSize, SeekOrigin.Begin);
             file.Read(bitMap, 0, BitMapByteSize);
             byte[] copyBitMap = new byte[BitMapByteSize];
             Array.Copy(bitMap, copyBitMap, 0);
