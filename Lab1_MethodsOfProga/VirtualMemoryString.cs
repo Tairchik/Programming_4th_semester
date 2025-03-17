@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class VirtualMemoryString : IVirtualMemory<int, string>
+    internal class VirtualMemoryString : IVirtualMemory<string>
     {
         // Файловый указатель
         private FileStream file;
@@ -29,7 +29,7 @@ namespace Lab1_MethodsOfProgram
         private readonly long PageCount;
 
         // Строка из файла 2:
-        private string file2Str;
+        private string file2Str = "";
         private FileStream file2;
         private readonly string path2;
         public VirtualMemoryString(string fileName, long totalSize, int lengthString)
@@ -66,17 +66,18 @@ namespace Lab1_MethodsOfProgram
                 file.Write(signature, 0, signature.Length);
                 file.SetLength(signature.Length + FileByteSize);
                 file2 = new FileStream(path2, FileMode.CreateNew, FileAccess.ReadWrite);
+                file2.Close();
             }
             else
             {
                 file = new FileStream(path, FileMode.Open);
                 byte[] signature = new byte[] { (byte)'V', (byte)'M' };
                 file.SetLength(FileByteSize + signature.Length);
-
-                file2Str = File.ReadAllText(path2);
+                file2 = new FileStream(path2, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                file2.Close();
             }
 
-            
+            file2Str = File.ReadAllText(path2);
 
             bufferPages = new List<IPage<int>>();
             for (int i = 0; i < BufferSize; i++)
@@ -86,7 +87,7 @@ namespace Lab1_MethodsOfProgram
 
         }
 
-        public IPage<int> LoadFormFile(long absolutePageNumber)
+        private IPage<int> LoadFormFile(long absolutePageNumber)
         {
             if (absolutePageNumber > PageCount || absolutePageNumber < 0)
             {
@@ -318,6 +319,11 @@ namespace Lab1_MethodsOfProgram
             }
 
             File.WriteAllText(path2, file2Str);
+
+        }
+        public void Close()
+        {
+            file.Close();
         }
     }
 }

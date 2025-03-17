@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class VirtualMemoryChar : IVirtualMemory<string, string>
+    internal class VirtualMemoryChar : IVirtualMemory<string>
     {
         // Файловый указатель
         private FileStream file;
@@ -79,7 +79,7 @@ namespace Lab1_MethodsOfProgram
 
         }
 
-        public IPage<string> LoadFormFile(long absolutePageNumber)
+        private IPage<string> LoadFormFile(long absolutePageNumber)
         {
             if (absolutePageNumber > PageCount || absolutePageNumber < 0)
             {
@@ -259,6 +259,10 @@ namespace Lab1_MethodsOfProgram
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
                 }
             }
+        }
+        public void Close()
+        {
+            file.Close();
         }
     }
 }

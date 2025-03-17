@@ -12,7 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal class VirtualMemoryInteger : IVirtualMemory<int, int>
+    internal class VirtualMemoryInteger : IVirtualMemory<int>
     {
         // Файловый указатель
         private FileStream file;
@@ -67,7 +67,7 @@ namespace Lab1_MethodsOfProgram
         }
 
 
-        public IPage<int> LoadFormFile(long absolutePageNumber)
+        private IPage<int> LoadFormFile(long absolutePageNumber)
         {
             if (absolutePageNumber > PageCount || absolutePageNumber < 0) 
             {
@@ -240,6 +240,11 @@ namespace Lab1_MethodsOfProgram
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
                 }
             }
+
+        }
+        public void Close()
+        {
+            file.Close();
         }
     }
 }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Lab1_MethodsOfProgram
 {
-    internal interface IVirtualMemory <T, Y>
+    internal interface IVirtualMemory <T>
     {
-        IPage<T> LoadFormFile(long absolutePageNumber);
         long GetPageNumber(long index);
-        Y GetElementByIndex(long index);
-        bool SetElementByIndex(int index, Y value);
+        T GetElementByIndex(long index);
+        bool SetElementByIndex(int index, T value);
         void DumpBuffer();
+        void Close();
     }
 }
