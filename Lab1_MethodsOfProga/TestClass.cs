@@ -108,13 +108,21 @@ namespace Lab1_MethodsOfProgram
             else if (type.Split('(')[1].ToLower() == "char")
             {
                 typeWorking = "char";
-                int length = int.Parse(type.Split('(')[2].Substring(0, type.Split('(')[2].Length - 2));
+                int length;
+                if (!int.TryParse(type.Split('(')[2].Substring(0, type.Split('(')[2].Length - 2), out length))
+                {
+                    throw new ArgumentException("Некорректный ввод длины строки.");
+                }
                 virtualMemoryChar = new VirtualMemoryChar(fileName, 10001, length);
             }
             else if (type.Split('(')[1].ToLower() == "varchar")
             {
                 typeWorking = "varchar";
-                int length = int.Parse(type.Split('(')[2].Substring(0, type.Split('(')[2].Length - 2));
+                int length;
+                if (!int.TryParse(type.Split('(')[2].Substring(0, type.Split('(')[2].Length - 2), out length))
+                {
+                    throw new ArgumentException("Некорректный ввод длины строки.");
+                }
                 virtualMemoryString = new VirtualMemoryString(fileName, 10001, length);
             }
             else
@@ -130,8 +138,16 @@ namespace Lab1_MethodsOfProgram
             }
             if (typeWorking == "int")
             {
-                int index = int.Parse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2));
-                int value = int.Parse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1));
+                int index;
+                int value;
+                if (int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+                {
+                    throw new Exception("Некорректный ввод команды.");
+                }
+                if (int.TryParse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1), out value))
+                {
+                    throw new Exception("Некорректный ввод команды.");
+                }
                 if (virtualMemoryInteger.SetElementByIndex(index, value))
                 {
                     Console.WriteLine("Замена выполнена.");
@@ -144,8 +160,12 @@ namespace Lab1_MethodsOfProgram
             }
             else if (typeWorking == "char")
             {
-                int index = int.Parse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2));
+                int index;
                 string value = command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1);
+                if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+                {
+                    throw new Exception("Некорректный ввод команды.");
+                }
                 if (virtualMemoryChar.SetElementByIndex(index, value))
                 {
                     Console.WriteLine("Замена выполнена.");
@@ -157,8 +177,12 @@ namespace Lab1_MethodsOfProgram
             }
             else if (typeWorking == "varchar")
             {
-                int index = int.Parse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2));
+                int index;
                 string value = command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1);
+                if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+                {
+                    throw new Exception("Некорректный ввод команды.");
+                }
                 if (virtualMemoryString.SetElementByIndex(index, value))
                 {
                     Console.WriteLine("Замена выполнена.");
@@ -179,7 +203,11 @@ namespace Lab1_MethodsOfProgram
             {
                 throw new Exception("Некорректный ввод команды.");
             }
-            long index = long.Parse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2));
+            long index;
+            if (!long.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+            {
+                throw new Exception("Некорректный ввод команды.");
+            }
             if (typeWorking == "int")
             {
                 Console.WriteLine(virtualMemoryInteger.GetElementByIndex(index));
