@@ -118,7 +118,7 @@ namespace Lab1_MethodsOfProgram
             file.Seek(2 + absolutePageNumber * BlockByteSize, SeekOrigin.Begin);
             file.Read(bitMap, 0, BitMapByteSize);
             byte[] copyBitMap = new byte[BitMapByteSize];
-            Array.Copy(bitMap, copyBitMap, 0);
+            Array.Copy(bitMap, copyBitMap, BitMapByteSize);
 
             return new PageInt(absolutePageNumber, 0, DateTime.Now, intArray, copyBitMap);
         }
@@ -198,6 +198,7 @@ namespace Lab1_MethodsOfProgram
 
             // Вычисляет номер элемента в странице
             long indexElementInPage = index % 128;
+            int bit = (int)indexElementInPage % 8;
 
             foreach (var page in bufferPages)
             {
