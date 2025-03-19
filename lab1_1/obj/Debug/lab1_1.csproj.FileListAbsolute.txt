@@ -5,3 +5,10 @@ C:\Users\user\source\repos\lab1\lab1_1\obj\Debug\lab1_1.csproj.AssemblyReference
 C:\Users\user\source\repos\lab1\lab1_1\obj\Debug\lab1_1.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\lab1\lab1_1\obj\Debug\lab1_1.exe
 C:\Users\user\source\repos\lab1\lab1_1\obj\Debug\lab1_1.pdb
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\bin\Debug\lab1_1.exe.config
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\bin\Debug\lab1_1.exe
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\bin\Debug\lab1_1.pdb
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\obj\Debug\lab1_1.csproj.AssemblyReference.cache
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\obj\Debug\lab1_1.csproj.CoreCompileInputs.cache
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\obj\Debug\lab1_1.exe
+C:\Users\дмитрий\Desktop\уник\4sem\prog\lab1_1\obj\Debug\lab1_1.pdb

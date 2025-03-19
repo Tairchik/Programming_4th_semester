@@ -90,16 +90,16 @@ namespace Lab1_MethodsOfProgram
 
             for (int j = 0; j < 128; j++)
             {
-                // Выделяем lengthString байта для считывания значений поэлементно из файла  
+                // Выделяем массив байтов для считывания значений поэлементно из файла  
                 byte[] bufferElement = new byte[lengthString];
 
-                // Считываем элементы, где 2 - VM
-                file.Seek(2 + j * lengthString + absolutePageNumber * BlockByteSize + BitMapByteSize, SeekOrigin.Begin);
+                // Считываем элементы, где 2 - сигнатура
+                file.Seek(2 + absolutePageNumber * BlockByteSize + j * lengthString + BitMapByteSize, SeekOrigin.Begin);
                 file.Read(bufferElement, 0, bufferElement.Length);
 
                 // Копируем
                 byte[] copyBufferElement = new byte[lengthString];
-                Array.Copy(bufferElement, copyBufferElement, lengthString);
+                Array.Copy(bufferElement, copyBufferElement, bufferElement.Length);
 
                 // Переводим в string и передаем в массив элементов
                 stringArray[j] = Encoding.UTF8.GetString(copyBufferElement).TrimEnd('\0');
@@ -110,7 +110,7 @@ namespace Lab1_MethodsOfProgram
             file.Seek(2 + absolutePageNumber * BlockByteSize, SeekOrigin.Begin);
             file.Read(bitMap, 0, BitMapByteSize);
             byte[] copyBitMap = new byte[BitMapByteSize];
-            Array.Copy(bitMap, copyBitMap, 0);
+            Array.Copy(bitMap, copyBitMap, BitMapByteSize);
 
             return new PageChar(absolutePageNumber, 0, DateTime.Now, stringArray, copyBitMap);
         }
@@ -189,12 +189,17 @@ namespace Lab1_MethodsOfProgram
 
             // Вычисляет номер элемента в странице
             long indexElementInPage = index % 128;
-
+            int bit = (int)indexElementInPage % 8;
             foreach (var page in bufferPages)
             {
                 if (page.AbsoluteNumber == absolutePageNumber)
                 {
-                    return page.Values[indexElementInPage];
+                    int elementBit = (page.BitMap[indexElementInPage / 8] >> bit) & 1;
+                    if (elementBit == 1)
+                    {
+                        return page.Values[indexElementInPage];
+                    }
+                    return null;
                 }
             }
             throw new Exception("Элемент не найден в буфере.");
