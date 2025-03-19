@@ -140,11 +140,11 @@ namespace Lab1_MethodsOfProgram
             {
                 int index;
                 int value;
-                if (int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+                if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
                 {
                     throw new Exception("Некорректный ввод команды.");
                 }
-                if (int.TryParse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1), out value))
+                if (!int.TryParse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1), out value))
                 {
                     throw new Exception("Некорректный ввод команды.");
                 }
