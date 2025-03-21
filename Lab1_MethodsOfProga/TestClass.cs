@@ -256,7 +256,14 @@ namespace Lab1_MethodsOfProgram
             }
             if (typeWorking == "int")
             {
-                Console.WriteLine(virtualMemoryInteger.GetElementByIndex(index));
+                try
+                {
+                    Console.WriteLine(virtualMemoryInteger.GetElementByIndex(index));
+                }
+                catch (ArgumentException e) 
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else if (typeWorking == "char")
             {

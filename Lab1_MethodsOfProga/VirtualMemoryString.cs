@@ -61,12 +61,19 @@ namespace Lab1_MethodsOfProgram
             path2 = $"../../Data/{fileName}.txt";
             if (!File.Exists(path))
             {
-                file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
-                byte[] signature = new byte[] { (byte)'V', (byte)'M' };
-                file.Write(signature, 0, signature.Length);
-                file.SetLength(signature.Length + FileByteSize);
-                file2 = new FileStream(path2, FileMode.CreateNew, FileAccess.ReadWrite);
-                file2.Close();
+                try
+                {
+                    file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
+                    byte[] signature = new byte[] { (byte)'V', (byte)'M' };
+                    file.Write(signature, 0, signature.Length);
+                    file.SetLength(signature.Length + FileByteSize);
+                    file2 = new FileStream(path2, FileMode.CreateNew, FileAccess.ReadWrite);
+                    file2.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }   
             }
             else
             {
