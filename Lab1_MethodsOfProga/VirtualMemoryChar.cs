@@ -59,10 +59,18 @@ namespace Lab1_MethodsOfProgram
             string path = $"../../Data/{fileName}.bin";
             if (!File.Exists(path))
             {
-                file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
-                byte[] signature = new byte[] { (byte)'V', (byte)'M' };
-                file.Write(signature, 0, signature.Length);
-                file.SetLength(signature.Length + FileByteSize);
+                try
+                {
+
+                    file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
+                    byte[] signature = new byte[] { (byte)'V', (byte)'M' };
+                    file.Write(signature, 0, signature.Length);
+                    file.SetLength(signature.Length + FileByteSize);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {

@@ -47,10 +47,17 @@ namespace Lab1_MethodsOfProgram
             string path = $"../../Data/{fileName}.bin";
             if (!File.Exists(path))
             {
-                file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
-                byte[] signature = new byte[] { (byte)'V', (byte)'M' };
-                file.Write(signature, 0, signature.Length);
-                file.SetLength(FileByteSize + signature.Length);
+                try
+                {
+                    file = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
+                    byte[] signature = new byte[] { (byte)'V', (byte)'M' };
+                    file.Write(signature, 0, signature.Length);
+                    file.SetLength(FileByteSize + signature.Length);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {
@@ -188,7 +195,7 @@ namespace Lab1_MethodsOfProgram
                     {
                         return page.Values[indexElementInPage];
                     }
-                    return 0;
+                    throw new ArgumentException("Элемент не задан.");
                 }
             }
             throw new Exception("Элемент не найден в буфере.");
