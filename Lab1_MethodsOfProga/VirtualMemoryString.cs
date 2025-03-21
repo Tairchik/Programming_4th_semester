@@ -213,7 +213,7 @@ namespace Lab1_MethodsOfProgram
                 {   
                     if (file2Str.Length == 0)
                     {
-                        return "";
+                        throw new ArgumentException("Элемент не задан.");
                     }
                     int strId = GetStringIndex(index);
                     return file2Str.Substring(strId, page.Values[index]);
