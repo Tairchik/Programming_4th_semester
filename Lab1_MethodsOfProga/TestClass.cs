@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -26,68 +27,92 @@ namespace Lab1_MethodsOfProgram
             bool fl = false;
             while (true) 
             {
-                Console.Write("VM>");
-                command = Console.ReadLine();
-                string nameCommand = command.Split(' ')[0];
-                if (nameCommand.ToLower() == "create")
+                try
                 {
-                    Create();
-                    fl = true;
-                }
-                else if (nameCommand.ToLower() == "input")
-                {
-                    if (fl) 
+                    Console.Write("VM>");
+                    command = Console.ReadLine();
+                    string nameCommand = command.Split(' ')[0];
+                    if (nameCommand.ToLower() == "create")
                     {
-                        Input();
+                        Create();
+                        fl = true;
+                    }
+                    else if (nameCommand.ToLower() == "open")
+                    {
+                        Open();
+                        fl = true;
+                    }
+                    else if (nameCommand.ToLower() == "input")
+                    {
+                        if (fl)
+                        {
+                            Input();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала выполните команду Create/Open");
+                        }
+
+                    }
+                    else if (nameCommand.ToLower() == "print")
+                    {
+                        if (fl)
+                        {
+                            Print();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала выполните команду Create/Open");
+                        }
+                    }
+                    else if (nameCommand.ToLower() == "save")
+                    {
+                        if (fl)
+                        {
+                            Exit();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала выполните команду Create/Open");
+                        }
+                    }
+                    else if (nameCommand.ToLower() == "close")
+                    {
+                        if (fl)
+                        {
+                            Exit();
+                            fl = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала выполните команду Create/Open");
+                        }
+                    }
+                    else if (nameCommand.ToLower() == "exit")
+                    {
+                        if (fl)
+                        {
+                            Exit();
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else if (nameCommand.ToLower() == "help")
+                    {
+                        PrintInfo();
                     }
                     else
                     {
-                        Console.WriteLine("Сначала выполните команду Create");
-                    }
-                    
-                }
-                else if (nameCommand.ToLower() == "print")
-                {
-                    if (fl)
-                    {
-                        Print();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Сначала выполните команду Create");
+                        Console.WriteLine("Некорректный ввод команды. Введите еще раз.");
+                        Console.WriteLine("Help - вывести список команд.");
                     }
                 }
-                else if (nameCommand.ToLower() == "save")
+                catch (Exception ex) 
                 {
-                    if (fl)
-                    {
-                        Save();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Сначала выполните команду Create");
-                    }
-                }
-                else if (nameCommand.ToLower() == "exit")
-                {
-                    if (fl)
-                    {
-                        Exit();
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                else if (nameCommand.ToLower() == "help")
-                {
-                    PrintInfo();
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный ввод команды. Введите еще раз.");
-                    Console.WriteLine("Help - вывести список команд.");
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
@@ -96,9 +121,11 @@ namespace Lab1_MethodsOfProgram
         {
             Console.WriteLine("Список команд:");
             Console.WriteLine("\tCreate имя файла (int | char(длина строки) | varchar(максимальная длина строки)) размер");
+            Console.WriteLine("\tOpen имя файла (int | char(длина строки) | varchar(максимальная длина строки)) размер");
             Console.WriteLine("\tInput (индекс, значение)");
             Console.WriteLine("\tPrint (индекс)");
             Console.WriteLine("\tSave");
+            Console.WriteLine("\tClose");
             Console.WriteLine("\tExit");
             Console.WriteLine("\tHelp");
         }
@@ -123,6 +150,8 @@ namespace Lab1_MethodsOfProgram
             {
                 throw new ArgumentException("Некорректный ввод размера. Размер должен быть положительным числом.");
             }
+
+            if (File.Exists($"../../Data/{fileName}.bin")) { throw new Exception("Файл уже существует. Его необходимо открыть."); }
 
             // Обрабатываем тип данных
             if (type.Split('(')[1].ToLower() == "int)")
@@ -156,25 +185,61 @@ namespace Lab1_MethodsOfProgram
             }
         }
 
-        private void Save()
+        private void Open()
         {
-            if (typeWorking == "int")
+            // Разбиваем команду на части
+            string[] parts = command.Split(' ');
+
+            // Проверяем, что команда содержит правильное количество аргументов
+            if (parts.Length != 4)
             {
-                virtualMemoryInteger.DumpBuffer();
+                throw new Exception("Некорректный ввод строки. Формат: Open имя_файла (тип(параметры)) размер");
             }
-            else if (typeWorking == "char")
+
+            string fileName = parts[1];
+            string type = parts[2];
+            int size;
+
+            // Проверяем, что размер является корректным числом
+            if (!int.TryParse(parts[3], out size) || size <= 0)
             {
-                virtualMemoryChar.DumpBuffer();
+                throw new ArgumentException("Некорректный ввод размера. Размер должен быть положительным числом.");
             }
-            else if (typeWorking == "varchar")
+
+            if (!File.Exists($"../../Data/{fileName}.bin")) { throw new Exception("Файла не существует. Его необходимо создать."); }
+
+            // Обрабатываем тип данных
+            if (type.Split('(')[1].ToLower() == "int)")
             {
-                virtualMemoryString.DumpBuffer();
+                typeWorking = "int";
+                virtualMemoryInteger = new VirtualMemoryInteger(fileName, size);
+            }
+            else if (type.Split('(')[1].ToLower() == "char")
+            {
+                typeWorking = "char";
+                int length;
+                if (!int.TryParse(type.Split('(')[2].Substring(0, type.Split('(')[2].Length - 2), out length))
+                {
+                    throw new ArgumentException("Некорректный ввод длины строки.");
+                }
+                virtualMemoryChar = new VirtualMemoryChar(fileName, size, length);
+            }
+            else if (type.Split('(')[1].ToLower() == "varchar")
+            {
+                typeWorking = "varchar";
+                int length;
+                if (!int.TryParse(type.Split('(')[2].Substring(0, type.Split('(')[2].Length - 2), out length))
+                {
+                    throw new ArgumentException("Некорректный ввод длины строки.");
+                }
+                virtualMemoryString = new VirtualMemoryString(fileName, size, length);
             }
             else
             {
                 throw new Exception("Некорректный ввод команды.");
             }
         }
+
 
         private void Input()
         {
