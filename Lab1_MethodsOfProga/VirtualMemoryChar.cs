@@ -142,7 +142,8 @@ namespace Lab1_MethodsOfProgram
                     }
                 }
             }
-
+            /*мы считываем как char, а потом только в utf;
+            а надо считывать в utf*/
             for (int page = 0; page < bufferPages.Count; page++)
             {
                 if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 1)

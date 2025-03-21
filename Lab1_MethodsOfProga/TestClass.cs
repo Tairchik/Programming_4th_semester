@@ -57,6 +57,17 @@ namespace Lab1_MethodsOfProgram
                         Console.WriteLine("Сначала выполните команду Create");
                     }
                 }
+                else if (nameCommand.ToLower() == "save")
+                {
+                    if (fl)
+                    {
+                        Save();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Сначала выполните команду Create");
+                    }
+                }
                 else if (nameCommand.ToLower() == "exit")
                 {
                     if (fl)
@@ -84,26 +95,40 @@ namespace Lab1_MethodsOfProgram
         private void PrintInfo()
         {
             Console.WriteLine("Список команд:");
-            Console.WriteLine("\tCreate имя файла (int | char(длина строки) | varchar(максимальная длина строки))");
+            Console.WriteLine("\tCreate имя файла (int | char(длина строки) | varchar(максимальная длина строки)) размер");
             Console.WriteLine("\tInput (индекс, значение)");
             Console.WriteLine("\tPrint (индекс)");
+            Console.WriteLine("\tSave");
             Console.WriteLine("\tExit");
             Console.WriteLine("\tHelp");
         }
 
         private void Create()
         {
-            if (command.Split(' ').Length != 3)
-            {
-                throw new Exception("Некорректный ввод строки.");
-            }
-            string fileName = command.Split(' ')[1];
-            string type = command.Split(' ')[2];
+            // Разбиваем команду на части
+            string[] parts = command.Split(' ');
 
+            // Проверяем, что команда содержит правильное количество аргументов
+            if (parts.Length != 4)
+            {
+                throw new Exception("Некорректный ввод строки. Формат: Create имя_файла (тип(параметры)) размер");
+            }
+
+            string fileName = parts[1];
+            string type = parts[2];
+            int size;
+
+            // Проверяем, что размер является корректным числом
+            if (!int.TryParse(parts[3], out size) || size <= 0)
+            {
+                throw new ArgumentException("Некорректный ввод размера. Размер должен быть положительным числом.");
+            }
+
+            // Обрабатываем тип данных
             if (type.Split('(')[1].ToLower() == "int)")
             {
                 typeWorking = "int";
-                virtualMemoryInteger = new VirtualMemoryInteger(fileName, 10001);
+                virtualMemoryInteger = new VirtualMemoryInteger(fileName, size);
             }
             else if (type.Split('(')[1].ToLower() == "char")
             {
@@ -113,7 +138,7 @@ namespace Lab1_MethodsOfProgram
                 {
                     throw new ArgumentException("Некорректный ввод длины строки.");
                 }
-                virtualMemoryChar = new VirtualMemoryChar(fileName, 10001, length);
+                virtualMemoryChar = new VirtualMemoryChar(fileName, size, length);
             }
             else if (type.Split('(')[1].ToLower() == "varchar")
             {
@@ -123,13 +148,34 @@ namespace Lab1_MethodsOfProgram
                 {
                     throw new ArgumentException("Некорректный ввод длины строки.");
                 }
-                virtualMemoryString = new VirtualMemoryString(fileName, 10001, length);
+                virtualMemoryString = new VirtualMemoryString(fileName, size, length);
             }
             else
             {
                 throw new Exception("Некорректный ввод команды.");
             }
         }
+
+        private void Save()
+        {
+            if (typeWorking == "int")
+            {
+                virtualMemoryInteger.DumpBuffer();
+            }
+            else if (typeWorking == "char")
+            {
+                virtualMemoryChar.DumpBuffer();
+            }
+            else if (typeWorking == "varchar")
+            {
+                virtualMemoryString.DumpBuffer();
+            }
+            else
+            {
+                throw new Exception("Некорректный ввод команды.");
+            }
+        }
+
         private void Input()
         {
             if (command.Split(' ').Length != 3)
@@ -225,6 +271,7 @@ namespace Lab1_MethodsOfProgram
                 throw new Exception("Некорректный ввод команды.");
             }
         }
+
         private void Exit()
         {
             if (typeWorking == "int")
