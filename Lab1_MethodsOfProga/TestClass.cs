@@ -34,13 +34,27 @@ namespace Lab1_MethodsOfProgram
                     string nameCommand = command.Split(' ')[0];
                     if (nameCommand.ToLower() == "create")
                     {
-                        Create();
-                        fl = true;
+                        if (!fl)
+                        {
+                            Create();
+                            fl = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала необходимо завершить работу с текущим файлом.");
+                        }
                     }
                     else if (nameCommand.ToLower() == "open")
                     {
-                        Open();
-                        fl = true;
+                        if (!fl)
+                        {
+                            Open();
+                            fl = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала необходимо завершить работу с текущим файлом.");
+                        }
                     }
                     else if (nameCommand.ToLower() == "input")
                     {
