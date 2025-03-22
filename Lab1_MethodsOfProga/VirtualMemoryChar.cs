@@ -208,7 +208,11 @@ namespace Lab1_MethodsOfProgram
                     {
                         return page.Values[indexElementInPage];
                     }
-                    return null;
+                    else
+                    {
+                        throw new ArgumentNullException("Элемент не задан.");
+                    }
+                   
                 }
             }
             throw new Exception("Элемент не найден в буфере.");
