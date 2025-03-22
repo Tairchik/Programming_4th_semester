@@ -255,73 +255,7 @@ namespace Lab1_MethodsOfProgram
         }
 
 
-        private void Input()
-        {
-            if (command.Split(' ').Length != 3)
-            {
-                throw new Exception("Некорректный ввод команды.");
-            }
-            if (typeWorking == "int")
-            {
-                int index;
-                int value;
-                if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
-                {
-                    throw new Exception("Некорректный ввод команды.");
-                }
-                if (!int.TryParse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1), out value))
-                {
-                    throw new Exception("Некорректный ввод команды.");
-                }
-                if (virtualMemoryInteger.SetElementByIndex(index, value))
-                {
-                    Console.WriteLine("Замена выполнена.");
-                }
-                else
-                {
-                    Console.WriteLine("Замена не выполнена.");
-                }
-
-            }
-            else if (typeWorking == "char")
-            {
-                int index;
-                string value = command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1);
-                if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
-                {
-                    throw new Exception("Некорректный ввод команды.");
-                }
-                if (virtualMemoryChar.SetElementByIndex(index, value))
-                {
-                    Console.WriteLine("Замена выполнена.");
-                }
-                else
-                {
-                    Console.WriteLine("Замена не выполнена.");
-                }
-            }
-            else if (typeWorking == "varchar")
-            {
-                int index;
-                string value = command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1);
-                if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
-                {
-                    throw new Exception("Некорректный ввод команды.");
-                }
-                if (virtualMemoryString.SetElementByIndex(index, value))
-                {
-                    Console.WriteLine("Замена выполнена.");
-                }
-                else
-                {
-                    Console.WriteLine("Замена не выполнена.");
-                }
-            }
-            else
-            {
-                throw new Exception("Некорректный ввод команды.");
-            }
-        }
+        
         private void Print()
         {
             if (command.Split(' ').Length != 2)
