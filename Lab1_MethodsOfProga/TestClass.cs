@@ -255,7 +255,166 @@ namespace Lab1_MethodsOfProgram
         }
 
 
+<<<<<<< HEAD
         
+=======
+        //private void Input()
+        //{
+        //    if (command.Split(' ').Length != 3)
+        //    {
+        //        throw new Exception("Некорректный ввод команды.");
+        //    }
+
+        //    if (typeWorking == "int")
+        //    {
+        //        int index;
+        //        int value;
+        //        if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+        //        {
+        //            throw new Exception("Некорректный ввод команды.");
+        //        }
+        //        if (!int.TryParse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1), out value))
+        //        {
+        //            throw new Exception("Некорректный ввод команды.");
+        //        }
+        //        if (virtualMemoryInteger.SetElementByIndex(index, value))
+        //        {
+        //            Console.WriteLine("Замена выполнена.");
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Замена не выполнена.");
+        //        }
+        //    }
+        //    else if (typeWorking == "char" || typeWorking == "varchar")
+        //    {
+        //        int index;
+        //        string value = command.Split(' ')[2];
+
+        //        // Удаляем лишнюю закрывающую скобку, если она есть
+        //        if (value.EndsWith(")"))
+        //        {
+        //            value = value.Substring(0, value.Length - 1);
+        //        }
+
+        //        // Проверка, что значение заключено в кавычки
+        //        if (!IsQuoted(value))
+        //        {
+        //            throw new Exception("Значение должно быть заключено в кавычки.");
+        //        }
+
+        //        // Убираем кавычки из значения
+        //        value = RemoveQuotes(value);
+
+        //        // Парсим индекс
+        //        if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
+        //        {
+        //            throw new Exception("Некорректный ввод команды.");
+        //        }
+
+        //        // Устанавливаем элемент по индексу
+        //        if (typeWorking == "char" && virtualMemoryChar.SetElementByIndex(index, value))
+        //        {
+        //            Console.WriteLine("Замена выполнена.");
+        //        }
+        //        else if (typeWorking == "varchar" && virtualMemoryString.SetElementByIndex(index, value))
+        //        {
+        //            Console.WriteLine("Замена выполнена.");
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Замена не выполнена.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Некорректный ввод команды.");
+        //    }
+        //}
+
+        private void Input()
+        {
+            // Разбираем команду без потери пробелов внутри кавычек
+            string[] parts = ParseCommandWithQuotes(command);
+
+            // Проверяем, что команда содержит правильное количество аргументов
+            if (parts.Length != 3)
+            {
+                throw new Exception("Некорректный ввод команды.");
+            }
+
+            int index;
+            string value = parts[2];
+
+            // Удаляем лишнюю закрывающую скобку, если она есть
+            if (value.EndsWith(")"))
+            {
+                value = value.Substring(0, value.Length - 1);
+            }
+
+            // Проверка, что значение заключено в кавычки (для char и varchar)
+            if ((typeWorking == "char" || typeWorking == "varchar") && !IsQuoted(value))
+            {
+                throw new Exception("Значение должно быть заключено в кавычки.");
+            }
+
+            // Убираем кавычки из значения
+            if (typeWorking == "char" || typeWorking == "varchar")
+            {
+                value = RemoveQuotes(value);
+            }
+
+            // Парсим индекс
+            if (!int.TryParse(parts[1].Substring(1, parts[1].Length - 2), out index))
+            {
+                throw new Exception("Некорректный ввод команды.");
+            }
+
+            // Устанавливаем элемент по индексу
+            if (typeWorking == "int")
+            {
+                int intValue;
+                if (!int.TryParse(value, out intValue))
+                {
+                    throw new Exception("Некорректный ввод значения для типа int.");
+                }
+                if (virtualMemoryInteger.SetElementByIndex(index, intValue))
+                {
+                    Console.WriteLine("Замена выполнена.");
+                }
+                else
+                {
+                    Console.WriteLine("Замена не выполнена.");
+                }
+            }
+            else if (typeWorking == "char")
+            {
+                if (virtualMemoryChar.SetElementByIndex(index, value))
+                {
+                    Console.WriteLine("Замена выполнена.");
+                }
+                else
+                {
+                    Console.WriteLine("Замена не выполнена.");
+                }
+            }
+            else if (typeWorking == "varchar")
+            {
+                if (virtualMemoryString.SetElementByIndex(index, value))
+                {
+                    Console.WriteLine("Замена выполнена.");
+                }
+                else
+                {
+                    Console.WriteLine("Замена не выполнена.");
+                }
+            }
+            else
+            {
+                throw new Exception("Некорректный ввод команды.");
+            }
+        }
+>>>>>>> origin/master
         private void Print()
         {
             if (command.Split(' ').Length != 2)
@@ -335,5 +494,68 @@ namespace Lab1_MethodsOfProgram
             }
         }
 
+        // Метод для проверки, заключена ли строка в кавычки
+        private static bool IsQuoted(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length < 2)
+            {
+                return false;
+            }
+
+            char firstChar = value[0];
+            char lastChar = value[value.Length - 1];
+
+            // Проверяем, что строка начинается и заканчивается одинаковыми кавычками
+            return (firstChar == '"' && lastChar == '"') || (firstChar == '\'' && lastChar == '\'');
+        }
+
+        // Метод для удаления кавычек из строки
+        private static string RemoveQuotes(string value)
+        {
+            if (IsQuoted(value))
+            {
+                return value.Substring(1, value.Length - 2);
+            }
+
+            return value; // Если кавычки отсутствуют, возвращаем исходную строку
+        }
+
+        private string[] ParseCommandWithQuotes(string command)
+        {
+            List<string> parts = new List<string>();
+            bool inQuotes = false;
+            StringBuilder currentPart = new StringBuilder();
+
+            foreach (char c in command)
+            {
+                if (c == '"' || c == '\'')
+                {
+                    inQuotes = !inQuotes; // Переключаем состояние "внутри кавычек"
+                    currentPart.Append(c); // Добавляем кавычку в текущую часть
+                }
+                else if (c == ' ' && !inQuotes)
+                {
+                    // Если пробел вне кавычек, завершаем текущую часть
+                    if (currentPart.Length > 0)
+                    {
+                        parts.Add(currentPart.ToString());
+                        currentPart.Clear();
+                    }
+                }
+                else
+                {
+                    // Добавляем символ в текущую часть
+                    currentPart.Append(c);
+                }
+            }
+
+            // Добавляем последнюю часть, если она есть
+            if (currentPart.Length > 0)
+            {
+                parts.Add(currentPart.ToString());
+            }
+
+            return parts.ToArray();
+        }
     }
 }

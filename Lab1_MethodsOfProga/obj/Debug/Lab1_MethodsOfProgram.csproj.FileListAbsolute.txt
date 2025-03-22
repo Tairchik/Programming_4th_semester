@@ -12,3 +12,10 @@ C:\Users\user\source\repos\lab1\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProg
 C:\Users\user\source\repos\lab1\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\lab1\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.exe
 C:\Users\user\source\repos\lab1\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.pdb
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\bin\Debug\Lab1_MethodsOfProgram.exe.config
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\bin\Debug\Lab1_MethodsOfProgram.exe
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\bin\Debug\Lab1_MethodsOfProgram.pdb
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.csproj.AssemblyReference.cache
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.csproj.CoreCompileInputs.cache
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.exe
+C:\Users\manae\Source\Repos\Programming_4th_semester3\Lab1_MethodsOfProga\obj\Debug\Lab1_MethodsOfProgram.pdb
