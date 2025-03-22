@@ -253,85 +253,6 @@ namespace Lab1_MethodsOfProgram
                 throw new Exception("Некорректный ввод команды.");
             }
         }
-
-
-<<<<<<< HEAD
-        
-=======
-        //private void Input()
-        //{
-        //    if (command.Split(' ').Length != 3)
-        //    {
-        //        throw new Exception("Некорректный ввод команды.");
-        //    }
-
-        //    if (typeWorking == "int")
-        //    {
-        //        int index;
-        //        int value;
-        //        if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
-        //        {
-        //            throw new Exception("Некорректный ввод команды.");
-        //        }
-        //        if (!int.TryParse(command.Split(' ')[2].Substring(0, command.Split(' ')[2].Length - 1), out value))
-        //        {
-        //            throw new Exception("Некорректный ввод команды.");
-        //        }
-        //        if (virtualMemoryInteger.SetElementByIndex(index, value))
-        //        {
-        //            Console.WriteLine("Замена выполнена.");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Замена не выполнена.");
-        //        }
-        //    }
-        //    else if (typeWorking == "char" || typeWorking == "varchar")
-        //    {
-        //        int index;
-        //        string value = command.Split(' ')[2];
-
-        //        // Удаляем лишнюю закрывающую скобку, если она есть
-        //        if (value.EndsWith(")"))
-        //        {
-        //            value = value.Substring(0, value.Length - 1);
-        //        }
-
-        //        // Проверка, что значение заключено в кавычки
-        //        if (!IsQuoted(value))
-        //        {
-        //            throw new Exception("Значение должно быть заключено в кавычки.");
-        //        }
-
-        //        // Убираем кавычки из значения
-        //        value = RemoveQuotes(value);
-
-        //        // Парсим индекс
-        //        if (!int.TryParse(command.Split(' ')[1].Substring(1, command.Split(' ')[1].Length - 2), out index))
-        //        {
-        //            throw new Exception("Некорректный ввод команды.");
-        //        }
-
-        //        // Устанавливаем элемент по индексу
-        //        if (typeWorking == "char" && virtualMemoryChar.SetElementByIndex(index, value))
-        //        {
-        //            Console.WriteLine("Замена выполнена.");
-        //        }
-        //        else if (typeWorking == "varchar" && virtualMemoryString.SetElementByIndex(index, value))
-        //        {
-        //            Console.WriteLine("Замена выполнена.");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Замена не выполнена.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Некорректный ввод команды.");
-        //    }
-        //}
-
         private void Input()
         {
             // Разбираем команду без потери пробелов внутри кавычек
@@ -414,7 +335,6 @@ namespace Lab1_MethodsOfProgram
                 throw new Exception("Некорректный ввод команды.");
             }
         }
->>>>>>> origin/master
         private void Print()
         {
             if (command.Split(' ').Length != 2)
