@@ -207,16 +207,29 @@ namespace Lab1_MethodsOfProgram
             long indexElementInPage = index % 128;
             int bit = (int)indexElementInPage % 8;
 
-            foreach (var page in bufferPages)
+            for (int page = 0; page < bufferPages.Count; page++)
             {
-                if (page.AbsoluteNumber == absolutePageNumber)
+                if (bufferPages[page].AbsoluteNumber == absolutePageNumber)
                 {   
                     if (file2Str.Length == 0)
                     {
                         throw new ArgumentException("Элемент не задан.");
                     }
                     int strId = GetStringIndex(index);
-                    return file2Str.Substring(strId, page.Values[index]);
+                    absolutePageNumber = GetPageNumber(index);
+
+                    for (int j = 0; j < bufferPages.Count; j++)
+                    {
+                        if (bufferPages[j].AbsoluteNumber == absolutePageNumber)
+                        {
+                            if (file2Str.Length == 0)
+                            {
+                                throw new ArgumentException("Элемент не задан.");
+                            }
+                            return file2Str.Substring(strId, bufferPages[j].Values[indexElementInPage]);
+                        }
+                    }
+                   
                 }
             }
             throw new Exception("Элемент не найден в буфере.");
@@ -274,31 +287,35 @@ namespace Lab1_MethodsOfProgram
 
             int byteIndex = (int)indexElementInPage / 8;
             int bitIndex = (int)indexElementInPage % 8;
-            foreach (var page in bufferPages)
+            for (int page = 0; page < bufferPages.Count; page++)
             {
-                if (page.AbsoluteNumber == absolutePageNumber)
+                if (bufferPages[page].AbsoluteNumber == absolutePageNumber)
                 {
                     // Вставляем элемент в файл со строками
 
                     int id = GetStringIndex(index);
+                    absolutePageNumber = GetPageNumber(index);
 
-                    if (file2Str.Length == 0)
+                    for (int j = 0; j < bufferPages.Count; j++)
                     {
-                        file2Str = value;
-                    }
-                    else
-                    {
-       
-                        file2Str = file2Str.Substring(0, id) + value + file2Str.Substring(page.Values[indexElementInPage] + id);
-
                         
-                    }
-                    
-                    page.Values[indexElementInPage] = value.Length;
-                    page.BitMap[byteIndex] |= (byte)(1 << bitIndex);
-                    page.Status = 1;
-                    page.ModTime = DateTime.Now;
-                    return true;
+                        if (bufferPages[j].AbsoluteNumber == absolutePageNumber)
+                        {
+                            if (file2Str.Length == 0)
+                            {
+                                file2Str = value;
+                            }
+                            else
+                            {
+                                file2Str = file2Str.Substring(0, id) + value + file2Str.Substring(bufferPages[j].Values[indexElementInPage] + id);
+                            }
+                            bufferPages[j].Values[indexElementInPage] = value.Length;
+                            bufferPages[j].BitMap[byteIndex] |= (byte)(1 << bitIndex);
+                            bufferPages[j].Status = 1;
+                            bufferPages[j].ModTime = DateTime.Now;
+                            return true;
+                        }
+                    }     
                 }
             }
             return false;
