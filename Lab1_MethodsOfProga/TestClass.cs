@@ -69,7 +69,7 @@ namespace Lab1_MethodsOfProgram
                     {
                         if (fl)
                         {
-                            Exit();
+                            Save();
                         }
                         else
                         {
@@ -360,6 +360,26 @@ namespace Lab1_MethodsOfProgram
             {
                 virtualMemoryString.DumpBuffer();
                 virtualMemoryString.Close();
+            }
+            else
+            {
+                throw new Exception("Некорректный ввод команды.");
+            }
+        }
+
+        private void Save()
+        {
+            if (typeWorking == "int")
+            {
+                virtualMemoryInteger.DumpBuffer();
+            }
+            else if (typeWorking == "char")
+            {
+                virtualMemoryChar.DumpBuffer();
+            }
+            else if (typeWorking == "varchar")
+            {
+                virtualMemoryString.DumpBuffer();
             }
             else
             {
