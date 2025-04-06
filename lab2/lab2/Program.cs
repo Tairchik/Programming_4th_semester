@@ -11,14 +11,21 @@ namespace lab2
         [STAThread]
         static void Main()
         {
+            // To customize application configuration such as set high DPI settings or default font,
+            // see https://aka.ms/applicationconfiguration.
+            ApplicationConfiguration.Initialize();
+            Application.Run(new LoginForm());
+
+
             /*// To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());*/
+            /*
             try
             {
                 // Создаем объект меню
-                var menu = new Menu("menu.txt");
+                var menu = new Menu("..\\..\\..\\..\\menu.txt");
 
                 // Выводим меню
                 Console.WriteLine("Структура меню:");
@@ -32,7 +39,7 @@ namespace lab2
             try
             {
                 // Создаем объект авторизации
-                var auth = new Authorization("USERS.txt");
+                var auth = new Authorization("..\\..\\..\\..\\USERS.txt");
 
                 // Тестовая авторизация
                 Console.WriteLine("Введите имя пользователя:");
@@ -75,6 +82,7 @@ namespace lab2
             {
                 Console.WriteLine($"Ошибка: {ex.Message}");
             }
+            */
         }
     }
 }
