@@ -1,22 +1,46 @@
 using System.Windows.Forms;
 using System.Globalization;
-using System.Windows.Forms;
+using Autorization.AuthorizationLibrary;
+using MenuLibrary.MenuLibrary;
 
 namespace lab2
 {
     public partial class LoginForm : Form
     {
+        private const string pathMenu = "..\\..\\..\\..\\menu.txt";
+        private const string pathUser = "..\\..\\..\\..\\USER.txt";
+
         public LoginForm()
         {
             InitializeComponent();
-            this.Text = "Вход";
             UpdateLanguageStatus();
+            UpdateCapsLockStatus();
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            // Here you would add your authentication logic
-            MessageBox.Show("Выполняется вход в систему...");
+            try
+            {
+                // Создаем объект авторизации
+                var auth = new Authorization("..\\..\\..\\..\\USERS.txt");
+
+                // Тестовая авторизация
+                string username = usernameTextBox.Text;
+                string password = passwordTextBox.Text;
+
+                if (auth.Authenticate(username, password))
+                {
+                    MessageBox.Show("Авторизация успешна!");
+                }
+                else
+                {
+                    MessageBox.Show("Неверное имя пользователя или пароль.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -28,14 +52,19 @@ namespace lab2
         {
             if (e.KeyCode == Keys.CapsLock)
             {
-                if (Control.IsKeyLocked(Keys.CapsLock))
-                {
-                    capsLockLabel.Text = "Клавиша CapsLock нажата";
-                }
-                else
-                {
-                    capsLockLabel.Text = "Клавиша CapsLock не нажата";
-                }
+                UpdateCapsLockStatus();
+            }
+        }
+
+        private void UpdateCapsLockStatus()
+        {
+            if (Control.IsKeyLocked(Keys.CapsLock))
+            {
+                capsLockLabel.Text = "Клавиша CapsLock нажата";
+            }
+            else
+            {
+                capsLockLabel.Text = "Клавиша CapsLock не нажата";
             }
         }
 
@@ -43,6 +72,7 @@ namespace lab2
         {
             UpdateLanguageStatus();
         }
+
         private void UpdateLanguageStatus()
         {
             // Получаем культуру (например "ru-RU", "en-US")
@@ -60,16 +90,6 @@ namespace lab2
                 languageLabel.Text = $"Язык ввода Английский";
 
             }
-        }
-
-        private void Form_KeyUp(object sender, KeyEventArgs e)
-        {
-          
-        }
-
-        private void Form_Activated(object sender, EventArgs e)
-        {
-       
         }
 
     }

@@ -202,6 +202,7 @@
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
+            Text = "Вход";
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(436, 238);
@@ -221,9 +222,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             ShowIcon = false;
             Text = "Вход";
-            Activated += Form_Activated;
             KeyDown += Form_KeyDown;
-            KeyUp += Form_KeyUp;
             InputLanguageChanged += Form_InputLanguageChanged;
             bannerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)keyIcon).EndInit();
