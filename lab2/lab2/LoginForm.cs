@@ -7,12 +7,13 @@ namespace lab2
 {
     public partial class LoginForm : Form
     {
-        private const string pathMenu = "..\\..\\..\\..\\menu.txt";
         private const string pathUser = "..\\..\\..\\..\\USER.txt";
+        private const string version = "1.0.0.3";
 
         public LoginForm()
         {
             InitializeComponent();
+            versionLabel.Text = $"Версия: {version}";
             UpdateLanguageStatus();
             UpdateCapsLockStatus();
         }
@@ -22,7 +23,7 @@ namespace lab2
             try
             {
                 // Создаем объект авторизации
-                var auth = new Authorization("..\\..\\..\\..\\USERS.txt");
+                var auth = new Authorization(pathUser);
 
                 // Тестовая авторизация
                 string username = usernameTextBox.Text;
@@ -30,7 +31,9 @@ namespace lab2
 
                 if (auth.Authenticate(username, password))
                 {
-                    MessageBox.Show("Авторизация успешна!");
+                    MainForm mainForm = new MainForm();
+                    mainForm.Show();
+                    this.Hide();
                 }
                 else
                 {

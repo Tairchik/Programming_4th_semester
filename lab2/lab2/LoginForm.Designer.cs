@@ -105,7 +105,7 @@
             versionLabel.Name = "versionLabel";
             versionLabel.Size = new Size(420, 29);
             versionLabel.TabIndex = 2;
-            versionLabel.Text = "Версия 1.0.0.0";
+            versionLabel.Text = "Версия 0.0.0.0";
             versionLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // usernameLabel
