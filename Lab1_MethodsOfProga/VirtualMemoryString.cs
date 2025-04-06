@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,10 +29,7 @@ namespace Lab1_MethodsOfProgram
         private readonly int BlockByteSize;
         private readonly long PageCount;
 
-        // Строка из файла 2:
-        private string file2Str = "";
         private FileStream file2;
-        private readonly string path2;
         public VirtualMemoryString(string fileName, long totalSize, int lengthString)
         {
             if (totalSize <= 10000)
@@ -58,7 +56,7 @@ namespace Lab1_MethodsOfProgram
             FileByteSize = PageCount * BlockByteSize;
 
             string path = $"../../Data/{fileName}.bin";
-            path2 = $"../../Data/{fileName}.txt";
+            string path2 = $"../../Data/{fileName}Str.bin";
             if (!File.Exists(path))
             {
                 try
@@ -68,7 +66,6 @@ namespace Lab1_MethodsOfProgram
                     file.Write(signature, 0, signature.Length);
                     file.SetLength(signature.Length + FileByteSize);
                     file2 = new FileStream(path2, FileMode.CreateNew, FileAccess.ReadWrite);
-                    file2.Close();
                 }
                 catch (Exception e)
                 {
@@ -81,10 +78,8 @@ namespace Lab1_MethodsOfProgram
                 byte[] signature = new byte[] { (byte)'V', (byte)'M' };
                 file.SetLength(FileByteSize + signature.Length);
                 file2 = new FileStream(path2, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                file2.Close();
             }
 
-            file2Str = File.ReadAllText(path2);
 
             bufferPages = new List<IPage<int>>();
             for (int i = 0; i < BufferSize; i++)
@@ -178,7 +173,7 @@ namespace Lab1_MethodsOfProgram
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
 
                     // Загружаем в буфер
-                    bufferPages[page] = LoadFormFile(index);
+                    bufferPages[page] = LoadFormFile(absolutePageNumber);
                     return bufferPages[page].AbsoluteNumber;
                 }
                 else if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 0)
@@ -210,62 +205,23 @@ namespace Lab1_MethodsOfProgram
             for (int page = 0; page < bufferPages.Count; page++)
             {
                 if (bufferPages[page].AbsoluteNumber == absolutePageNumber)
-                {   
-                    if (file2Str.Length == 0)
+                {
+                    int elementBit = (bufferPages[page].BitMap[indexElementInPage / 8] >> bit) & 1;
+                    if (elementBit == 1)
                     {
-                        throw new ArgumentException("Элемент не задан.");
+                        int indexStr = bufferPages[page].Values[indexElementInPage];
+                        file2.Seek(indexStr, SeekOrigin.Begin);
+                        byte[] lenBytes = new byte[sizeof(int)];
+                        file2.Read(lenBytes, 0, sizeof(int));
+                        int len = BitConverter.ToInt32(lenBytes, 0);
+                        byte[] strBytes = new byte[len];
+                        file2.Read(strBytes, 0, len);
+                        return Encoding.UTF8.GetString(strBytes);
                     }
-                    int strId = GetStringIndex(index);
-                    absolutePageNumber = GetPageNumber(index);
-
-                    for (int j = 0; j < bufferPages.Count; j++)
-                    {
-                        if (bufferPages[j].AbsoluteNumber == absolutePageNumber)
-                        {
-                            if (file2Str.Length == 0)
-                            {
-                                throw new ArgumentException("Элемент не задан.");
-                            }
-                            return file2Str.Substring(strId, bufferPages[j].Values[indexElementInPage]);
-                        }
-                    }
-                   
                 }
             }
             throw new Exception("Элемент не найден в буфере.");
         }
-
-
-        private int GetStringIndex(long index)
-        {
-            long absolutePageNumber = GetPageNumber(index);
-
-            long countIndex = 0;
-            int countPage = 0;
-            int result = 0;
-            long temp = 0;
-            while (true) 
-            {
-                temp = GetPageNumber(countPage);
-                foreach (var page in bufferPages)
-                {
-                    if (temp == page.AbsoluteNumber)
-                    {
-                        for (int i = 0; i < 128; i++) 
-                        {
-                            if (countIndex == index)
-                            {
-                                return result;
-                            }
-                            result += page.Values[i];
-                            countIndex++;
-                        }
-                    }
-                }
-                countPage += 128;
-            }
-        }
-
 
         // Метод записи заданного значения в элемент массива с указанным индексом
         public bool SetElementByIndex(int index, string value)
@@ -273,11 +229,6 @@ namespace Lab1_MethodsOfProgram
             if (index < 0 || index > ArrayLength)
             {
                 throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
-            }
-
-            if (value.Length > lengthString)
-            {
-                value = value.Substring(0, lengthString);
             }
             // Вычисляет номер (индекс) страницы в буфере страниц, на которой находится требуемый элемент
             long absolutePageNumber = GetPageNumber(index);
@@ -291,35 +242,20 @@ namespace Lab1_MethodsOfProgram
             {
                 if (bufferPages[page].AbsoluteNumber == absolutePageNumber)
                 {
-                    // Вставляем элемент в файл со строками
-
-                    int id = GetStringIndex(index);
-                    absolutePageNumber = GetPageNumber(index);
-
-                    for (int j = 0; j < bufferPages.Count; j++)
-                    {
-                        
-                        if (bufferPages[j].AbsoluteNumber == absolutePageNumber)
-                        {
-                            if (file2Str.Length == 0)
-                            {
-                                file2Str = value;
-                            }
-                            else
-                            {
-                                file2Str = file2Str.Substring(0, id) + value + file2Str.Substring(bufferPages[j].Values[indexElementInPage] + id);
-                            }
-                            bufferPages[j].Values[indexElementInPage] = value.Length;
-                            bufferPages[j].BitMap[byteIndex] |= (byte)(1 << bitIndex);
-                            bufferPages[j].Status = 1;
-                            bufferPages[j].ModTime = DateTime.Now;
-                            return true;
-                        }
-                    }     
+                    bufferPages[page].Values[indexElementInPage] = (int) file2.Length; // index kak
+                    file2.Seek(0, SeekOrigin.End);
+                    file2.Write(BitConverter.GetBytes(value.Length), 0, sizeof(int));
+                    file2.Write(Encoding.UTF8.GetBytes(value), 0, value.Length);
+                    bufferPages[page].BitMap[byteIndex] |= (byte)(1 << bitIndex);
+                    bufferPages[page].Status = 1;
+                    bufferPages[page].ModTime = DateTime.Now;
+                    return true;
                 }
             }
             return false;
         }
+
+       
 
         // Выгрузка в файл 
         public void DumpBuffer()
@@ -342,13 +278,11 @@ namespace Lab1_MethodsOfProgram
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
                 }
             }
-
-            File.WriteAllText(path2, file2Str);
-
         }
         public void Close()
         {
             file.Close();
+            file2.Close();
         }
     }
 }

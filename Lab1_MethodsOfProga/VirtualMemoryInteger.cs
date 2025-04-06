@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Lab1_MethodsOfProgram
 {
@@ -76,7 +68,7 @@ namespace Lab1_MethodsOfProgram
 
         private IPage<int> LoadFormFile(long absolutePageNumber)
         {
-            if (absolutePageNumber > PageCount || absolutePageNumber < 0) 
+            if ((absolutePageNumber > PageCount) || (absolutePageNumber < 0))
             {
                 throw new ArgumentOutOfRangeException("Страницы не существует.");
             }
@@ -115,7 +107,7 @@ namespace Lab1_MethodsOfProgram
         // где находится элемент массива с заданным индексом
         public long GetPageNumber(long index)
         {
-            if (index < 0 || index > ArrayLength) 
+            if ((index < 0) || (index > ArrayLength)) 
             {
                 throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
             }
@@ -141,7 +133,7 @@ namespace Lab1_MethodsOfProgram
 
             for (int page = 0; page < bufferPages.Count; page++)
             {
-                if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 1)
+                if ( Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 1)
                 {
                     // Выгружаем битовую карту
                     file.Seek(2 + bufferPages[page].AbsoluteNumber * BlockByteSize, SeekOrigin.Begin);
@@ -158,7 +150,7 @@ namespace Lab1_MethodsOfProgram
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
 
                     // Загружаем в буфер
-                    bufferPages[page] = LoadFormFile(index);
+                    bufferPages[page] = LoadFormFile(absolutePageNumber);
                     return bufferPages[page].AbsoluteNumber;
                 }
                 else if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 0)
@@ -175,7 +167,7 @@ namespace Lab1_MethodsOfProgram
         // Метод чтения значения элемента массива с заданным индексом в указанную переменную
         public int GetElementByIndex(long index) 
         {
-            if (index < 0 || index > ArrayLength)
+            if ((index < 0) || (index > ArrayLength))
             {
                 throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
             }
@@ -205,7 +197,7 @@ namespace Lab1_MethodsOfProgram
         // Метод записи заданного значения в элемент массива с указанным индексом
         public bool SetElementByIndex(int index, int value)
         {
-            if (index < 0 || index > ArrayLength)
+            if ((index < 0) || (index > ArrayLength))
             {
                 throw new ArgumentOutOfRangeException("Адресуемый элемент выходит за пределы массива.");
             }

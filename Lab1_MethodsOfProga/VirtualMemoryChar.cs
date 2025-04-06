@@ -171,7 +171,7 @@ namespace Lab1_MethodsOfProgram
                     file.Write(valuesInBytes, 0, valuesInBytes.Length);
 
                     // Загружаем в буфер
-                    bufferPages[page] = LoadFormFile(index);
+                    bufferPages[page] = LoadFormFile(absolutePageNumber);
                     return bufferPages[page].AbsoluteNumber;
                 }
                 else if (Equals(bufferPages[page].ModTime, time) && bufferPages[page].Status == 0)
