@@ -1,3 +1,7 @@
+using System.Windows.Forms;
+using System.Globalization;
+using System.Windows.Forms;
+
 namespace lab2
 {
     public partial class LoginForm : Form
@@ -5,8 +9,8 @@ namespace lab2
         public LoginForm()
         {
             InitializeComponent();
-            UpdateCapsLockStatus();
             this.Text = "¬ход";
+            UpdateLanguageStatus();
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
@@ -22,31 +26,50 @@ namespace lab2
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            UpdateCapsLockStatus();
+            if (e.KeyCode == Keys.CapsLock)
+            {
+                if (Control.IsKeyLocked(Keys.CapsLock))
+                {
+                    capsLockLabel.Text = " лавиша CapsLock нажата";
+                }
+                else
+                {
+                    capsLockLabel.Text = " лавиша CapsLock не нажата";
+                }
+            }
+        }
+
+        private void Form_InputLanguageChanged(object sender, InputLanguageChangedEventArgs e)
+        {
+            UpdateLanguageStatus();
+        }
+        private void UpdateLanguageStatus()
+        {
+            // ѕолучаем культуру (например "ru-RU", "en-US")
+            var culture = InputLanguage.CurrentInputLanguage.Culture;
+
+            // Ѕерем только две буквы Ч EN, RU и т.д.
+            string lang = culture.TwoLetterISOLanguageName.ToUpper();
+
+            if (lang == "RU")
+            {
+                languageLabel.Text = $"язык ввода –усский";
+            }
+            else if (lang == "EN")
+            {
+                languageLabel.Text = $"язык ввода јнглийский";
+
+            }
         }
 
         private void Form_KeyUp(object sender, KeyEventArgs e)
         {
-            UpdateCapsLockStatus();
+          
         }
 
         private void Form_Activated(object sender, EventArgs e)
         {
-            UpdateCapsLockStatus();
-        }
-
-        private void UpdateCapsLockStatus()
-        {
-            if (Control.IsKeyLocked(Keys.CapsLock))
-            {
-                capsLockLabel.Text = " лавиша CapsLock нажата";
-                capsLockLabel.ForeColor = Color.Red;
-            }
-            else
-            {
-                capsLockLabel.Text = " лавиша CapsLock не нажата";
-                capsLockLabel.ForeColor = SystemColors.ControlText;
-            }
+       
         }
 
     }

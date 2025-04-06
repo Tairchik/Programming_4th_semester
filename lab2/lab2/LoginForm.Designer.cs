@@ -214,14 +214,17 @@
             Controls.Add(bannerPanel);
             Controls.Add(statusStrip);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            KeyPreview = true;
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
+            ShowIcon = false;
             Text = "Вход";
             Activated += Form_Activated;
             KeyDown += Form_KeyDown;
             KeyUp += Form_KeyUp;
+            InputLanguageChanged += Form_InputLanguageChanged;
             bannerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)keyIcon).EndInit();
             statusStrip.ResumeLayout(false);
