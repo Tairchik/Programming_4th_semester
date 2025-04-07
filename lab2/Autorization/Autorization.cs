@@ -1,92 +1,90 @@
-﻿namespace Autorization
+﻿
+using System.Collections.Generic;
+using System.IO;
+
+namespace AuthorizationLibrary
 {
-    using System.Collections.Generic;
-    using System.IO;
-
-    namespace AuthorizationLibrary
+    public class Authorization
     {
-        public class Authorization
+        private readonly string usersFileName;
+        private readonly Dictionary<string, User> users = new();
+
+        // Внутренний класс для хранения данных пользователя
+        private class User
         {
-            private readonly string usersFileName;
-            private readonly Dictionary<string, User> users = new();
+            public string Password { get; set; }
+            public Dictionary<string, int> MenuStatus { get; set; } = new Dictionary<string, int>();
+        }
 
-            // Внутренний класс для хранения данных пользователя
-            private class User
+        // Конструктор класса
+        public Authorization(string fileName = "USERS.txt")
+        {
+            usersFileName = fileName;
+            LoadUsers();
+        }
+
+        // Метод для загрузки данных пользователей из файла
+        private void LoadUsers()
+        {
+            if (!File.Exists(usersFileName))
             {
-                public string Password { get; set; }
-                public Dictionary<string, int> MenuStatus { get; set; } = new Dictionary<string, int>();
+                throw new FileNotFoundException("Файл пользователей не найден.", usersFileName);
             }
 
-            // Конструктор класса
-            public Authorization(string fileName = "USERS.txt")
-            {
-                usersFileName = fileName;
-                LoadUsers();
-            }
+            string[] lines = File.ReadAllLines(usersFileName);
+            User currentUser = null;
 
-            // Метод для загрузки данных пользователей из файла
-            private void LoadUsers()
+            foreach (var line in lines)
             {
-                if (!File.Exists(usersFileName))
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                // Если строка начинается с '#', это новый пользователь
+                if (line.StartsWith("#"))
                 {
-                    throw new FileNotFoundException("Файл пользователей не найден.", usersFileName);
+                    var parts = line.Substring(1).Split(' ');
+                    if (parts.Length < 2) continue;
+
+                    string username = parts[0];
+                    string password = parts[1];
+
+                    currentUser = new User { Password = password };
+                    users[username] = currentUser;
                 }
-
-                string[] lines = File.ReadAllLines(usersFileName);
-                User currentUser = null;
-
-                foreach (var line in lines)
+                else
                 {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    // Это данные о пункте меню
+                    var parts = line.Split(' ');
+                    if (parts.Length < 2 || currentUser == null) continue;
 
-                    // Если строка начинается с '#', это новый пользователь
-                    if (line.StartsWith("#"))
-                    {
-                        var parts = line.Substring(1).Split(' ');
-                        if (parts.Length < 2) continue;
+                    string menuItem = parts[0];
+                    int status = int.Parse(parts[1]);
 
-                        string username = parts[0];
-                        string password = parts[1];
-
-                        currentUser = new User { Password = password };
-                        users[username] = currentUser;
-                    }
-                    else
-                    {
-                        // Это данные о пункте меню
-                        var parts = line.Split(' ');
-                        if (parts.Length < 2 || currentUser == null) continue;
-
-                        string menuItem = parts[0];
-                        int status = int.Parse(parts[1]);
-
-                        currentUser.MenuStatus[menuItem] = status;
-                    }
+                    currentUser.MenuStatus[menuItem] = status;
                 }
             }
+        }
 
-            // Метод для проверки логина и пароля
-            public bool Authenticate(string username, string password)
+        // Метод для проверки логина и пароля
+        public bool Authenticate(string username, string password)
+        {
+            if (users.TryGetValue(username, out var user))
             {
-                if (users.TryGetValue(username, out var user))
-                {
-                    return user.Password == password;
-                }
-                return false;
+                return user.Password == password;
             }
+            return false;
+        }
 
-            // Метод для получения статуса пункта меню для пользователя
-            public int GetMenuStatus(string username, string menuItem)
+        // Метод для получения статуса пункта меню для пользователя
+        public int GetMenuStatus(string username, string menuItem)
+        {
+            if (users.TryGetValue(username, out var user))
             {
-                if (users.TryGetValue(username, out var user))
+                if (user.MenuStatus.TryGetValue(menuItem, out int status))
                 {
-                    if (user.MenuStatus.TryGetValue(menuItem, out int status))
-                    {
-                        return status;
-                    }
+                    return status;
                 }
-                return 0; // По умолчанию, если пункт не указан, он виден и доступен
             }
+            return 0; // По умолчанию, если пункт не указан, он виден и доступен
         }
     }
 }

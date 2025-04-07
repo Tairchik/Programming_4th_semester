@@ -1,5 +1,5 @@
-using Autorization.AuthorizationLibrary;
-using MenuLibrary.MenuLibrary;
+using AuthorizationLibrary;
+using MenuLibrary;
 
 namespace lab2
 {
