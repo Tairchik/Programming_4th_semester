@@ -13,6 +13,9 @@ namespace lab2
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+           
+
+
             ApplicationConfiguration.Initialize();
             Application.Run(new LoginForm());
 
@@ -28,7 +31,7 @@ namespace lab2
                 var menu = new Menu("..\\..\\..\\..\\menu.txt");
 
                 // Выводим меню
-                Console.WriteLine("Структура меню:");
+                Console.WriteLine("Структура меню:");   
                 menu.PrintMenu();
             }
             catch (Exception ex)

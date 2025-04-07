@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using System.Globalization;
+using Autorization.AuthorizationLibrary;
+using MenuLibrary.MenuLibrary;
+using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace lab2
 {
     public partial class MainForm : Form
     {
         private const string pathMenu = "..\\..\\..\\..\\menu.txt";
+        private MenuLibrary.MenuLibrary.Menu menu;
+        private Authorization auth;
+        private string username;
 
-        public MainForm()
+        public MainForm(Authorization auth, string username)
         {
+            this.username = username;
+            this.auth = auth;
             InitializeComponent();
         }
-
-        private void ShowMenu(object sender, EventArgs e)
-        {
-
-        }
-
 
     }
 }

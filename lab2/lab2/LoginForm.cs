@@ -7,7 +7,7 @@ namespace lab2
 {
     public partial class LoginForm : Form
     {
-        private const string pathUser = "..\\..\\..\\..\\USER.txt";
+        private const string pathUser = "..\\..\\..\\..\\USERS.txt";
         private const string version = "1.0.0.3";
 
         public LoginForm()
@@ -31,7 +31,7 @@ namespace lab2
 
                 if (auth.Authenticate(username, password))
                 {
-                    MainForm mainForm = new MainForm();
+                    MainForm mainForm = new MainForm(auth, username);
                     mainForm.Show();
                     this.Hide();
                 }

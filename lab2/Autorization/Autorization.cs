@@ -9,7 +9,6 @@
         {
             private readonly string usersFileName;
             private readonly Dictionary<string, User> users = new();
-
             // Внутренний класс для хранения данных пользователя
             private class User
             {
@@ -48,7 +47,7 @@
                         string username = parts[0];
                         string password = parts[1];
 
-                        currentUser = new User { Password = password };
+                        currentUser = new User { Password = password}; 
                         users[username] = currentUser;
                     }
                     else

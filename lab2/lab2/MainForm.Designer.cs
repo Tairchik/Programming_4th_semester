@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
+            menuStrip = new MenuStrip();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip1";
+            menuStrip.Size = new Size(800, 24);
+            menuStrip.TabIndex = 0;
+            menuStrip.Text = "menuStrip1";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
+            Controls.Add(menuStrip);
+            MainMenuStrip = menuStrip;
             Name = "MainForm";
             Text = "АИС Отдел Кадров";
             ResumeLayout(false);
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStrip;
     }
 }
