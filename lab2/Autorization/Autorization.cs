@@ -12,7 +12,6 @@ namespace AuthorizationLibrary
         // Внутренний класс для хранения данных пользователя
         private class User
         {
-<<<<<<< HEAD
             public string Password { get; set; }
             public Dictionary<string, int> MenuStatus { get; set; } = new Dictionary<string, int>();
         }
@@ -28,12 +27,6 @@ namespace AuthorizationLibrary
         private void LoadUsers()
         {
             if (!File.Exists(usersFileName))
-=======
-            private readonly string usersFileName;
-            private readonly Dictionary<string, User> users = new();
-            // Внутренний класс для хранения данных пользователя
-            private class User
->>>>>>> origin/master
             {
                 throw new FileNotFoundException("Файл пользователей не найден.", usersFileName);
             }
@@ -66,27 +59,7 @@ namespace AuthorizationLibrary
                     string menuItem = parts[0];
                     int status = int.Parse(parts[1]);
 
-<<<<<<< HEAD
                     currentUser.MenuStatus[menuItem] = status;
-=======
-                        string username = parts[0];
-                        string password = parts[1];
-
-                        currentUser = new User { Password = password}; 
-                        users[username] = currentUser;
-                    }
-                    else
-                    {
-                        // Это данные о пункте меню
-                        var parts = line.Split(' ');
-                        if (parts.Length < 2 || currentUser == null) continue;
-
-                        string menuItem = parts[0];
-                        int status = int.Parse(parts[1]);
-
-                        currentUser.MenuStatus[menuItem] = status;
-                    }
->>>>>>> origin/master
                 }
             }
         }
