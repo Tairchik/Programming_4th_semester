@@ -25,6 +25,7 @@ namespace MenuLibrary
                 subItem.PrintMenu(level + 1);
             }
         }
+    
     }
 
     // Класс для работы с меню
@@ -34,7 +35,7 @@ namespace MenuLibrary
         private readonly List<MenuItem> rootItems = new List<MenuItem>();
 
         // Конструктор класса
-        public Menu(string fileName = "menu.txt")
+        public Menu(string fileName = "..\\..\\..\\..\\menu.txt.")
         {
             menuFileName = fileName;
             LoadMenu();

@@ -1,7 +1,7 @@
 using System.Windows.Forms;
 using System.Globalization;
-using Autorization.AuthorizationLibrary;
-using MenuLibrary.MenuLibrary;
+using AuthorizationLibrary;
+using MenuLibrary;
 
 namespace lab2
 {
@@ -56,6 +56,14 @@ namespace lab2
             if (e.KeyCode == Keys.CapsLock)
             {
                 UpdateCapsLockStatus();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                LoginButton_Click(sender, e);
             }
         }
 
