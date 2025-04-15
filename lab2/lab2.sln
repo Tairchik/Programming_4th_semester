@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab2", "lab2\lab2.csproj", "{F7558276-1884-4FB2-960B-A4E95F538BA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab2LT", "lab2\lab2LT.csproj", "{F7558276-1884-4FB2-960B-A4E95F538BA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autorization", "Autorization\Autorization.csproj", "{D4235819-414D-46E1-AEE4-6839F34238A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autorization", "Autorization\Autorization.csproj", "{D4235819-414D-46E1-AEE4-6839F34238A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuLibrary", "MenuLibrary\MenuLibrary.csproj", "{AD4D4817-CD3A-48B3-A943-FA383BBC1D77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MenuLibrary", "MenuLibrary\MenuLibrary.csproj", "{AD4D4817-CD3A-48B3-A943-FA383BBC1D77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab2RT", "lab2RT\lab2RT.csproj", "{4EB980A7-8F89-49E4-AA35-3A3CEA2FBD55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AD4D4817-CD3A-48B3-A943-FA383BBC1D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD4D4817-CD3A-48B3-A943-FA383BBC1D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD4D4817-CD3A-48B3-A943-FA383BBC1D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EB980A7-8F89-49E4-AA35-3A3CEA2FBD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EB980A7-8F89-49E4-AA35-3A3CEA2FBD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EB980A7-8F89-49E4-AA35-3A3CEA2FBD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EB980A7-8F89-49E4-AA35-3A3CEA2FBD55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
