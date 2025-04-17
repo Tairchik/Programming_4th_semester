@@ -11,14 +11,41 @@ namespace lab2
         private const string pathUser = "..\\..\\..\\..\\USERS.txt";
         private const string version = "1.0.0.5";
         private LoginController loginController;
+        private KeyController _keyController;
 
         public LoginForm()
         {
             InitializeComponent();
-            loginController = new LoginController(this);
             versionLabel.Text = $"Версия: {version}";
-            UpdateLanguageStatus();
-            UpdateCapsLockStatus();
+
+            loginController = new LoginController(this);
+            _keyController = new KeyController();
+
+            _keyController.CapsLockChanged += OnCapsLockChanged;
+            _keyController.InputLanguageChanged += OnInputLanguageChanged;
+            _keyController.EnterPressed += LoginButton_Click;
+            _keyController.CloseRequested += CancelButton_Click;
+
+            _keyController.Initialize();
+        }
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            _keyController.OnKeyDown(e.KeyCode);
+        }
+
+        private void Form_InputLanguageChanged(object sender, InputLanguageChangedEventArgs e)
+        {
+            _keyController.OnInputLanguageChanged();
+        }
+
+        private void OnCapsLockChanged(object sender, string statusMessage)
+        {
+            capsLockLabel.Text = statusMessage;
+        }
+
+        private void OnInputLanguageChanged(object sender, string lang)
+        {
+            languageLabel.Text = lang;
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
@@ -37,7 +64,7 @@ namespace lab2
         {
             Close();
         }
-
+/* 
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.CapsLock)
@@ -54,7 +81,7 @@ namespace lab2
             }
         }
 
-        private void UpdateCapsLockStatus()
+       private void UpdateCapsLockStatus()
         {
             if (Control.IsKeyLocked(Keys.CapsLock))
             {
@@ -89,7 +116,7 @@ namespace lab2
 
             }
         }
-
+*/
         public string GetName()
         {
             return usernameTextBox.Text;

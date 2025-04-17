@@ -222,7 +222,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             ShowIcon = false;
             Text = "Вход";
-            KeyDown += Form_KeyDown;
+            KeyDown += LoginForm_KeyDown;
             InputLanguageChanged += Form_InputLanguageChanged;
             bannerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)keyIcon).EndInit();
