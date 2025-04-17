@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace lab2LT.Controller
 {
-    internal class LoginController
+    public class LoginController
     {
         private const string pathUser = "..\\..\\..\\..\\USERS.txt";
         private LoginForm view;
@@ -28,7 +28,7 @@ namespace lab2LT.Controller
 
             if (auth.Authenticate(username, password))
             {
-                MainForm mainForm = new MainForm(auth, username);
+                MainForm mainForm = new MainForm(new MainController(auth, username));
                 mainForm.Show();
                 view.Hide();
             }

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace lab2LT.Controller
 {
-    internal class KeyController
+    public class KeyController
     {
         public event EventHandler<string> CapsLockChanged;
         public event EventHandler<string> InputLanguageChanged;

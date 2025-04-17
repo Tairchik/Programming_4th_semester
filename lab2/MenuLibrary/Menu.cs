@@ -39,6 +39,22 @@ namespace MenuLibrary
         {
             menuFileName = fileName;
             LoadMenu();
+            rootItems = FilterMenuByAccess(rootItems);
+        }
+
+        // Рекурсивно фильтруем пункты меню по уровням доступа
+        private List<MenuItem> FilterMenuByAccess(List<MenuItem> items)
+        {
+            var result = new List<MenuItem>();
+
+            foreach (var item in items)
+            {
+                var newItem = new MenuItem(item.Name);
+                newItem.SubItems.AddRange(FilterMenuByAccess(item.SubItems));
+                result.Add(newItem);
+            }
+
+            return result;
         }
 
         // Метод для загрузки данных меню из файла
