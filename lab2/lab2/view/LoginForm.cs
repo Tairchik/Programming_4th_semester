@@ -2,17 +2,20 @@ using System.Windows.Forms;
 using System.Globalization;
 using AuthorizationLibrary;
 using MenuLibrary;
+using lab2LT.Controller;
 
 namespace lab2
 {
     public partial class LoginForm : Form
     {
         private const string pathUser = "..\\..\\..\\..\\USERS.txt";
-        private const string version = "1.0.0.3";
+        private const string version = "1.0.0.5";
+        private LoginController loginController;
 
         public LoginForm()
         {
             InitializeComponent();
+            loginController = new LoginController(this);
             versionLabel.Text = $"Версия: {version}";
             UpdateLanguageStatus();
             UpdateCapsLockStatus();
@@ -22,23 +25,7 @@ namespace lab2
         {
             try
             {
-                // Создаем объект авторизации
-                var auth = new Authorization(pathUser);
-
-                // Тестовая авторизация
-                string username = usernameTextBox.Text;
-                string password = passwordTextBox.Text;
-
-                if (auth.Authenticate(username, password))
-                {
-                    MainForm mainForm = new MainForm(auth, username);
-                    mainForm.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Неверное имя пользователя или пароль.");
-                }
+                loginController.AuthorizationData();
             }
             catch (Exception ex)
             {
@@ -48,7 +35,7 @@ namespace lab2
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
@@ -59,7 +46,7 @@ namespace lab2
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                this.Close();
+                Close();
             }
             else if (e.KeyCode == Keys.Enter)
             {
@@ -103,5 +90,14 @@ namespace lab2
             }
         }
 
+        public string GetName()
+        {
+            return usernameTextBox.Text;
+        }
+
+        public string GetPassword()
+        {
+            return passwordTextBox.Text;
+        }
     }
 }
