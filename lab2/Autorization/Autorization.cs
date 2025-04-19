@@ -1,20 +1,19 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace AuthorizationLibrary
 {
+    public class User
+    {
+        public string Password { get; set; }
+        public string UserName { get; set; }
+
+        public Dictionary<string, int> MenuStatus { get; set; } = new Dictionary<string, int>();
+    }
     public class Authorization
     {
         private readonly string usersFileName;
-        private readonly Dictionary<string, User> users = new();
-
-        // Внутренний класс для хранения данных пользователя
-        private class User
-        {
-            public string Password { get; set; }
-            public Dictionary<string, int> MenuStatus { get; set; } = new Dictionary<string, int>();
-        }
+        public Dictionary<string, User> users { get; private set; } = new();
 
         // Конструктор класса
         public Authorization(string fileName = "USERS.txt")
@@ -67,24 +66,15 @@ namespace AuthorizationLibrary
         // Метод для проверки логина и пароля
         public bool Authenticate(string username, string password)
         {
-            if (users.TryGetValue(username, out var user))
+            if (users.TryGetValue(username, out var userData))
             {
-                return user.Password == password;
-            }
-            return false;
-        }
-
-        // Метод для получения статуса пункта меню для пользователя
-        public int GetMenuStatus(string username, string menuItem)
-        {
-            if (users.TryGetValue(username, out var user))
-            {
-                if (user.MenuStatus.TryGetValue(menuItem, out int status))
+                if (password == userData.Password)
                 {
-                    return status;
+                    userData.MenuStatus = userData.MenuStatus;
+                    return true;
                 }
             }
-            return 0; // По умолчанию, если пункт не указан, он виден и доступен
+            return false;
         }
     }
 }

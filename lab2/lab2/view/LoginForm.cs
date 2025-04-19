@@ -15,7 +15,7 @@ namespace lab2
         public LoginForm()
         {
             InitializeComponent();
-            versionLabel.Text = $"¬ÂÒËˇ: {version}";
+            versionLabel.Text = $"–í–µ—Ä—Å–∏—è: {version}";
 
             loginController = new LoginController(this);
             _keyController = new KeyController();
@@ -51,11 +51,15 @@ namespace lab2
         {
             try
             {
-                loginController.AuthorizationData();
+                if(loginController.AuthorizationData())
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Œ¯Ë·Í‡: {ex.Message}");
+                MessageBox.Show($"–û—à–∏–±–∫–∞: {ex.Message}");
             }
         }
 
@@ -72,6 +76,16 @@ namespace lab2
         public string GetPassword()
         {
             return passwordTextBox.Text;
+        }
+
+        public string AuthenticatedUsername
+        {
+            get { return loginController.AuthenticatedUsername; }
+        }
+
+        public Dictionary<string, AuthorizationLibrary.User> Users
+        {
+            get { return loginController.users; }
         }
     }
 }

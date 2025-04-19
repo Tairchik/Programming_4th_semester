@@ -5,7 +5,15 @@ namespace lab2
         static void Main()  
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new LoginForm());
+            LoginForm loginForm = new LoginForm();
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                var users = loginForm.Users;
+                var username = loginForm.AuthenticatedUsername;
+                var mainController = new lab2LT.Controller.MainController(users, username);
+                MainForm mainForm = new MainForm(mainController);
+                mainForm.ShowDialog();
+            }
         }
     }
 }

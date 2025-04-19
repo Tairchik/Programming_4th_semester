@@ -1,6 +1,7 @@
 ﻿using AuthorizationLibrary;
 using lab2;
 using MenuLibrary;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,27 @@ namespace lab2LT.Controller
         public event EventHandler<EventArgs> MenuItemClick;
 
         private MainForm _view;
-        private Authorization _userData;
         private string _userName;
         private readonly Menu _menu;
-        public MainController(Authorization userData, string username)
+        private Dictionary<string, AuthorizationLibrary.User> users;
+        public MainController(Dictionary<string, AuthorizationLibrary.User> users, string username)
         {
-            _userData = userData;
+            this.users = users;
             _userName = username;
             _menu = new Menu();
+        }
+
+        // Метод для получения статуса пункта меню для пользователя
+        public int GetMenuStatus(string username, string menuItem)
+        {
+            if (users.TryGetValue(username, out var userData))
+            {
+                if (userData.MenuStatus.TryGetValue(menuItem, out int status))
+                {
+                    return status;
+                }
+            }
+            return 0; // По умолчанию, если пункт не указан, он виден и доступен
         }
 
         // Метод для добавления пунктов в форму
@@ -38,7 +52,7 @@ namespace lab2LT.Controller
         // Рекурсивно создаем пункты меню
         private ToolStripMenuItem CreateMenuItem(MenuItem menuItem)
         {
-            int status = _userData.GetMenuStatus(_userName, menuItem.Name);
+            int status = GetMenuStatus(_userName, menuItem.Name);
 
             var menu = new ToolStripMenuItem(menuItem.Name);
 

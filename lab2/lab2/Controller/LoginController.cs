@@ -12,25 +12,29 @@ namespace lab2LT.Controller
     {
         private const string pathUser = "..\\..\\..\\..\\USERS.txt";
         private LoginForm view;
+        private string _authenticatedUsername;
+        private Dictionary<string, User> _users;
+        public Dictionary<string, User> users { get { return _users; } }
+        public string AuthenticatedUsername { get { return _authenticatedUsername; } }
+
         public LoginController(LoginForm loginForm)
         {
             view = loginForm;
         }
 
-        public void AuthorizationData()
+        public bool AuthorizationData()
         {
             // Создаем объект авторизации
             var auth = new Authorization(pathUser);
-
+            _users = auth.users;
             // Тестовая авторизация
             string username = view.GetName();
             string password = view.GetPassword();
 
             if (auth.Authenticate(username, password))
             {
-                MainForm mainForm = new MainForm(new MainController(auth, username));
-                mainForm.Show();
-                view.Hide();
+                _authenticatedUsername = username;
+                return true;
             }
             else
             {
