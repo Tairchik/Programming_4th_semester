@@ -2,16 +2,19 @@ namespace lab2RT
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new LoginForm());
+            var loginForm = new LoginForm();
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                var loginController = new Controller.LoginController();
+                var username = loginForm.Controls["usernameTextBox"].Text;
+                var mainController = new Controller.MainController(loginController.Users, username);
+                var mainForm = new MainForm(mainController);
+                mainForm.ShowDialog();
+            }
         }
     }
 }

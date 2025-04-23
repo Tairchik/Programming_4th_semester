@@ -8,57 +8,31 @@ namespace lab2RT
     {
         private const string pathUser = "..\\..\\..\\..\\USERS.txt";
         private const string version = "1.0.0.3";
-        private readonly MethodInfo method;
-        private readonly object instance;
+        private lab2RT.Controller.LoginController loginController;
+
         public LoginForm()
         {
-            try
-            {
-                Assembly asm = Assembly.LoadFrom("Autorization.dll");
-                Type? type = asm.GetType("AuthorizationLibrary.Authorization");
-                instance = Activator.CreateInstance(type, pathUser);
-                // Находим метод
-                method = type.GetMethod("Authenticate");
-                if (method == null)
-                {
-                    Console.WriteLine("Method not found.");
-                    return;
-                }
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
             InitializeComponent();
-            versionLabel.Text = $"Версия: {version}";
+            versionLabel.Text = $"пїЅпїЅпїЅпїЅпїЅпїЅ: {version}";
             UpdateLanguageStatus();
             UpdateCapsLockStatus();
+
+            loginController = new lab2RT.Controller.LoginController();
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-/*            try
-            {*/
-                // Тестовая авторизация
-                string username = usernameTextBox.Text;
-                string password = passwordTextBox.Text;
-                object[] args = { username, password };
-                if ((bool)method.Invoke(instance, args))
-                {
-                    MainForm mainForm = new MainForm(instance, username);
-                    mainForm.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Неверное имя пользователя или пароль.");
-                }
-/*            }
-            catch (Exception ex)
+            string username = usernameTextBox.Text;
+            string password = passwordTextBox.Text;
+            if (loginController.Authenticate(username, password))
             {
-                throw ex;
-                //MessageBox.Show($"Ошибка: {ex.Message}");
-            }*/
+                DialogResult = DialogResult.OK;
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
+            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -86,11 +60,11 @@ namespace lab2RT
         {
             if (Control.IsKeyLocked(Keys.CapsLock))
             {
-                capsLockLabel.Text = "Клавиша CapsLock нажата";
+                capsLockLabel.Text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ CapsLock пїЅпїЅпїЅпїЅпїЅпїЅ";
             }
             else
             {
-                capsLockLabel.Text = "Клавиша CapsLock не нажата";
+                capsLockLabel.Text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ CapsLock пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
             }
         }
 
@@ -101,19 +75,19 @@ namespace lab2RT
 
         private void UpdateLanguageStatus()
         {
-            // Получаем культуру (например "ru-RU", "en-US")
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "ru-RU", "en-US")
             var culture = InputLanguage.CurrentInputLanguage.Culture;
 
-            // Берем только две буквы — EN, RU и т.д.
+            // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ EN, RU пїЅ пїЅ.пїЅ.
             string lang = culture.TwoLetterISOLanguageName.ToUpper();
 
             if (lang == "RU")
             {
-                languageLabel.Text = $"Язык ввода Русский";
+                languageLabel.Text = $"пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
             }
             else if (lang == "EN")
             {
-                languageLabel.Text = $"Язык ввода Английский";
+                languageLabel.Text = $"пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 
             }
         }
