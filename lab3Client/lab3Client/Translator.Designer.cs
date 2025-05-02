@@ -1,4 +1,4 @@
-﻿namespace lab3
+﻿namespace lab3Client
 {
     partial class Translator
     {

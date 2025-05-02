@@ -1,4 +1,4 @@
-п»їusing System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace lab3
+namespace lab3Client
 {
     public partial class Translator : Form
     {
@@ -19,7 +19,7 @@ namespace lab3
         {
             InitializeComponent();
 
-            // РџРѕРґРїРёСЃРєР° РЅР° СЃРѕР±С‹С‚РёСЏ РєРѕРЅС‚СЂРѕР»Р»РµСЂР°
+            // Подписка на события контроллера
             fileController.DirectoryChanged += FileController_DirectoryChanged;
             fileController.FileSelected += FileController_FileSelected;
         }
@@ -33,7 +33,7 @@ namespace lab3
         private void comboBoxSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedDrive = comboBoxSearch.SelectedItem.ToString();
-            fileController.GetDirectoryEntries(selectedDrive); // С‚СЂРёРіРіРµСЂ DirectoryChanged
+            fileController.GetDirectoryEntries(selectedDrive); // триггер DirectoryChanged
         }
 
         private void comboBoxSearch_TextChanged(object sender, EventArgs e)
@@ -67,13 +67,13 @@ namespace lab3
             }
             catch (Exception ex)
             {
-                MessageBox.Show("РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РїР°РїРєРё: " + ex.Message);
+                MessageBox.Show("Ошибка при загрузке папки: " + ex.Message);
             }
         }
 
         private void FileController_FileSelected(object sender, string filePath)
         {
-            MessageBox.Show("Р­С‚Рѕ С„Р°Р№Р»: " + filePath);
+            MessageBox.Show("Это файл: " + filePath);
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
@@ -86,11 +86,11 @@ namespace lab3
                 string drives = netClient.ReceiveInitialDrives();
                 listBoxServerSide.Items.Clear();
                 listBoxServerSide.Items.AddRange(drives.Split('\n'));
-                MessageBox.Show("РЎРѕРµРґРёРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ!");
+                MessageBox.Show("Соединение установлено!");
             }
             else
             {
-                MessageBox.Show("РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ Рє СЃРµСЂРІРµСЂСѓ.");
+                MessageBox.Show("Не удалось подключиться к серверу.");
             }
         }
 
@@ -110,7 +110,7 @@ namespace lab3
         private void buttonDisconnect_Click(object sender, EventArgs e)
         {
             netClient?.Disconnect();
-            MessageBox.Show("РћС‚РєР»СЋС‡РµРЅРѕ РѕС‚ СЃРµСЂРІРµСЂР°.");
+            MessageBox.Show("Отключено от сервера.");
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
