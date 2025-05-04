@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,6 +14,9 @@ namespace lab3Client
         private readonly TcpClient _client;
         private readonly IPAddress _address;
         private NetworkStream _stream;
+
+        public bool Connected { get { return _client.Connected; } }
+
         public Client(string ipString)
         {
             _address = IPAddress.Parse(ipString);
@@ -28,30 +31,22 @@ namespace lab3Client
 
         public void Close()
         {
+            _stream.Write(Encoding.UTF8.GetBytes("?Disconnect"));
+            _stream.Close();
             _client.Close();
         }
 
-        public string GetDrives()
+        public void SendRequest(string requestMessage)
         {
-            return SendRequest("GET_DRIVES");
-        }
-
-        public string SendRequest(string requestMessage)
-        {
-            _stream = _client.GetStream();
             var requestData = Encoding.UTF8.GetBytes(requestMessage);
             _stream.Write(requestData);
-
-            var buffer = new byte[4096];
-            var byteCount = _stream.Read(buffer, 0, buffer.Length);
-            return Encoding.UTF8.GetString(buffer, 0, byteCount);
         }
 
-        /*public string GetResponce()
+        public string GetResponce()
         {
             var buffer = new byte[4096];
             var byteCount = _stream.Read(buffer, 0, buffer.Length);
             return Encoding.UTF8.GetString(buffer, 0, byteCount);
-        }*/
+        }
     }
 }

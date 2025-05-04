@@ -17,7 +17,17 @@ namespace lab3
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());*/
 
-            string ServerResponseString = "All good!";
+            Server server = new Server();
+            try
+            {
+                server.Start();
+            }
+            finally
+            {
+                server.Stop();
+            }
+
+            /*string ServerResponseString = "All good!";
             byte[] ServerResponseBytes = Encoding.UTF8.GetBytes(ServerResponseString);
 
             IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -45,7 +55,7 @@ namespace lab3
             finally
             {
                 tcpListener.Stop(); // останавливаем сервер
-            }
+            }*/
 
         }
     }
