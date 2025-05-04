@@ -1,11 +1,6 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lab3
 {
@@ -75,8 +70,7 @@ namespace lab3
                 {
                     connected = false;
                 }
-
-                if (Directory.Exists(request))
+                else if (Directory.Exists(request))
                 {
                     string directoryStructure = GetDirectoryStructure(request);
                     SendResponse(stream, directoryStructure);

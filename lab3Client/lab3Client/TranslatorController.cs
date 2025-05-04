@@ -93,9 +93,12 @@ namespace lab3Client
             {
                 if (client != null)
                 {
-                    client.Close();
+                    if (client.Connected)
+                    {
+                        client.Close();
+                    }
                 }
-    
+
                 client = new Client(IP);
                 client.Connect();
 
@@ -112,7 +115,7 @@ namespace lab3Client
         {
             try
             {
-                if (client != null) client.Close();
+                if (client.Connected) client.Close();
             }
             catch (Exception ex)
             {

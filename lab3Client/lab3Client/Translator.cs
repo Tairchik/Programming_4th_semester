@@ -71,6 +71,7 @@ namespace lab3Client
             listBoxSearch.Items.Clear();
             comboBoxSearch.Items.Clear();
             comboBoxSearch.Text = null;
+            fileContent.Text = string.Empty;
             comboBoxSearch.Items.AddRange(controller.ConnectToServer(textBoxIPAddress.Text));
         }
 
@@ -80,6 +81,7 @@ namespace lab3Client
             listBoxSearch.Items.Clear();
             comboBoxSearch.Items.Clear();
             comboBoxSearch.Text = null;
+            fileContent.Text = string.Empty;
         }
 
         private void buttonExit_Click(object sender, EventArgs e)

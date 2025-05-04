@@ -126,6 +126,7 @@
             // 
             fileContent.Location = new Point(359, 45);
             fileContent.Name = "fileContent";
+            fileContent.ReadOnly = true;
             fileContent.Size = new Size(545, 398);
             fileContent.TabIndex = 11;
             fileContent.Text = "";
@@ -149,7 +150,7 @@
             Margin = new Padding(4, 3, 4, 3);
             Name = "Translator";
             Text = "Программа для обмена данными между компьютерами";
-            this.FormClosing += FormExit_Click;
+            FormClosing += FormExit_Click;
             ResumeLayout(false);
             PerformLayout();
         }
