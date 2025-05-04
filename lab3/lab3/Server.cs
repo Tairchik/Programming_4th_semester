@@ -95,10 +95,9 @@ namespace lab3
 
         private string GetDirectoryStructure(string path)
         {
-            var files = Directory.GetFiles(path);
-            var directories = Directory.GetDirectories(path);
+            string[] st = Directory.GetFileSystemEntries(path);
 
-            return $"Файлы: {string.Join(", ", files)}\nКаталоги: {string.Join(", ", directories)}";
+            return string.Join("|", st);
         }
 
         private void SendResponse(NetworkStream stream, string response)

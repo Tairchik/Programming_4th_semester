@@ -8,22 +8,10 @@ namespace lab3Client
         [STAThread]
         static void Main()
         {
-            /*// To customize application configuration such as set high DPI settings or default font,
+            // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Translator());*/
-            Client client = new Client("127.0.0.1");
-            client.Connect();
-            Console.WriteLine(client.GetResponce());
-            client.SendRequest("C:/");
-            Console.WriteLine(client.GetResponce());
-            client.SendRequest("C:/hello/");
-            Console.WriteLine(client.GetResponce());
-            client.SendRequest("C:/hello/hello.cpp");
-            Console.WriteLine(client.GetResponce());
-            Console.WriteLine(client.Connected);
-            client.Close();
-            Console.WriteLine(client.Connected);
+            Application.Run(new Translator());
         }
     }
 }

@@ -9,7 +9,7 @@ namespace lab3Client
 {
     internal class TranslatorController
     {
-
+        private Client client;
         public Dictionary<string, string> DisplayNameToFullPath { get; private set; }
 
         public event EventHandler<string> DirectoryChanged;
@@ -27,12 +27,15 @@ namespace lab3Client
 
         public string[] GetDirectoryEntries(string path)
         {
+            
             DisplayNameToFullPath.Clear();
 
             if (!Directory.Exists(path))
                 throw new DirectoryNotFoundException("Каталог не найден: " + path);
 
-            var entries = Directory.GetFileSystemEntries(path);
+            client.SendRequest(path);
+            
+            var entries = client.GetResponce().Split('|');
 
             foreach (var entry in entries)
             {
@@ -46,7 +49,7 @@ namespace lab3Client
 
             DirectoryChanged?.Invoke(this, path);
 
-            return DisplayNameToFullPath.Keys.ToArray();
+            return DisplayNameToFullPath.Keys.ToArray();          
         }
 
         public void OnItemSelected(string displayName)
@@ -59,6 +62,18 @@ namespace lab3Client
                 else if (File.Exists(fullPath))
                     FileSelected?.Invoke(this, fullPath);
             }
+        }
+
+        public string[] ConnectToServer(string IP)
+        {
+            client = new Client(IP);
+            client.Connect();
+            return client.GetResponce().Split(',');
+        }
+
+        public void Disconnect()
+        {
+            client.Close();
         }
     }
 }
