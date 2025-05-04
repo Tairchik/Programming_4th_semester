@@ -79,7 +79,7 @@ namespace lab3Client
 
         public void Disconnect()
         {
-            client.Close();
+            if (client != null) client.Close();
         }
     }
 }
