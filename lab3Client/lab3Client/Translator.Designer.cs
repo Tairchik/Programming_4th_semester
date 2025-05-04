@@ -1,4 +1,4 @@
-﻿namespace lab3Client
+﻿/*namespace lab3Client
 {
     partial class Translator
     {
@@ -217,4 +217,4 @@
         private System.Windows.Forms.Label labelServerSide;
         private System.Windows.Forms.ListBox listBoxServerSide;
     }
-}
+}*/

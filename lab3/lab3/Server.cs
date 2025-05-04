@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -12,6 +12,7 @@ namespace lab3
     {
         private readonly TcpListener _server;
         private bool _isRunning;
+        private bool connected = false;
         public Server()
         {
             IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -22,11 +23,21 @@ namespace lab3
         {
             _server.Start();
             _isRunning = true;
+            TcpClient client;
+            NetworkStream stream;
             
             while (_isRunning)
             {
-                using TcpClient client = _server.AcceptTcpClient();
-                HandleClient(client);
+                client = _server.AcceptTcpClient();
+                connected = true;
+                stream = client.GetStream();
+                // При установлении соединения передаем список логических устройств
+                SendDrives(stream);
+                while (connected)
+                {
+                    HandleClient(stream);
+                }
+                client.Close();
             }
         }
 
@@ -36,28 +47,35 @@ namespace lab3
             _server.Stop();
         }
 
-        private void HandleClient(TcpClient client)
+        private void SendDrives(NetworkStream stream)
         {
-            using (NetworkStream stream = client.GetStream())
+            string drives = string.Join(",", Directory.GetLogicalDrives());
+            SendResponse(stream, drives);
+        }
+
+        private void HandleClient(NetworkStream stream)
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            if (stream.DataAvailable)
             {
-                byte[] buffer = new byte[1024];
-                int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                bytesRead = stream.Read(buffer, 0, buffer.Length);
+                if (bytesRead == 0)
+                {
+                    // Client disconnected
+                    return;
+                }
+
                 string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                 Console.WriteLine($"Получен запрос: {request}");
 
-                if (string.IsNullOrEmpty(request))
+                if (request == "?Disconnect")
                 {
-                    SendResponse(stream, "Ошибка: пустой запрос");
-                    return;
+                    connected = false;
                 }
 
-                if (request == "GET_DRIVES")
-                {
-                    string drives = string.Join(",", Directory.GetLogicalDrives());
-                    SendResponse(stream, drives);
-                }
-                else if (Directory.Exists(request))
+                if (Directory.Exists(request))
                 {
                     string directoryStructure = GetDirectoryStructure(request);
                     SendResponse(stream, directoryStructure);
@@ -73,6 +91,7 @@ namespace lab3
                 }
             }
         }
+
 
         private string GetDirectoryStructure(string path)
         {
