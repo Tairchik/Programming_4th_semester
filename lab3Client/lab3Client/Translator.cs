@@ -69,20 +69,15 @@ namespace lab3Client
             comboBoxSearch.Items.AddRange(controller.ConnectToServer(textBoxIPAddress.Text)); 
         }
 
-        private void buttonSendToServer_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void buttonDisconnect_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void buttonExit_Click(object sender, EventArgs e)
         {
             controller.Disconnect();
             this.Close();
+        }
+
+        private void menuExit_Click(object sender, FormClosingEventArgs e)
+        {
+            controller.Disconnect();
         }
     }
 }
