@@ -52,6 +52,12 @@ namespace lab3Client
             return DisplayNameToFullPath.Keys.ToArray();          
         }
 
+        public string GetFileText(string path)
+        {
+            client.SendRequest(path);
+            return client.GetResponce();
+        }
+
         public void OnItemSelected(string displayName)
         {
             string fullPath;

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lab3
 {
@@ -102,8 +103,19 @@ namespace lab3
 
         private void SendResponse(NetworkStream stream, string response)
         {
-            byte[] data = Encoding.UTF8.GetBytes(response);
-            stream.Write(data, 0, data.Length);
+            if (string.IsNullOrEmpty(response))
+            {
+                byte[] empty = new byte[] { 0 };
+                stream.Write(empty, 0, 1);
+                Console.WriteLine($"Отправлен ответ: {Encoding.UTF8.GetString(empty)}");
+            }
+            else
+            {
+                byte[] data = Encoding.UTF8.GetBytes(response);
+                stream.Write(data, 0, data.Length);
+                Console.WriteLine($"Отправлен ответ: {Encoding.UTF8.GetString(data)}");
+            }
+            
         }
 
     }
