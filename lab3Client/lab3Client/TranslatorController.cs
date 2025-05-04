@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,19 +51,14 @@ namespace lab3Client
 
         public void OnItemSelected(string displayName)
         {
-            if (TryGetFullPath(displayName, out string fullPath))
+            string fullPath;
+            if (DisplayNameToFullPath.TryGetValue(displayName, out fullPath))
             {
-                if (IsDirectory(fullPath))
+                if (Directory.Exists(fullPath))
                     DirectoryChanged?.Invoke(this, fullPath);
-                else if (IsFile(fullPath))
+                else if (File.Exists(fullPath))
                     FileSelected?.Invoke(this, fullPath);
             }
         }
-
-        public bool TryGetFullPath(string displayName, out string fullPath)
-            => DisplayNameToFullPath.TryGetValue(displayName, out fullPath);
-
-        public bool IsDirectory(string path) => Directory.Exists(path);
-        public bool IsFile(string path) => File.Exists(path);
     }
 }

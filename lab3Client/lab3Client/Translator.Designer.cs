@@ -28,177 +28,168 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBoxSearch = new System.Windows.Forms.ComboBox();
-            this.listBoxSearch = new System.Windows.Forms.ListBox();
-            this.labelIP = new System.Windows.Forms.Label();
-            this.textBoxIPAddress = new System.Windows.Forms.TextBox();
-            this.buttonTurnOffServer = new System.Windows.Forms.Button();
-            this.buttonConnect = new System.Windows.Forms.Button();
-            this.buttonDisconnect = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
-            this.buttonSendToServer = new System.Windows.Forms.Button();
-            this.buttonSendToClient = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.listBoxClientSide = new System.Windows.Forms.ListBox();
-            this.labelServerSide = new System.Windows.Forms.Label();
-            this.listBoxServerSide = new System.Windows.Forms.ListBox();
-            this.SuspendLayout();
+            comboBoxSearch = new ComboBox();
+            listBoxSearch = new ListBox();
+            labelIP = new Label();
+            textBoxIPAddress = new TextBox();
+            buttonTurnOffServer = new Button();
+            buttonConnect = new Button();
+            buttonDisconnect = new Button();
+            buttonExit = new Button();
+            buttonSendToServer = new Button();
+            buttonSendToClient = new Button();
+            label1 = new Label();
+            listBoxClientSide = new ListBox();
+            SuspendLayout();
             // 
             // comboBoxSearch
             // 
-            this.comboBoxSearch.FormattingEnabled = true;
-            this.comboBoxSearch.Location = new System.Drawing.Point(12, 12);
-            this.comboBoxSearch.Name = "comboBoxSearch";
-            this.comboBoxSearch.Size = new System.Drawing.Size(279, 21);
-            this.comboBoxSearch.TabIndex = 0;
-            this.comboBoxSearch.SelectedIndexChanged += comboBoxSearch_SelectedIndexChanged;
-            this.comboBoxSearch.SelectedIndexChanged += comboBoxSearch_TextChanged;
+            comboBoxSearch.FormattingEnabled = true;
+            comboBoxSearch.Location = new Point(14, 14);
+            comboBoxSearch.Margin = new Padding(4, 3, 4, 3);
+            comboBoxSearch.Name = "comboBoxSearch";
+            comboBoxSearch.Size = new Size(325, 23);
+            comboBoxSearch.TabIndex = 0;
+            comboBoxSearch.SelectedIndexChanged += comboBoxSearch_TextChanged;
             // 
             // listBoxSearch
             // 
-            this.listBoxSearch.FormattingEnabled = true;
-            this.listBoxSearch.Location = new System.Drawing.Point(13, 39);
-            this.listBoxSearch.Name = "listBoxSearch";
-            this.listBoxSearch.Size = new System.Drawing.Size(278, 303);
-            this.listBoxSearch.TabIndex = 1;
+            listBoxSearch.FormattingEnabled = true;
+            listBoxSearch.ItemHeight = 15;
+            listBoxSearch.Location = new Point(15, 45);
+            listBoxSearch.Margin = new Padding(4, 3, 4, 3);
+            listBoxSearch.Name = "listBoxSearch";
+            listBoxSearch.Size = new Size(324, 349);
+            listBoxSearch.TabIndex = 1;
             listBoxSearch.DoubleClick += listBoxSearch_DoubleClick;
-
             // 
             // labelIP
             // 
-            this.labelIP.AutoSize = true;
-            this.labelIP.Location = new System.Drawing.Point(13, 352);
-            this.labelIP.Name = "labelIP";
-            this.labelIP.Size = new System.Drawing.Size(50, 13);
-            this.labelIP.TabIndex = 2;
-            this.labelIP.Text = "IP-адрес";
+            labelIP.AutoSize = true;
+            labelIP.Location = new Point(15, 406);
+            labelIP.Margin = new Padding(4, 0, 4, 0);
+            labelIP.Name = "labelIP";
+            labelIP.Size = new Size(53, 15);
+            labelIP.TabIndex = 2;
+            labelIP.Text = "IP-адрес";
             // 
             // textBoxIPAddress
             // 
-            this.textBoxIPAddress.Location = new System.Drawing.Point(69, 349);
-            this.textBoxIPAddress.Name = "textBoxIPAddress";
-            this.textBoxIPAddress.Size = new System.Drawing.Size(101, 20);
-            this.textBoxIPAddress.TabIndex = 3;
+            textBoxIPAddress.Location = new Point(80, 403);
+            textBoxIPAddress.Margin = new Padding(4, 3, 4, 3);
+            textBoxIPAddress.Name = "textBoxIPAddress";
+            textBoxIPAddress.Size = new Size(117, 23);
+            textBoxIPAddress.TabIndex = 3;
             // 
             // buttonTurnOffServer
             // 
-            this.buttonTurnOffServer.Location = new System.Drawing.Point(176, 346);
-            this.buttonTurnOffServer.Name = "buttonTurnOffServer";
-            this.buttonTurnOffServer.Size = new System.Drawing.Size(115, 27);
-            this.buttonTurnOffServer.TabIndex = 4;
-            this.buttonTurnOffServer.Text = "Сервер отключить";
-            this.buttonTurnOffServer.UseVisualStyleBackColor = true;
+            buttonTurnOffServer.Location = new Point(205, 399);
+            buttonTurnOffServer.Margin = new Padding(4, 3, 4, 3);
+            buttonTurnOffServer.Name = "buttonTurnOffServer";
+            buttonTurnOffServer.Size = new Size(134, 31);
+            buttonTurnOffServer.TabIndex = 4;
+            buttonTurnOffServer.Text = "Сервер отключить";
+            buttonTurnOffServer.UseVisualStyleBackColor = true;
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(13, 379);
-            this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(86, 27);
-            this.buttonConnect.TabIndex = 5;
-            this.buttonConnect.Text = "Соединиться";
-            this.buttonConnect.UseVisualStyleBackColor = true;
-            this.buttonConnect.Click += buttonConnect_Click;
+            buttonConnect.Location = new Point(15, 437);
+            buttonConnect.Margin = new Padding(4, 3, 4, 3);
+            buttonConnect.Name = "buttonConnect";
+            buttonConnect.Size = new Size(100, 31);
+            buttonConnect.TabIndex = 5;
+            buttonConnect.Text = "Соединиться";
+            buttonConnect.UseVisualStyleBackColor = true;
+            buttonConnect.Click += buttonConnect_Click;
             // 
             // buttonDisconnect
             // 
-            this.buttonDisconnect.Location = new System.Drawing.Point(113, 379);
-            this.buttonDisconnect.Name = "buttonDisconnect";
-            this.buttonDisconnect.Size = new System.Drawing.Size(86, 27);
-            this.buttonDisconnect.TabIndex = 6;
-            this.buttonDisconnect.Text = "Отключиться";
-            this.buttonDisconnect.UseVisualStyleBackColor = true;
-            this.buttonDisconnect.Click += buttonDisconnect_Click;
+            buttonDisconnect.Location = new Point(132, 437);
+            buttonDisconnect.Margin = new Padding(4, 3, 4, 3);
+            buttonDisconnect.Name = "buttonDisconnect";
+            buttonDisconnect.Size = new Size(100, 31);
+            buttonDisconnect.TabIndex = 6;
+            buttonDisconnect.Text = "Отключиться";
+            buttonDisconnect.UseVisualStyleBackColor = true;
+            buttonDisconnect.Click += buttonDisconnect_Click;
             // 
             // buttonExit
             // 
-            this.buttonExit.Location = new System.Drawing.Point(216, 379);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(75, 27);
-            this.buttonExit.TabIndex = 7;
-            this.buttonExit.Text = "Выход";
-            this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += buttonExit_Click;
+            buttonExit.Location = new Point(252, 437);
+            buttonExit.Margin = new Padding(4, 3, 4, 3);
+            buttonExit.Name = "buttonExit";
+            buttonExit.Size = new Size(88, 31);
+            buttonExit.TabIndex = 7;
+            buttonExit.Text = "Выход";
+            buttonExit.UseVisualStyleBackColor = true;
+            buttonExit.Click += buttonExit_Click;
             // 
-            // buttonSendToServerф
+            // buttonSendToServer
             // 
-            this.buttonSendToServer.Location = new System.Drawing.Point(163, 412);
-            this.buttonSendToServer.Name = "buttonSendToServer";
-            this.buttonSendToServer.Size = new System.Drawing.Size(128, 27);
-            this.buttonSendToServer.TabIndex = 8;
-            this.buttonSendToServer.Text = "Передать серверу";
-            this.buttonSendToServer.UseVisualStyleBackColor = true;
-            this.buttonSendToClient.Click += buttonSendToServer_Click;
+            buttonSendToServer.Location = new Point(190, 475);
+            buttonSendToServer.Margin = new Padding(4, 3, 4, 3);
+            buttonSendToServer.Name = "buttonSendToServer";
+            buttonSendToServer.Size = new Size(149, 31);
+            buttonSendToServer.TabIndex = 8;
+            buttonSendToServer.Text = "Передать серверу";
+            buttonSendToServer.UseVisualStyleBackColor = true;
             // 
             // buttonSendToClient
             // 
-            this.buttonSendToClient.Location = new System.Drawing.Point(12, 412);
-            this.buttonSendToClient.Name = "buttonSendToClient";
-            this.buttonSendToClient.Size = new System.Drawing.Size(128, 27);
-            this.buttonSendToClient.TabIndex = 9;
-            this.buttonSendToClient.Text = "Передать клиенту";
-            this.buttonSendToClient.UseVisualStyleBackColor = true;
+            buttonSendToClient.Location = new Point(14, 475);
+            buttonSendToClient.Margin = new Padding(4, 3, 4, 3);
+            buttonSendToClient.Name = "buttonSendToClient";
+            buttonSendToClient.Size = new Size(149, 31);
+            buttonSendToClient.TabIndex = 9;
+            buttonSendToClient.Text = "Передать клиенту";
+            buttonSendToClient.UseVisualStyleBackColor = true;
+            buttonSendToClient.Click += buttonSendToServer_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(308, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Клиентская сторона";
+            label1.AutoSize = true;
+            label1.Location = new Point(359, 17);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(118, 15);
+            label1.TabIndex = 10;
+            label1.Text = "Клиентская сторона";
             // 
             // listBoxClientSide
-            //
-            this.listBoxClientSide.FormattingEnabled = true;
-            this.listBoxClientSide.Location = new System.Drawing.Point(311, 39);
-            this.listBoxClientSide.Name = "listBoxClientSide";
-            this.listBoxClientSide.Size = new System.Drawing.Size(221, 394);
-            this.listBoxClientSide.TabIndex = 11;
             // 
-            // labelServerSide
-            // 
-            this.labelServerSide.AutoSize = true;
-            this.labelServerSide.Location = new System.Drawing.Point(543, 15);
-            this.labelServerSide.Name = "labelServerSide";
-            this.labelServerSide.Size = new System.Drawing.Size(106, 13);
-            this.labelServerSide.TabIndex = 12;
-            this.labelServerSide.Text = "Серверная сторона";
-            // 
-            // listBoxServerSide
-            // 
-            this.listBoxServerSide.FormattingEnabled = true;
-            this.listBoxServerSide.Location = new System.Drawing.Point(546, 39);
-            this.listBoxServerSide.Name = "listBoxServerSide";
-            this.listBoxServerSide.Size = new System.Drawing.Size(221, 394);
-            this.listBoxServerSide.TabIndex = 13;
+            listBoxClientSide.FormattingEnabled = true;
+            listBoxClientSide.ItemHeight = 15;
+            listBoxClientSide.Location = new Point(363, 45);
+            listBoxClientSide.Margin = new Padding(4, 3, 4, 3);
+            listBoxClientSide.Name = "listBoxClientSide";
+            listBoxClientSide.Size = new Size(540, 454);
+            listBoxClientSide.TabIndex = 11;
             // 
             // Translator
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FloralWhite;
-            this.ClientSize = new System.Drawing.Size(785, 444);
-            this.Controls.Add(this.listBoxServerSide);
-            this.Controls.Add(this.labelServerSide);
-            this.Controls.Add(this.listBoxClientSide);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.buttonSendToClient);
-            this.Controls.Add(this.buttonSendToServer);
-            this.Controls.Add(this.buttonExit);
-            this.Controls.Add(this.buttonDisconnect);
-            this.Controls.Add(this.buttonConnect);
-            this.Controls.Add(this.buttonTurnOffServer);
-            this.Controls.Add(this.textBoxIPAddress);
-            this.Controls.Add(this.labelIP);
-            this.Controls.Add(this.listBoxSearch);
-            this.Controls.Add(this.comboBoxSearch);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Translator";
-            this.Text = "Программа для обмена данными между компьютерами";
-            this.Load += Translator_Load;
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FloralWhite;
+            ClientSize = new Size(916, 512);
+            Controls.Add(listBoxClientSide);
+            Controls.Add(label1);
+            Controls.Add(buttonSendToClient);
+            Controls.Add(buttonSendToServer);
+            Controls.Add(buttonExit);
+            Controls.Add(buttonDisconnect);
+            Controls.Add(buttonConnect);
+            Controls.Add(buttonTurnOffServer);
+            Controls.Add(textBoxIPAddress);
+            Controls.Add(labelIP);
+            Controls.Add(listBoxSearch);
+            Controls.Add(comboBoxSearch);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "Translator";
+            Text = "Программа для обмена данными между компьютерами";
+            Load += Translator_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -214,7 +205,5 @@
         private System.Windows.Forms.Button buttonSendToClient;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listBoxClientSide;
-        private System.Windows.Forms.Label labelServerSide;
-        private System.Windows.Forms.ListBox listBoxServerSide;
     }
 }

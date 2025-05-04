@@ -13,7 +13,6 @@ namespace lab3Client
     public partial class Translator : Form
     {
         private TranslatorController fileController = new TranslatorController();
-        private NetworkClient netClient;
 
         public Translator()
         {
