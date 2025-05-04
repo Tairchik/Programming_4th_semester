@@ -151,7 +151,7 @@
             Margin = new Padding(4, 3, 4, 3);
             Name = "Translator";
             Text = "Программа для обмена данными между компьютерами";
-            this.FormClosing += menuExit_Click;
+            this.FormClosing += FormExit_Click;
             ResumeLayout(false);
             PerformLayout();
         }

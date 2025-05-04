@@ -21,6 +21,7 @@ namespace lab3Client
             // Подписка на события контроллера
             controller.DirectoryChanged += FileController_DirectoryChanged;
             controller.FileSelected += FileController_FileSelected;
+            controller.Errors += ShowError;
         }
 
         
@@ -43,15 +44,14 @@ namespace lab3Client
         {
             try
             {
-                var entries = controller.DisplayNameToFullPath.Keys.ToArray();
-
-                listBoxSearch.Items.Clear();
-                listBoxSearch.Items.AddRange(entries);
-
                 if (!comboBoxSearch.Items.Contains(path))
                     comboBoxSearch.Items.Add(path);
 
                 comboBoxSearch.Text = path;
+                var entries = controller.DisplayNameToFullPath.Keys.ToArray();
+
+                listBoxSearch.Items.Clear();
+                listBoxSearch.Items.AddRange(entries);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,18 @@ namespace lab3Client
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            comboBoxSearch.Items.AddRange(controller.ConnectToServer(textBoxIPAddress.Text)); 
+            listBoxSearch.Items.Clear();
+            comboBoxSearch.Items.Clear();
+            comboBoxSearch.Text = null;
+            comboBoxSearch.Items.AddRange(controller.ConnectToServer(textBoxIPAddress.Text));
+        }
+
+        private void buttonDisconnect_Click(object sender, EventArgs e)
+        {
+            controller.Disconnect();
+            listBoxSearch.Items.Clear();
+            comboBoxSearch.Items.Clear();
+            comboBoxSearch.Text = null;
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -75,9 +86,14 @@ namespace lab3Client
             this.Close();
         }
 
-        private void menuExit_Click(object sender, FormClosingEventArgs e)
+        private void FormExit_Click(object sender, FormClosingEventArgs e)
         {
             controller.Disconnect();
+        }
+
+        private void ShowError(string message)
+        {
+            MessageBox.Show($"Error: {message}");
         }
     }
 }
