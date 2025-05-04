@@ -13,7 +13,7 @@ namespace lab3Client
     public partial class Translator : Form
     {
         private TranslatorController controller = new TranslatorController();
-        
+
         public Translator()
         {
             InitializeComponent();
@@ -24,12 +24,13 @@ namespace lab3Client
             controller.Errors += ShowError;
         }
 
-        
+
 
         private void comboBoxSearch_TextChanged(object sender, EventArgs e)
         {
             string path = comboBoxSearch.Text;
             controller.GetDirectoryEntries(path);
+            fileContent.Text = string.Empty;
         }
 
         private void SendToServer_DoubleClick(object sender, EventArgs e)
@@ -61,7 +62,8 @@ namespace lab3Client
 
         private void FileController_FileSelected(object sender, string filePath)
         {
-            MessageBox.Show("Ýעמ פאיכ: " + filePath);
+            fileContent.Text = string.Empty;
+            fileContent.Text = controller.GetFileText(filePath);
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)

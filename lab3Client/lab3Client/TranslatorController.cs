@@ -62,6 +62,12 @@ namespace lab3Client
 
         }
 
+        public string GetFileText(string path)
+        {
+            client.SendRequest(path);
+            return client.GetResponce();
+        }
+
         public void OnItemSelected(string displayName)
         {
             try

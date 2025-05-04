@@ -36,7 +36,7 @@
             buttonDisconnect = new Button();
             buttonExit = new Button();
             label1 = new Label();
-            listBoxClientSide = new ListBox();
+            fileContent = new RichTextBox();
             SuspendLayout();
             // 
             // comboBoxSearch
@@ -122,15 +122,13 @@
             label1.TabIndex = 10;
             label1.Text = "Клиентская сторона";
             // 
-            // listBoxClientSide
+            // fileContent
             // 
-            listBoxClientSide.FormattingEnabled = true;
-            listBoxClientSide.ItemHeight = 15;
-            listBoxClientSide.Location = new Point(363, 45);
-            listBoxClientSide.Margin = new Padding(4, 3, 4, 3);
-            listBoxClientSide.Name = "listBoxClientSide";
-            listBoxClientSide.Size = new Size(540, 424);
-            listBoxClientSide.TabIndex = 11;
+            fileContent.Location = new Point(359, 45);
+            fileContent.Name = "fileContent";
+            fileContent.Size = new Size(545, 398);
+            fileContent.TabIndex = 11;
+            fileContent.Text = "";
             // 
             // Translator
             // 
@@ -138,7 +136,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FloralWhite;
             ClientSize = new Size(916, 480);
-            Controls.Add(listBoxClientSide);
+            Controls.Add(fileContent);
             Controls.Add(label1);
             Controls.Add(buttonExit);
             Controls.Add(buttonDisconnect);
@@ -157,14 +155,14 @@
         }
 
         #endregion
-        private System.Windows.Forms.ComboBox comboBoxSearch;
-        private System.Windows.Forms.ListBox listBoxSearch;
-        private System.Windows.Forms.Label labelIP;
-        private System.Windows.Forms.TextBox textBoxIPAddress;
-        private System.Windows.Forms.Button buttonConnect;
-        private System.Windows.Forms.Button buttonDisconnect;
-        private System.Windows.Forms.Button buttonExit;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox listBoxClientSide;
+        private ComboBox comboBoxSearch;
+        private ListBox listBoxSearch;
+        private Label labelIP;
+        private TextBox textBoxIPAddress;
+        private Button buttonConnect;
+        private Button buttonDisconnect;
+        private Button buttonExit;
+        private Label label1;
+        private RichTextBox fileContent;
     }
 }
