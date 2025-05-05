@@ -15,6 +15,7 @@
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"AAAAAAAAAAA: {ex}");
             }
             finally
             {

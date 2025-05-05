@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -29,10 +30,26 @@ namespace ServerTask2_3
                 client = _server.AcceptTcpClient();
                 connected = true;
                 stream = client.GetStream();
+                DateTime dateTime = DateTime.Now;
 
                 while (connected)
                 {
-                    HandleClient(stream);
+                    if ((DateTime.Now - dateTime).TotalSeconds < 1)
+                    {
+                        HandleClient(stream);
+                    }
+                    else
+                    {
+                        dateTime = DateTime.Now;
+                        // Генерация значений температуры и давления
+                        int temperature = _random.Next(0, 101); // 0 - 100 °C
+                        double pressure = _random.NextDouble() * 6; // 0 - 6 атм
+
+                        // Формирование строки данных
+                        string data = $"{temperature};{pressure:F2}";
+
+                        SendResponse(stream, data);
+                    }
                 }
                 client.Close();
             }
@@ -67,17 +84,8 @@ namespace ServerTask2_3
                     return;
                 }
             }
-
-            // Генерация значений температуры и давления
-            int temperature = _random.Next(0, 101); // 0 - 1000 °C
-            double pressure = _random.NextDouble() * 6; // 0 - 6 атм
-
-            // Формирование строки данных
-            string data = $"{temperature};{pressure:F2}";
-
-            SendResponse(stream, data);
-
-            Thread.Sleep(1000);
+            
+           
 
         }
 
