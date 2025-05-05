@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
-using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace lab3Client
+﻿namespace lab3Client
 {
     public class Client
     {
@@ -40,12 +30,12 @@ namespace lab3Client
         public void SendRequest(string requestMessage)
         {
             var data = Encoding.UTF8.GetBytes(requestMessage);
-            _stream.Write(data, 0, data.Length < 2000000 ? data.Length : 2000000);
+            _stream.Write(data, 0, data.Length);
         }
 
         public string GetResponce()
         {
-            var buffer = new byte[2000000];
+            var buffer = new byte[50];
             var byteCount = _stream.Read(buffer, 0, buffer.Length);
             return Encoding.UTF8.GetString(buffer, 0, byteCount);
         }

@@ -9,7 +9,7 @@ namespace ServerTask2_3
         private readonly TcpListener _server;
         private bool _isRunning;
         private bool connected = false;
-        private Random _random;
+        private readonly Random _random;
         public ServerTask2_3()
         {
             IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -69,11 +69,11 @@ namespace ServerTask2_3
             }
 
             // Генерация значений температуры и давления
-            double temperature = _random.Next(0, 1001); // 0 - 1000 °C
+            int temperature = _random.Next(0, 101); // 0 - 1000 °C
             double pressure = _random.NextDouble() * 6; // 0 - 6 атм
 
             // Формирование строки данных
-            string data = $"{temperature:F2};{pressure:F2}";
+            string data = $"{temperature};{pressure:F2}";
 
             SendResponse(stream, data);
 
