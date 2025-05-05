@@ -30,10 +30,10 @@ namespace lab3_2Client
         /// </summary>
         private void InitializeComponent()
         {
-            Temperature = new ScottPlot.WinForms.FormsPlot();
+            Temperature = new FormsPlot();
             btnConnect = new Button();
             btn_disconnect = new Button();
-            Pressure = new ScottPlot.WinForms.FormsPlot();
+            Pressure = new FormsPlot();
             SuspendLayout();
             // 
             // Temperature
@@ -43,9 +43,6 @@ namespace lab3_2Client
             Temperature.Name = "Temperature";
             Temperature.Size = new Size(434, 427);
             Temperature.TabIndex = 0;
-            Temperature.Plot.Title("График зависимости температуры от времени");
-            Temperature.Plot.XLabel("Время (сек)");
-            Temperature.Plot.YLabel("Температура (C)");
             // 
             // btnConnect
             // 
@@ -55,6 +52,7 @@ namespace lab3_2Client
             btnConnect.TabIndex = 1;
             btnConnect.Text = "Подключиться";
             btnConnect.UseVisualStyleBackColor = true;
+            btnConnect.Click += btnConnect_Click;
             // 
             // btn_disconnect
             // 
@@ -64,6 +62,7 @@ namespace lab3_2Client
             btn_disconnect.TabIndex = 2;
             btn_disconnect.Text = "Отключиться";
             btn_disconnect.UseVisualStyleBackColor = true;
+            btn_disconnect.Click += btn_disconnect_Click;
             // 
             // Pressure
             // 
@@ -72,9 +71,6 @@ namespace lab3_2Client
             Pressure.Name = "Pressure";
             Pressure.Size = new Size(434, 427);
             Pressure.TabIndex = 3;
-            Pressure.Plot.Title("График зависимости давления от времени");
-            Pressure.Plot.XLabel("Время (сек)");
-            Pressure.Plot.YLabel("Давление (атм.)");
             // 
             // Graph
             // 

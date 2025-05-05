@@ -1,4 +1,8 @@
-﻿namespace lab3Client
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+namespace lab3Client
 {
     public class Client
     {
@@ -37,6 +41,10 @@
         {
             var buffer = new byte[50];
             var byteCount = _stream.Read(buffer, 0, buffer.Length);
+            if (byteCount == 0) 
+            {
+                return "";
+            }
             return Encoding.UTF8.GetString(buffer, 0, byteCount);
         }
     }
