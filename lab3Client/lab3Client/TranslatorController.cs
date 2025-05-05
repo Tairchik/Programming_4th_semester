@@ -56,7 +56,7 @@ namespace lab3Client
 
                 return DisplayNameToFullPath.Keys.ToArray();
             }
-            catch (SocketException socketEx)
+            catch (IOException socketEx)
             {
                 SocketError?.Invoke(socketEx.Message);
                 return DisplayNameToFullPath.Keys.ToArray();
@@ -88,7 +88,7 @@ namespace lab3Client
                         FileSelected?.Invoke(this, fullPath);
                 }
             }
-            catch (SocketException socketEx)
+            catch (IOException socketEx)
             {
                 SocketError?.Invoke(socketEx.Message);
             }
@@ -131,9 +131,15 @@ namespace lab3Client
         {
             try
             {
-                if (client.Connected) client.Close();
+                if (client != null)
+                {
+                    if (client.Connected)
+                    {
+                        client.Close();
+                    }
+                }
             }
-            catch (SocketException socketEx)
+            catch (IOException socketEx)
             {
                 SocketError?.Invoke(socketEx.Message);
             }

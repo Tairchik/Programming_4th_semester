@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace lab3Client
 {
@@ -93,7 +94,6 @@ namespace lab3Client
         private void ShowError(string message)
         {
             MessageBox.Show($"Error: {message}");
-            ClearForm();
         }
 
         private void ShowSocketError(string message)
@@ -106,9 +106,10 @@ namespace lab3Client
         private void ClearForm()
         {
             listBoxSearch.Items.Clear();
-            comboBoxSearch.Items.Clear();
-            comboBoxSearch.Text = null;
             fileContent.Text = string.Empty;
+            comboBoxSearch.Items.Clear();
+            comboBoxSearch.Text = string.Empty;
+
         }
     }
 }
