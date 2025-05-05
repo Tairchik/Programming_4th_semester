@@ -29,6 +29,8 @@ namespace lab3_2Client
 
         private void UpdateGraph(List<double> temperature, List<double> pressure)
         {
+            ClearGraph();
+
             Temperature.Plot.Add.Signal(temperature, 1, ScottPlot.Color.FromColor(System.Drawing.Color.Blue));
             Pressure.Plot.Add.Signal(pressure, 1, ScottPlot.Color.FromColor(System.Drawing.Color.Brown));
             Temperature.Plot.Axes.AutoScale();
@@ -46,6 +48,20 @@ namespace lab3_2Client
         private void btn_disconnect_Click(object sender, EventArgs e)
         {
             controller.Disconnect();
+        }
+
+        private void ResetGraphs_Click(object sender, EventArgs e)
+        {
+            controller.ClearValues();
+            ClearGraph();
+        }
+
+        private void ClearGraph()
+        {
+            Temperature.Plot.Clear();
+            Pressure.Plot.Clear();
+            Temperature.Refresh();
+            Pressure.Refresh();
         }
     }
 }

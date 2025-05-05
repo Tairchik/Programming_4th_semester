@@ -36,6 +36,7 @@ namespace lab3_2Client
             Pressure = new FormsPlot();
             tBoxIPAddress = new TextBox();
             lblIP = new Label();
+            ResetGraphs = new Button();
             SuspendLayout();
             // 
             // Temperature
@@ -95,6 +96,17 @@ namespace lab3_2Client
             lblIP.TabIndex = 5;
             lblIP.Text = "IP адрес:";
             // 
+            // ResetGraphs
+            // 
+            ResetGraphs.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            ResetGraphs.Location = new Point(243, 504);
+            ResetGraphs.Name = "ResetGraphs";
+            ResetGraphs.Size = new Size(145, 31);
+            ResetGraphs.TabIndex = 1;
+            ResetGraphs.Text = "Сбросить графики";
+            ResetGraphs.UseVisualStyleBackColor = true;
+            ResetGraphs.Click += ResetGraphs_Click;
+            // 
             // Graph
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -104,6 +116,7 @@ namespace lab3_2Client
             Controls.Add(tBoxIPAddress);
             Controls.Add(Pressure);
             Controls.Add(btn_disconnect);
+            Controls.Add(ResetGraphs);
             Controls.Add(btnConnect);
             Controls.Add(Temperature);
             Name = "Graph";
@@ -120,5 +133,6 @@ namespace lab3_2Client
         private FormsPlot Pressure;
         private TextBox tBoxIPAddress;
         private Label lblIP;
+        private Button ResetGraphs;
     }
 }

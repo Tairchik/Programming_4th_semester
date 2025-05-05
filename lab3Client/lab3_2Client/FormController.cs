@@ -44,10 +44,16 @@ namespace lab3_2Client
                     double.TryParse(values[i+1], out double pressure);
                     temps.Add(temperature);
                     pressures.Add(pressure);
-                    // Отображение графиков
-                    DataUpdated?.Invoke(temps, pressures);
                 }
+                // Отображение графиков
+                DataUpdated?.Invoke(temps, pressures);
             }
+        }
+
+        public void ClearValues()
+        {
+            temps.Clear();
+            pressures.Clear();
         }
 
         public void ConnectToServer(string IP)
