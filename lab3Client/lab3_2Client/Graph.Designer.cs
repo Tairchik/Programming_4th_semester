@@ -34,6 +34,8 @@ namespace lab3_2Client
             btnConnect = new Button();
             btn_disconnect = new Button();
             Pressure = new FormsPlot();
+            tBoxIPAddress = new TextBox();
+            lblIP = new Label();
             SuspendLayout();
             // 
             // Temperature
@@ -74,13 +76,32 @@ namespace lab3_2Client
             Pressure.Size = new Size(434, 427);
             Pressure.TabIndex = 3;
             // 
+            // tBoxIPAddress
+            // 
+            tBoxIPAddress.Font = new Font("Segoe UI", 10F);
+            tBoxIPAddress.Location = new Point(243, 462);
+            tBoxIPAddress.Name = "tBoxIPAddress";
+            tBoxIPAddress.Size = new Size(155, 25);
+            tBoxIPAddress.TabIndex = 4;
+            tBoxIPAddress.Text = "127.0.0.1";
+            // 
+            // lblIP
+            // 
+            lblIP.AutoSize = true;
+            lblIP.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            lblIP.Location = new Point(183, 465);
+            lblIP.Name = "lblIP";
+            lblIP.Size = new Size(60, 17);
+            lblIP.TabIndex = 5;
+            lblIP.Text = "IP адрес:";
+            // 
             // Graph
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(976, 572);
             Controls.Add(lblIP);
-            Controls.Add(textBox1);
+            Controls.Add(tBoxIPAddress);
             Controls.Add(Pressure);
             Controls.Add(btn_disconnect);
             Controls.Add(btnConnect);
@@ -97,7 +118,7 @@ namespace lab3_2Client
         private Button btnConnect;
         private Button btn_disconnect;
         private FormsPlot Pressure;
-        private TextBox textBox1;
+        private TextBox tBoxIPAddress;
         private Label lblIP;
     }
 }
