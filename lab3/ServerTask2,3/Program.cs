@@ -1,4 +1,4 @@
-namespace lab3
+﻿namespace ServerTask2_3
 {
     internal static class Program
     {
@@ -8,7 +8,7 @@ namespace lab3
         [STAThread]
         static void Main()
         {
-            Server server = new Server();
+            ServerTask2_3 server = new ServerTask2_3();
             try
             {
                 server.Start();
