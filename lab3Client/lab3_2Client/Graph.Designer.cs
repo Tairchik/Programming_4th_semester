@@ -34,8 +34,6 @@ namespace lab3_2Client
             btnConnect = new Button();
             btn_disconnect = new Button();
             Pressure = new FormsPlot();
-            textBox1 = new TextBox();
-            lblIP = new Label();
             SuspendLayout();
             // 
             // Temperature
@@ -55,6 +53,7 @@ namespace lab3_2Client
             btnConnect.TabIndex = 1;
             btnConnect.Text = "Подключиться";
             btnConnect.UseVisualStyleBackColor = true;
+            btnConnect.Click += btnConnect_Click;
             // 
             // btn_disconnect
             // 
@@ -65,6 +64,7 @@ namespace lab3_2Client
             btn_disconnect.TabIndex = 2;
             btn_disconnect.Text = "Отключиться";
             btn_disconnect.UseVisualStyleBackColor = true;
+            btn_disconnect.Click += btn_disconnect_Click;
             // 
             // Pressure
             // 
@@ -73,24 +73,6 @@ namespace lab3_2Client
             Pressure.Name = "Pressure";
             Pressure.Size = new Size(434, 427);
             Pressure.TabIndex = 3;
-            // 
-            // textBox1
-            // 
-            textBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            textBox1.Location = new Point(258, 462);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(188, 25);
-            textBox1.TabIndex = 4;
-            // 
-            // lblIP
-            // 
-            lblIP.AutoSize = true;
-            lblIP.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            lblIP.Location = new Point(194, 463);
-            lblIP.Name = "lblIP";
-            lblIP.Size = new Size(58, 17);
-            lblIP.TabIndex = 5;
-            lblIP.Text = "IP-адрес";
             // 
             // Graph
             // 
