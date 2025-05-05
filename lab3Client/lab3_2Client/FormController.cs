@@ -59,6 +59,7 @@ namespace lab3_2Client
                     if (client.Connected)
                     {
                         client.Close();
+                        timer.Stop();
                     }
                 }
 
@@ -81,6 +82,7 @@ namespace lab3_2Client
                     if (client.Connected)
                     {
                         client.Close();
+                        timer.Stop();
                     }
                 }
             }

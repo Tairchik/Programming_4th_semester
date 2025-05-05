@@ -69,7 +69,7 @@ namespace ServerTask2_3
             }
 
             // Генерация значений температуры и давления
-            int temperature = _random.Next(0, 101); // 0 - 1000 °C
+            int temperature = _random.Next(0, 101); // 0 - 100 °C
             double pressure = _random.NextDouble() * 6; // 0 - 6 атм
 
             // Формирование строки данных

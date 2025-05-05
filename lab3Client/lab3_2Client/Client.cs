@@ -39,7 +39,7 @@ namespace lab3Client
 
         public string GetResponce()
         {
-            var buffer = new byte[50];
+            var buffer = new byte[200];
             var byteCount = _stream.Read(buffer, 0, buffer.Length);
             if (byteCount == 0) 
             {

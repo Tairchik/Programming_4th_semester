@@ -39,7 +39,7 @@ namespace lab3_2Client
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            controller.ConnectToServer("127.0.0.1");
+            controller.ConnectToServer(tBoxIPAddress.Text);
             controller.StartGetData();
         }
 
