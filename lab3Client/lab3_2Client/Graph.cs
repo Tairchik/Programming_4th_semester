@@ -17,8 +17,6 @@ namespace lab3_2Client
             Pressure.Plot.Title("Датчик давления");
             Pressure.Plot.XLabel("Время (сек.)");
             Pressure.Plot.YLabel("Давление (атм.)");
-
-            Temperature.Plot.Add.Polygon;
         }
     }
 }
