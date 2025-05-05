@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace lab3
 {
     internal static class Program
@@ -12,6 +14,9 @@ namespace lab3
             try
             {
                 server.Start();
+            }
+            catch (Exception ex)
+            {
             }
             finally
             {

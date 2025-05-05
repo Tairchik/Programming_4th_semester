@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -51,7 +52,7 @@ namespace lab3
 
         private void HandleClient(NetworkStream stream)
         {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[2000000];
             int bytesRead;
             if (stream.DataAvailable)
             {
@@ -60,7 +61,7 @@ namespace lab3
                 {
                     // Client disconnected
                     return;
-                }
+            }
 
                 string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
@@ -85,6 +86,7 @@ namespace lab3
                     SendResponse(stream, "Ошибка: указанный путь не существует");
                 }
             }
+            
         }
 
 

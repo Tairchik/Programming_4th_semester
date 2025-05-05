@@ -44,7 +44,7 @@ namespace lab3Client
 
         public string GetResponce()
         {
-            var buffer = new byte[4096];
+            var buffer = new byte[2000000];
             var byteCount = _stream.Read(buffer, 0, buffer.Length);
             return Encoding.UTF8.GetString(buffer, 0, byteCount);
         }
