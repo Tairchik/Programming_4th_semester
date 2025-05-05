@@ -1,7 +1,7 @@
 ﻿using lab3Client;
 using System.Text;
 
-namespace lab3_2Client
+namespace lab3_3Client
 {
     internal class FormController
     {
@@ -45,13 +45,13 @@ namespace lab3_2Client
                         double.TryParse(values[i], out double temperature);
                         double.TryParse(values[i + 1], out double pressure);
                         temps.Add(temperature);
-                        pressures.Add(pressure);
+                        pressures.Add(pressure / temperature); // взята зависимость p/t, потому что непонятно как иначе
                     }
                     // Отображение графиков
                     DataUpdated?.Invoke(temps, pressures);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Errors?.Invoke(ex.Message);
             }
