@@ -22,6 +22,7 @@ namespace lab3Client
             controller.DirectoryChanged += FileController_DirectoryChanged;
             controller.FileSelected += FileController_FileSelected;
             controller.Errors += ShowError;
+            controller.SocketError += ShowSocketError;
         }
 
 
@@ -68,20 +69,14 @@ namespace lab3Client
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            listBoxSearch.Items.Clear();
-            comboBoxSearch.Items.Clear();
-            comboBoxSearch.Text = null;
-            fileContent.Text = string.Empty;
+            ClearForm();
             comboBoxSearch.Items.AddRange(controller.ConnectToServer(textBoxIPAddress.Text));
         }
 
         private void buttonDisconnect_Click(object sender, EventArgs e)
         {
             controller.Disconnect();
-            listBoxSearch.Items.Clear();
-            comboBoxSearch.Items.Clear();
-            comboBoxSearch.Text = null;
-            fileContent.Text = string.Empty;
+            ClearForm();
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -98,6 +93,22 @@ namespace lab3Client
         private void ShowError(string message)
         {
             MessageBox.Show($"Error: {message}");
+            ClearForm();
+        }
+
+        private void ShowSocketError(string message)
+        {
+            MessageBox.Show($"Error: {message}");
+            controller.Disconnect();
+            ClearForm();
+        }
+
+        private void ClearForm()
+        {
+            listBoxSearch.Items.Clear();
+            comboBoxSearch.Items.Clear();
+            comboBoxSearch.Text = null;
+            fileContent.Text = string.Empty;
         }
     }
 }

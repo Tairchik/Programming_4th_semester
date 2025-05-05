@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lab3Client
 {
@@ -38,8 +39,8 @@ namespace lab3Client
 
         public void SendRequest(string requestMessage)
         {
-            var requestData = Encoding.UTF8.GetBytes(requestMessage);
-            _stream.Write(requestData);
+            var data = Encoding.UTF8.GetBytes(requestMessage);
+            _stream.Write(data, 0, data.Length < 2000000 ? data.Length : 2000000);
         }
 
         public string GetResponce()

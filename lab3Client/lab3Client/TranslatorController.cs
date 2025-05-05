@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace lab3Client
         public event EventHandler<string> DirectoryChanged;
         public event EventHandler<string> FileSelected;
         public event Action<string> Errors;
+        public event Action<string> SocketError;
 
         public TranslatorController()
         {
@@ -54,6 +56,11 @@ namespace lab3Client
 
                 return DisplayNameToFullPath.Keys.ToArray();
             }
+            catch (SocketException socketEx)
+            {
+                SocketError?.Invoke(socketEx.Message);
+                return DisplayNameToFullPath.Keys.ToArray();
+            }
             catch (Exception ex)
             {
                 Errors?.Invoke(ex.Message);
@@ -81,6 +88,10 @@ namespace lab3Client
                         FileSelected?.Invoke(this, fullPath);
                 }
             }
+            catch (SocketException socketEx)
+            {
+                SocketError?.Invoke(socketEx.Message);
+            }
             catch (Exception ex)
             {
                 Errors?.Invoke(ex.Message);
@@ -104,6 +115,11 @@ namespace lab3Client
 
                 return client.GetResponce().Split(',');
             }
+            catch (SocketException socketEx)
+            {
+                SocketError?.Invoke(socketEx.Message);
+                return new string[] { "" };
+            }
             catch (Exception ex)
             {
                 Errors?.Invoke(ex.Message);
@@ -116,6 +132,10 @@ namespace lab3Client
             try
             {
                 if (client.Connected) client.Close();
+            }
+            catch (SocketException socketEx)
+            {
+                SocketError?.Invoke(socketEx.Message);
             }
             catch (Exception ex)
             {

@@ -92,9 +92,12 @@ namespace lab3
 
         private string GetDirectoryStructure(string path)
         {
-            string[] st = Directory.GetFileSystemEntries(path);
+            var st = Directory.GetFileSystemEntries(path)
+           .Where(n => FileAttributes.System != (File.GetAttributes(n) & FileAttributes.System));
+
 
             return string.Join("|", st);
+
         }
 
         private void SendResponse(NetworkStream stream, string response)
@@ -108,7 +111,7 @@ namespace lab3
             else
             {
                 byte[] data = Encoding.UTF8.GetBytes(response);
-                stream.Write(data, 0, data.Length);
+                stream.Write(data, 0, data.Length < 2000000 ? data.Length : 2000000);
                 Console.WriteLine($"Отправлен ответ: {Encoding.UTF8.GetString(data)}");
             }
             
