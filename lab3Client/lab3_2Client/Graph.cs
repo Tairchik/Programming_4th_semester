@@ -10,6 +10,14 @@ namespace lab3_2Client
         public Graph()
         {
             InitializeComponent();
+            Temperature.Plot.Title("Датчик температуры");
+            Temperature.Plot.XLabel("Время (сек.)");
+            Temperature.Plot.YLabel("Температура (цел.)");
+            Pressure.Plot.XLabel("Время (сек.)");
+            Pressure.Plot.YLabel("Давление (атм.)");
+
+            Pressure.Plot.Title("Датчик давления");
+
             controller.Errors += ShowError;
             controller.DataUpdated += UpdateGraph;
         }
@@ -21,8 +29,10 @@ namespace lab3_2Client
 
         private void UpdateGraph(List<double> temperature, List<double> pressure)
         {
-            Temperature.Plot.Add.Signal(temperature);
-            Pressure.Plot.Add.Signal(pressure);
+            Temperature.Plot.Add.Signal(temperature, 1, ScottPlot.Color.FromColor(System.Drawing.Color.Blue));
+            Pressure.Plot.Add.Signal(pressure, 1, ScottPlot.Color.FromColor(System.Drawing.Color.Brown));
+            Temperature.Plot.Axes.AutoScale();
+            Pressure.Plot.Axes.AutoScale();
             Temperature.Refresh();
             Pressure.Refresh();
         }
