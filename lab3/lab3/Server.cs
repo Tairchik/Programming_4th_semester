@@ -54,6 +54,10 @@ namespace lab3
         {
             byte[] buffer = new byte[2000000];
             int bytesRead;
+            string request;
+            string directoryStructure;
+            string fileContent;
+
             if (stream.DataAvailable)
             {
                 bytesRead = stream.Read(buffer, 0, buffer.Length);
@@ -63,7 +67,7 @@ namespace lab3
                     return;
             }
 
-                string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                 Console.WriteLine($"Получен запрос: {request}");
 
@@ -73,12 +77,12 @@ namespace lab3
                 }
                 else if (Directory.Exists(request))
                 {
-                    string directoryStructure = GetDirectoryStructure(request);
+                    directoryStructure = GetDirectoryStructure(request);
                     SendResponse(stream, directoryStructure);
                 }
                 else if (File.Exists(request))
                 {
-                    string fileContent = File.ReadAllText(request);
+                    fileContent = File.ReadAllText(request);
                     SendResponse(stream, fileContent);
                 }
                 else
@@ -102,19 +106,18 @@ namespace lab3
 
         private void SendResponse(NetworkStream stream, string response)
         {
+            byte[] data;
             if (string.IsNullOrEmpty(response))
             {
-                byte[] empty = new byte[] { 0 };
-                stream.Write(empty, 0, 1);
-                Console.WriteLine($"Отправлен ответ: {Encoding.UTF8.GetString(empty)}");
+                data = new byte[] { 0 };
             }
             else
             {
-                byte[] data = Encoding.UTF8.GetBytes(response);
-                stream.Write(data, 0, data.Length < 2000000 ? data.Length : 2000000);
-                Console.WriteLine($"Отправлен ответ: {Encoding.UTF8.GetString(data)}");
+                data = Encoding.UTF8.GetBytes(response);
             }
-            
+            stream.Write(data, 0, data.Length < 2000000 ? data.Length : 2000000);
+            Console.WriteLine($"Отправлен ответ: {Encoding.UTF8.GetString(data)}");
+
         }
 
     }

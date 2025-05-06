@@ -46,7 +46,6 @@ namespace lab3_4Client
 
                     // Разбор данных
                     string[] values = data.Split(';');
-                    buttonsStates = new List<Color>(values.Length);
                     for (int i = 0; i < values.Length; i++)
                     {
                         switch (values[i])
@@ -64,6 +63,7 @@ namespace lab3_4Client
                     }
                     // Отображение графиков
                     DataUpdated?.Invoke(buttonsStates);
+                    buttonsStates.Clear();
                 }
             }
             catch (Exception ex)
@@ -88,6 +88,7 @@ namespace lab3_4Client
                 client = new Client(IP);
                 client.Connect();
                 buttonNumbers = int.Parse(client.GetResponce());
+                buttonsStates = new List<Color>(buttonNumbers);
                 return buttonNumbers;
             }
             catch (Exception ex)

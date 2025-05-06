@@ -30,13 +30,15 @@ namespace ServerTask4
             Random _random = new Random();
 
             bool readyForGenerate = false;
+            string data;
+            DateTime dateTime;
 
             while (_isRunning)
             {
                 client = _server.AcceptTcpClient();
                 connected = true;
                 stream = client.GetStream();
-                DateTime dateTime = DateTime.Now;
+                dateTime = DateTime.Now;
 
                 // При установлении соединения передаем количество установок
                 SendNumberOfInstallations(stream);
@@ -54,7 +56,7 @@ namespace ServerTask4
                         GenerateValues();
 
                         // Формирование строки данных
-                        string data = string.Join(";", unitStates);
+                        data = string.Join(";", unitStates);
 
                         SendResponse(stream, data);
                         dateTime = DateTime.Now;
@@ -111,6 +113,7 @@ namespace ServerTask4
             byte[] buffer = new byte[20];
             int bytesRead;
             readyForGenerate = false;
+            string request;
             if (stream.DataAvailable)
             {
                 bytesRead = stream.Read(buffer, 0, buffer.Length);
@@ -120,7 +123,7 @@ namespace ServerTask4
                     return;
                 }
 
-                string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                 Console.WriteLine($"Получен запрос: {request}");
 

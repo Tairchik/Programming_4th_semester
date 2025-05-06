@@ -40,10 +40,12 @@ namespace lab3_3Client
 
                     // Разбор данных
                     string[] values = data.Split(';');
+                    double temperature;
+                    double pressure;
                     for (int i = 0; i < values.Length; i += 2)
                     {
-                        double.TryParse(values[i], out double temperature);
-                        double.TryParse(values[i + 1], out double pressure);
+                        double.TryParse(values[i], out temperature);
+                        double.TryParse(values[i + 1], out pressure);
                         temps.Add(temperature);
                         pressures.Add(pressure / temperature); // взята зависимость p/t, потому что непонятно как иначе
                     }

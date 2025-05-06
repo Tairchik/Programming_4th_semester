@@ -34,10 +34,10 @@ namespace lab3Client
                 client.SendRequest(path);
 
                 var entries = client.GetResponce().Split('|');
-
+                string name;
                 foreach (var entry in entries)
                 {
-                    string name = Path.GetFileName(entry);
+                    name = Path.GetFileName(entry);
                     if (string.IsNullOrWhiteSpace(name))
                         name = entry;
 
@@ -72,8 +72,7 @@ namespace lab3Client
         {
             try
             {
-                string fullPath;
-                if (DisplayNameToFullPath.TryGetValue(displayName, out fullPath))
+                if (DisplayNameToFullPath.TryGetValue(displayName, out string fullPath))
                 {
                     if (Directory.Exists(fullPath))
                         DirectoryChanged?.Invoke(this, fullPath);

@@ -24,7 +24,9 @@ namespace ServerTask2_3
             _isRunning = true;
             TcpClient client;
             NetworkStream stream;
-
+            int temperature;
+            double pressure;
+            string data;
             while (_isRunning)
             {
                 client = _server.AcceptTcpClient();
@@ -42,11 +44,11 @@ namespace ServerTask2_3
                     {
                         dateTime = DateTime.Now;
                         // Генерация значений температуры и давления
-                        int temperature = _random.Next(0, 101); // 0 - 100 °C
-                        double pressure = _random.NextDouble() * 6; // 0 - 6 атм
+                        temperature = _random.Next(0, 101); // 0 - 100 °C
+                        pressure = _random.NextDouble() * 6; // 0 - 6 атм
 
                         // Формирование строки данных
-                        string data = $"{temperature};{pressure:F2}";
+                        data = $"{temperature};{pressure:F2}";
 
                         SendResponse(stream, data);
                     }
@@ -65,6 +67,7 @@ namespace ServerTask2_3
         {
             byte[] buffer = new byte[20];
             int bytesRead;
+            string request;
             if (stream.DataAvailable)
             {
                 bytesRead = stream.Read(buffer, 0, buffer.Length);
@@ -74,7 +77,7 @@ namespace ServerTask2_3
                     return;
                 }
 
-                string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                 Console.WriteLine($"Получен запрос: {request}");
 
