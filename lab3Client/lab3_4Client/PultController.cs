@@ -12,8 +12,9 @@ namespace lab3_4Client
         private Client client;
         public event Action<string> Errors;
         public event Action<List<Color>> DataUpdated;
-        private List<Color> buttonsStates = new();
+        private List<Color> buttonsStates;
         private System.Windows.Forms.Timer timer;
+        private int buttonNumbers;
 
         public PultController()
         {
@@ -24,6 +25,7 @@ namespace lab3_4Client
 
         public void StartGetData()
         {
+            client.SendRequest("?Ready");
             timer.Start();
         }
 
@@ -44,18 +46,19 @@ namespace lab3_4Client
 
                     // Разбор данных
                     string[] values = data.Split(';');
+                    buttonsStates = new List<Color>(values.Length);
                     for (int i = 0; i < values.Length; i++)
                     {
                         switch (values[i])
                         {
                             case "WORKING":
-                                buttonsStates[i] = Color.Green;
+                                buttonsStates.Add(Color.Green);
                                 break;
                             case "FAILURE":
-                                buttonsStates[i] = Color.Red;
+                                buttonsStates.Add(Color.Red);
                                 break;
                             case "REPAIR":
-                                buttonsStates[i] = Color.Gray;
+                                buttonsStates.Add(Color.Gray);
                                 break;
                         }
                     }
@@ -65,6 +68,7 @@ namespace lab3_4Client
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 Errors?.Invoke(ex.Message);
             }
         }
@@ -83,8 +87,8 @@ namespace lab3_4Client
 
                 client = new Client(IP);
                 client.Connect();
-
-                return int.Parse(client.GetResponce());
+                buttonNumbers = int.Parse(client.GetResponce());
+                return buttonNumbers;
             }
             catch (Exception ex)
             {

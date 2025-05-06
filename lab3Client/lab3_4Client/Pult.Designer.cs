@@ -34,44 +34,46 @@
             labelIP = new Label();
             SuspendLayout();
             // 
-            // buttonDisconnect
+            // labelIP
             // 
-            buttonDisconnect.Location = new Point(130, 407);
-            buttonDisconnect.Margin = new Padding(4, 3, 4, 3);
-            buttonDisconnect.Name = "buttonDisconnect";
-            buttonDisconnect.Size = new Size(100, 31);
-            buttonDisconnect.TabIndex = 10;
-            buttonDisconnect.Text = "Отключиться";
-            buttonDisconnect.UseVisualStyleBackColor = true;
-            // 
-            // buttonConnect
-            // 
-            buttonConnect.Location = new Point(13, 407);
-            buttonConnect.Margin = new Padding(4, 3, 4, 3);
-            buttonConnect.Name = "buttonConnect";
-            buttonConnect.Size = new Size(100, 31);
-            buttonConnect.TabIndex = 9;
-            buttonConnect.Text = "Соединиться";
-            buttonConnect.UseVisualStyleBackColor = true;
+            labelIP.AutoSize = true;
+            labelIP.Location = new Point(13, 328);
+            labelIP.Margin = new Padding(4, 0, 4, 0);
+            labelIP.Name = "labelIP";
+            labelIP.Size = new Size(53, 15);
+            labelIP.TabIndex = 7;
+            labelIP.Text = "IP-адрес";
             // 
             // textBoxIPAddress
             // 
-            textBoxIPAddress.Location = new Point(78, 373);
+            textBoxIPAddress.Location = new Point(78, 325);
             textBoxIPAddress.Margin = new Padding(4, 3, 4, 3);
             textBoxIPAddress.Name = "textBoxIPAddress";
             textBoxIPAddress.Size = new Size(117, 23);
             textBoxIPAddress.TabIndex = 8;
             textBoxIPAddress.Text = "127.0.0.1";
             // 
-            // labelIP
+            // buttonConnect
             // 
-            labelIP.AutoSize = true;
-            labelIP.Location = new Point(13, 376);
-            labelIP.Margin = new Padding(4, 0, 4, 0);
-            labelIP.Name = "labelIP";
-            labelIP.Size = new Size(53, 15);
-            labelIP.TabIndex = 7;
-            labelIP.Text = "IP-адрес";
+            buttonConnect.Location = new Point(13, 370);
+            buttonConnect.Margin = new Padding(4, 3, 4, 3);
+            buttonConnect.Name = "buttonConnect";
+            buttonConnect.Size = new Size(100, 31);
+            buttonConnect.TabIndex = 9;
+            buttonConnect.Text = "Соединиться";
+            buttonConnect.UseVisualStyleBackColor = true;
+            buttonConnect.Click += buttonConnect_Click;
+            // 
+            // buttonDisconnect
+            // 
+            buttonDisconnect.Location = new Point(131, 370);
+            buttonDisconnect.Margin = new Padding(4, 3, 4, 3);
+            buttonDisconnect.Name = "buttonDisconnect";
+            buttonDisconnect.Size = new Size(100, 31);
+            buttonDisconnect.TabIndex = 10;
+            buttonDisconnect.Text = "Отключиться";
+            buttonDisconnect.UseVisualStyleBackColor = true;
+            buttonDisconnect.Click += buttonDisconnect_Click;
             // 
             // Pult
             // 

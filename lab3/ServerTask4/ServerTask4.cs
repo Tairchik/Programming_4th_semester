@@ -43,13 +43,13 @@ namespace ServerTask4
 
                 while (connected)
                 {
-                    if ((DateTime.Now - dateTime).TotalSeconds < 2 && !readyForGenerate)
+                    if ((DateTime.Now - dateTime).TotalSeconds < 2)
                     {
                         HandleClient(stream, out readyForGenerate);
                     }
                     else
                     {
-                        dateTime = DateTime.Now;
+                        
                         // Генерация значений
                         GenerateValues();
 
@@ -57,6 +57,7 @@ namespace ServerTask4
                         string data = string.Join(";", unitStates);
 
                         SendResponse(stream, data);
+                        dateTime = DateTime.Now;
                     }
                 }
                 client.Close();
