@@ -14,7 +14,7 @@ namespace lab3_4Client
         public event Action<List<Color>> DataUpdated;
         private List<Color> buttonsStates;
         private System.Windows.Forms.Timer timer;
-        private int buttonNumbers;
+        private int buttonNumbers = 0;
 
         public PultController()
         {
@@ -25,8 +25,16 @@ namespace lab3_4Client
 
         public void StartGetData()
         {
-            client.SendRequest("?Ready");
-            timer.Start();
+            if (buttonNumbers == 0) return;
+            try
+            {
+                client.SendRequest("?Ready");
+                timer.Start();
+            }
+            catch (Exception ex)
+            {
+                Errors?.Invoke(ex.Message);
+            }
         }
 
         private void DataUpdate(object sender, EventArgs e)
@@ -68,7 +76,6 @@ namespace lab3_4Client
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 Errors?.Invoke(ex.Message);
             }
         }
@@ -94,7 +101,7 @@ namespace lab3_4Client
             catch (Exception ex)
             {
                 Errors?.Invoke(ex.Message);
-                return 0;
+                return buttonNumbers;
             }
         }
 

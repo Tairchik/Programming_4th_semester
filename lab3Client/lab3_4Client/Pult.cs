@@ -27,6 +27,7 @@ namespace lab3_4Client
 
         private void CreateButtons(int numberOfUnits)
         {
+            if (numberOfUnits == 0) return;
             int buttonSize = 100; // Размер кнопки
             int padding = 10;     // Отступ между кнопками
             int buttonsPerRow = 10; // Количество кнопок в строке
