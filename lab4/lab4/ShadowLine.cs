@@ -7,35 +7,53 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lab4
 {
-    internal class ShadowLine
+    public class ShadowLine
     {
-        private double[,] _coordinates;
+        private int[,] _coordinates;
         
-        public ShadowLine(double[,] coordinates)
+        public ShadowLine(int[,] coordinates)
         {
             Coordinates = coordinates;        
         }
 
-        public double CalculateSum()
+        public int CalculateSum()
         {
-            double sum = Coordinates[0, 1] - Coordinates[0, 0];
-            for (int i = 1; i < Coordinates.GetLength(0); i++)
+            // Проверка на пустой массив
+            if (Coordinates.GetLength(0) == 0)
             {
-                // Если не пересекаются
-                if (Coordinates[i, 0] > Coordinates[i - 1, 1])
-                {
-                    sum += Coordinates[i, 1] - Coordinates[i, 0];
-                }
-                // Пересекаются и один не вложен в другого
-                else if (Coordinates[i, 1] > Coordinates[i - 1, 1])
-                {
-                    sum += Coordinates[i, 1] - Coordinates[i - 1, 1];
-                }
+                return 0;
             }
+
+            int sum = 0;
+            int currentRight = Coordinates[0, 0]; // Изначально берем левую границу первого отрезка
+
+            for (int i = 0; i < Coordinates.GetLength(0); i++)
+            {
+                // Если текущая левая граница больше правой границы предыдущего объединенного отрезка,
+                // то начинаем новый объединенный отрезок
+                if (Coordinates[i, 0] > currentRight)
+                {
+                    sum += currentRight - Coordinates[0, 0]; // Добавляем длину предыдущего объединенного отрезка
+                    Coordinates[0, 0] = Coordinates[i, 0];   // Новая левая граница
+                    currentRight = Coordinates[i, 1];        // Новая правая граница
+                }
+                // Если текущая правая граница больше правой границы текущего объединенного отрезка,
+                // расширяем текущий объединенный отрезок вправо
+                else if (Coordinates[i, 1] > currentRight)
+                {
+                    currentRight = Coordinates[i, 1];
+                }
+                // Если весь текущий отрезок полностью содержится в объединенном отрезке,
+                // ничего делать не нужно
+            }
+
+            // Добавляем длину последнего объединенного отрезка
+            sum += currentRight - Coordinates[0, 0];
+
             return sum;
         }
 
-        public double[,] Coordinates
+        public int[,] Coordinates
         {
             get
             {
@@ -57,7 +75,7 @@ namespace lab4
                 }
             }
         }
-        private bool CheckElements(double[,] data)
+        private bool CheckElements(int[,] data)
         {
             for (int i = 0; i < data.GetLength(0); i++)
             {
@@ -69,13 +87,13 @@ namespace lab4
             return true;
         }
 
-        private double[,] SortElements(double[,] data)
+        private int[,] SortElements(int[,] data)
         {
             int rows = data.GetLength(0);
             int cols = data.GetLength(1);
 
             // Создаем временный массив для строк
-            double[] tempRow = new double[cols];
+            int[] tempRow = new int[cols];
 
             // Простая пузырьковая сортировка по первому столбцу (левой границе)
             for (int i = 0; i < rows - 1; i++)
