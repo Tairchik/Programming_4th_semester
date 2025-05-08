@@ -36,10 +36,10 @@ namespace lab3_4Client
             int rows = (int)Math.Ceiling((double)numberOfUnits / buttonsPerRow);
 
             // Высота формы
-            int formHeight = padding + (buttonSize + padding) * rows + 200;
+            // int formHeight = padding + (buttonSize + padding) * rows + 200;
 
             // Установка размера формы
-            this.ClientSize = new System.Drawing.Size(1100, formHeight); // Ширина фиксированная, высота динамическая
+            // this.ClientSize = new System.Drawing.Size(1100, formHeight); // Ширина фиксированная, высота динамическая
 
             for (int i = 0; i < numberOfUnits; i++)
             {
@@ -55,7 +55,7 @@ namespace lab3_4Client
                     BackColor = System.Drawing.Color.Green
                 };
                 buttons.Add(button);
-                this.Controls.Add(button);
+                splitContainer1.Panel1.Controls.Add(button);
             }
         }
 
@@ -70,5 +70,6 @@ namespace lab3_4Client
         {
             controller.Disconnect();
         }
+
     }
 }

@@ -28,25 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            buttonDisconnect = new Button();
-            buttonConnect = new Button();
             textBoxIPAddress = new TextBox();
+            buttonConnect = new Button();
+            buttonDisconnect = new Button();
             labelIP = new Label();
+            splitContainer1 = new SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
-            // 
-            // labelIP
-            // 
-            labelIP.AutoSize = true;
-            labelIP.Location = new Point(13, 328);
-            labelIP.Margin = new Padding(4, 0, 4, 0);
-            labelIP.Name = "labelIP";
-            labelIP.Size = new Size(53, 15);
-            labelIP.TabIndex = 7;
-            labelIP.Text = "IP-адрес";
             // 
             // textBoxIPAddress
             // 
-            textBoxIPAddress.Location = new Point(78, 325);
+            textBoxIPAddress.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            textBoxIPAddress.Location = new Point(92, 1);
             textBoxIPAddress.Margin = new Padding(4, 3, 4, 3);
             textBoxIPAddress.Name = "textBoxIPAddress";
             textBoxIPAddress.Size = new Size(117, 23);
@@ -55,7 +50,8 @@
             // 
             // buttonConnect
             // 
-            buttonConnect.Location = new Point(13, 370);
+            buttonConnect.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonConnect.Location = new Point(17, 48);
             buttonConnect.Margin = new Padding(4, 3, 4, 3);
             buttonConnect.Name = "buttonConnect";
             buttonConnect.Size = new Size(100, 31);
@@ -66,7 +62,8 @@
             // 
             // buttonDisconnect
             // 
-            buttonDisconnect.Location = new Point(131, 370);
+            buttonDisconnect.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonDisconnect.Location = new Point(125, 48);
             buttonDisconnect.Margin = new Padding(4, 3, 4, 3);
             buttonDisconnect.Name = "buttonDisconnect";
             buttonDisconnect.Size = new Size(100, 31);
@@ -75,26 +72,63 @@
             buttonDisconnect.UseVisualStyleBackColor = true;
             buttonDisconnect.Click += buttonDisconnect_Click;
             // 
+            // labelIP
+            // 
+            labelIP.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            labelIP.AutoSize = true;
+            labelIP.Location = new Point(17, 4);
+            labelIP.Margin = new Padding(4, 0, 4, 0);
+            labelIP.Name = "labelIP";
+            labelIP.Size = new Size(53, 15);
+            labelIP.TabIndex = 7;
+            labelIP.Text = "IP-адрес";
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            splitContainer1.IsSplitterFixed = true;
+            splitContainer1.Location = new Point(12, 12);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.AutoScroll = true;
+            splitContainer1.Panel1MinSize = 400;
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(labelIP);
+            splitContainer1.Panel2.Controls.Add(buttonDisconnect);
+            splitContainer1.Panel2.Controls.Add(textBoxIPAddress);
+            splitContainer1.Panel2.Controls.Add(buttonConnect);
+            splitContainer1.Size = new Size(1125, 547);
+            splitContainer1.SplitterDistance = 450;
+            splitContainer1.SplitterWidth = 1;
+            splitContainer1.TabIndex = 11;
+            // 
             // Pult
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(buttonDisconnect);
-            Controls.Add(buttonConnect);
-            Controls.Add(textBoxIPAddress);
-            Controls.Add(labelIP);
+            ClientSize = new Size(1149, 571);
+            Controls.Add(splitContainer1);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "Pult";
             Text = "Form1";
+            splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Button buttonDisconnect;
-        private Button buttonConnect;
         private TextBox textBoxIPAddress;
+        private Button buttonConnect;
+        private Button buttonDisconnect;
         private Label labelIP;
+        private SplitContainer splitContainer1;
     }
 }
