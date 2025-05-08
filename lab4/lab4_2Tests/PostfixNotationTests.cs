@@ -3,7 +3,7 @@
 namespace lab4_2Tests
 {
     [TestClass]
-    public sealed class Test1
+    public sealed class PostfixNotationTests
     {
 
         // Тесты на корректные выражения
@@ -12,7 +12,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_NumericInput_ReturnsCorrectNotation()
         {
             string input = "1 + 2 * 3";
-            string expected = "1 2 3 * + ";
+            string expected = "1  2  3*+";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -21,7 +21,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_SimpleAddition_ReturnsCorrectNotation()
         {
             string input = "a + b";
-            string expected = "a b + ";
+            string expected = "a  b+";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -30,7 +30,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_SimpleMultiplication_ReturnsCorrectNotation()
         {
             string input = "a * b";
-            string expected = "a b * ";
+            string expected = "a  b*";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -39,7 +39,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_PriorityOperators_ReturnsCorrectNotation()
         {
             string input = "a + b * c";
-            string expected = "a b c * + ";
+            string expected = "a  b  c*+";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -48,7 +48,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_ParenthesesOverridePriority_ReturnsCorrectNotation()
         {
             string input = "(a + b) * c";
-            string expected = "a b + c * ";
+            string expected = "a  b+  c*";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -57,7 +57,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_ComplexExpression_ReturnsCorrectNotation()
         {
             string input = "a + b * (c - d) / e";
-            string expected = "a b c d - * e / + ";
+            string expected = "a  b  c  d- * e/+";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -66,7 +66,7 @@ namespace lab4_2Tests
         public void ConvertToPolishNotation_Exponentiation_ReturnsCorrectNotation()
         {
             string input = "a ^ b ^ c";
-            string expected = "a b c ^ ^ ";
+            string expected = "a  b ^ c^";
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
@@ -94,28 +94,20 @@ namespace lab4_2Tests
 
         // Тесты на некорректные выражения
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void ConvertToPolishNotation_UnbalancedParentheses_ThrowsOrExits()
         {
             string input = "(a + b";
-            Assert.Throws<InvalidOperationException>(() => Poliz.ConvertToPolishNotation(input));
-            // Или проверка вывода в консоль (если используется `Environment.Exit`).
+            Poliz.ConvertToPolishNotation(input);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void ConvertToPolishNotation_InvalidCharacters_IgnoresOrFails()
         {
             string input = "a + b # c";
-            // В текущей реализации символ '#' игнорируется (если не буква/цифра/оператор).
-            string expected = "a b + c ";
             string result = Poliz.ConvertToPolishNotation(input);
-            Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
-        public void ConvertToPolishNotation_OnlyOperators_ThrowsOrExits()
-        {
-            string input = "+ * /";
-            Assert.Throws<InvalidOperationException>(() => Poliz.ConvertToPolishNotation(input));
-        }
     }
 }

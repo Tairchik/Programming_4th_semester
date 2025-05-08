@@ -22,11 +22,6 @@ namespace lab4_2
 
                 if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
                 {
-                    // Добавляем пробел перед числом/переменной (кроме самого первого символа)
-                    if (result.Length > 0 && !char.IsWhiteSpace(result[result.Length - 1]))
-                    {
-                        result.Append(' ');
-                    }
                     result.Append(c);
                     continue;
                 }
@@ -40,7 +35,7 @@ namespace lab4_2
                         {
                             while (operatorStack.Count > 0 && operatorStack.Peek() != '(')
                             {
-                                result.Append(' ').Append(operatorStack.Pop());
+                                result.Append(operatorStack.Pop());
                             }
 
                             if (operatorStack.Count == 0 || operatorStack.Peek() != '(')
@@ -55,7 +50,7 @@ namespace lab4_2
 
                 while (operatorStack.Count > 0 && GetPrecedence(operatorStack.Peek()) >= GetPrecedence(c))
                 {
-                    result.Append(' ').Append(operatorStack.Pop());
+                    result.Append(operatorStack.Pop());
                 }
 
                 operatorStack.Push(c);
@@ -68,10 +63,10 @@ namespace lab4_2
                     throw new InvalidOperationException("Некорректное выражение: несбалансированные скобки");
                 }
 
-                result.Append(' ').Append(operatorStack.Pop());
+                result.Append(operatorStack.Pop());
             }
 
-            return result.ToString();
+            return result.ToString().Trim();
         }
 
         private static int GetPrecedence(char c)
