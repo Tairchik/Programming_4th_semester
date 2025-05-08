@@ -5,7 +5,7 @@
 
         static void Main()
         {
-            string input = "a+b*c";
+            string input = "";
             Console.WriteLine("Input - " + input);
             string result = Poliz.ConvertToPolishNotation(input);
             Console.Write("Postfix Notation: ");

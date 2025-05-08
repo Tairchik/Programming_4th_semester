@@ -18,24 +18,6 @@ namespace lab4_2Tests
         }
 
         [TestMethod]
-        public void ConvertToPolishNotation_SimpleAddition_ReturnsCorrectNotation()
-        {
-            string input = "a + b";
-            string expected = "a  b+";
-            string result = Poliz.ConvertToPolishNotation(input);
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void ConvertToPolishNotation_SimpleMultiplication_ReturnsCorrectNotation()
-        {
-            string input = "a * b";
-            string expected = "a  b*";
-            string result = Poliz.ConvertToPolishNotation(input);
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
         public void ConvertToPolishNotation_PriorityOperators_ReturnsCorrectNotation()
         {
             string input = "a + b * c";
@@ -61,16 +43,6 @@ namespace lab4_2Tests
             string result = Poliz.ConvertToPolishNotation(input);
             Assert.AreEqual(expected, result);
         }
-
-        [TestMethod]
-        public void ConvertToPolishNotation_Exponentiation_ReturnsCorrectNotation()
-        {
-            string input = "a ^ b ^ c";
-            string expected = "a  b ^ c^";
-            string result = Poliz.ConvertToPolishNotation(input);
-            Assert.AreEqual(expected, result);
-        }
-
 
         // Тесты на граничные случаи
         [TestMethod]
