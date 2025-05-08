@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace lab4
+﻿namespace lab4
 {
     public class ShadowLine
     {
@@ -25,20 +18,21 @@ namespace lab4
             }
 
             int sum = 0;
-            int currentRight = Coordinates[0, 0]; // Изначально берем левую границу первого отрезка
+            int currentLeft = Coordinates[0, 0];  // Левая граница текущего объединенного отрезка
+            int currentRight = Coordinates[0, 1]; // Правая граница текущего объединенного отрезка
 
-            for (int i = 0; i < Coordinates.GetLength(0); i++)
+            for (int i = 1; i < Coordinates.GetLength(0); i++)
             {
-                // Если текущая левая граница больше правой границы предыдущего объединенного отрезка,
-                // то начинаем новый объединенный отрезок
+                // Если текущая левая граница больше правой границы объединенного отрезка,
+                // добавляем длину текущего объединенного отрезка и начинаем новый
                 if (Coordinates[i, 0] > currentRight)
                 {
-                    sum += currentRight - Coordinates[0, 0]; // Добавляем длину предыдущего объединенного отрезка
-                    Coordinates[0, 0] = Coordinates[i, 0];   // Новая левая граница
-                    currentRight = Coordinates[i, 1];        // Новая правая граница
+                    sum += currentRight - currentLeft; // Добавляем длину текущего объединенного отрезка
+                    currentLeft = Coordinates[i, 0];   // Новая левая граница
+                    currentRight = Coordinates[i, 1];  // Новая правая граница
                 }
-                // Если текущая правая граница больше правой границы текущего объединенного отрезка,
-                // расширяем текущий объединенный отрезок вправо
+                // Если текущая правая граница больше правой границы объединенного отрезка,
+                // расширяем объединенный отрезок вправо
                 else if (Coordinates[i, 1] > currentRight)
                 {
                     currentRight = Coordinates[i, 1];
@@ -48,7 +42,7 @@ namespace lab4
             }
 
             // Добавляем длину последнего объединенного отрезка
-            sum += currentRight - Coordinates[0, 0];
+            sum += currentRight - currentLeft;
 
             return sum;
         }
