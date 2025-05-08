@@ -10,11 +10,23 @@ namespace lab4_2
         {
             var result = new StringBuilder();
             var operatorStack = new Stack<char>();
+            var allowedOperators = new HashSet<char> { '+', '-', '*', '/', '^', '(', ')' };
 
             foreach (var c in expression)
             {
+                // Пропускаем недопустимые символы
+                if (!char.IsLetterOrDigit(c) && !allowedOperators.Contains(c) && !char.IsWhiteSpace(c))
+                {
+                    throw new ArgumentException("Недопустимый символ:" + c);
+                }
+
                 if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
                 {
+                    // Добавляем пробел перед числом/переменной (кроме самого первого символа)
+                    if (result.Length > 0 && !char.IsWhiteSpace(result[result.Length - 1]))
+                    {
+                        result.Append(' ');
+                    }
                     result.Append(c);
                     continue;
                 }
@@ -28,14 +40,12 @@ namespace lab4_2
                         {
                             while (operatorStack.Count > 0 && operatorStack.Peek() != '(')
                             {
-                                result.Append(operatorStack.Pop());
-                                result.Append(' ');
+                                result.Append(' ').Append(operatorStack.Pop());
                             }
 
                             if (operatorStack.Count == 0 || operatorStack.Peek() != '(')
                             {
-                                Console.WriteLine("Некорректное выражение");
-                                Environment.Exit(0);
+                                throw new InvalidOperationException("Некорректное выражение: несбалансированные скобки");
                             }
 
                             operatorStack.Pop();
@@ -45,8 +55,7 @@ namespace lab4_2
 
                 while (operatorStack.Count > 0 && GetPrecedence(operatorStack.Peek()) >= GetPrecedence(c))
                 {
-                    result.Append(operatorStack.Pop());
-                    result.Append(' ');
+                    result.Append(' ').Append(operatorStack.Pop());
                 }
 
                 operatorStack.Push(c);
@@ -56,12 +65,10 @@ namespace lab4_2
             {
                 if (operatorStack.Peek() == '(' || operatorStack.Peek() == ')')
                 {
-                    Console.WriteLine("Некорректное выражение");
-                    Environment.Exit(0);
+                    throw new InvalidOperationException("Некорректное выражение: несбалансированные скобки");
                 }
 
-                result.Append(operatorStack.Pop());
-                result.Append(' ');
+                result.Append(' ').Append(operatorStack.Pop());
             }
 
             return result.ToString();
@@ -71,16 +78,20 @@ namespace lab4_2
         {
             switch (c)
             {
+                case '(':
+                    return 0;
+                case ')':
+                    return 1;
                 case '+':
                 case '-':
-                    return 1;
+                    return 2;
                 case '*':
                 case '/':
-                    return 2;
-                case '^':
                     return 3;
+                case '^':
+                    return 4;
                 default:
-                    return 0;
+                    return 5;
             }
         }
     }
