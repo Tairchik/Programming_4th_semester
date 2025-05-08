@@ -5,8 +5,7 @@
 
         static void Main()
         {
-            Poliz pn = new();
-            string input = "3 + 4 * 2 / (1 - 5)^2";
+            string input = "";
             Console.WriteLine("Input - " + input);
             string result = Poliz.ConvertToPolishNotation(input);
             Console.Write("Postfix Notation: ");
