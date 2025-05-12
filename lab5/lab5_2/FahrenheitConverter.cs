@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab5_2_2
+namespace lab5_2
 {
     internal class FahrenheitConverter : ITemperatureConverter
     {
