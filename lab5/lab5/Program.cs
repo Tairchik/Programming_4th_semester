@@ -6,7 +6,10 @@ try
 {
     DigitalClock digitalClock = new DigitalClock(digitalTime);
     IAnalogClock analogClock = new DigitalToAnalogAdapter(digitalClock);
-    Console.WriteLine("Время в градусах: " + analogClock);
+
+    Client client = new Client(analogClock);
+
+    Console.WriteLine("Время в градусах: " + client);
 }
 catch(ArgumentException ex)
 {
