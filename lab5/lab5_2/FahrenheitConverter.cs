@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnitsNet;
 
 namespace lab5_2
 {
@@ -10,12 +11,12 @@ namespace lab5_2
     {
         public double ConvertToCelsius(double fahrenheit)
         {
-            return (fahrenheit - 32) * 5 / 9;
+            return Temperature.FromDegreesFahrenheit(fahrenheit).DegreesCelsius;
         }
 
         public double ConvertFromCelsius(double celsius)
         {
-            return celsius * 9 / 5 + 32;
+            return Temperature.FromDegreesCelsius(celsius).DegreesFahrenheit;
         }
     }
 }

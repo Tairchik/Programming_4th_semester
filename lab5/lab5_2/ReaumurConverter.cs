@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnitsNet;
 
 namespace lab5_2
 {
@@ -10,12 +11,12 @@ namespace lab5_2
     {
         public double ReaumurToCelsius(double reaumur)
         {
-            return reaumur * 1.25;
+            return Temperature.FromDegreesReaumur(reaumur).DegreesCelsius;
         }
 
         public double CelsiusToReaumur(double celsius)
         {
-            return celsius / 1.25;
+            return Temperature.FromDegreesCelsius(celsius).DegreesReaumur;
         }
     }
 }
