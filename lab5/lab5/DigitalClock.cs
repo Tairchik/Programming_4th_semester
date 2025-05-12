@@ -23,7 +23,7 @@ namespace lab5
                 !int.TryParse(parts[0], out int hours) ||
                 !int.TryParse(parts[1], out int minutes))
             {
-                throw new ArgumentException("Invalid time format. Use 'hh.mm'");
+                throw new ArgumentException("Invalid time format. Use 'hh:mm'");
             }
             Hours = hours;
             Minutes = minutes;
