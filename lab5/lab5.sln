@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab5", "lab5\lab5.csproj", "{9075AB49-67EF-4392-B060-DF9C021B8369}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab5_2_2", "lab5_2\lab5_2_2.csproj", "{892428F1-E254-4281-A0ED-9D7024351B69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab5_2", "lab5_2\lab5_2.csproj", "{892428F1-E254-4281-A0ED-9D7024351B69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab5_3", "lab5_3\lab5_3.csproj", "{4A871CC9-4E0E-4D38-A7D4-0143D5349D6A}"
 EndProject
