@@ -8,7 +8,7 @@ namespace lab5
 {
     internal interface IAnalogClock
     {
-        public int HourDegrees { get; set; }
-        public int MinuteDegrees { get; set; }
+        public double HourDegrees { get; set; }
+        public double MinuteDegrees { get; set; }
     }
 }
