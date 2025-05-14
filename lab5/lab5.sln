@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab5_2", "lab5_2\lab5_2.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab5_3", "lab5_3\lab5_3.csproj", "{4A871CC9-4E0E-4D38-A7D4-0143D5349D6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempConverter", "TempConverter\TempConverter.csproj", "{23895103-D8C8-4DFF-B12B-9E0A909C8053}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4A871CC9-4E0E-4D38-A7D4-0143D5349D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A871CC9-4E0E-4D38-A7D4-0143D5349D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A871CC9-4E0E-4D38-A7D4-0143D5349D6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23895103-D8C8-4DFF-B12B-9E0A909C8053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23895103-D8C8-4DFF-B12B-9E0A909C8053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23895103-D8C8-4DFF-B12B-9E0A909C8053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23895103-D8C8-4DFF-B12B-9E0A909C8053}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
